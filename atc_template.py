@@ -1,5 +1,4 @@
 import sys
-import heapq
 import bisect
 import random
 import io, os
@@ -11,7 +10,7 @@ from math import sqrt, gcd, inf
 from array import *
 from functools import lru_cache
 from types import GeneratorType
-
+from heapq import *
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
 RILST = lambda: list(RI())

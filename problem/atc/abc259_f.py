@@ -7,7 +7,6 @@
 # Powered by CP Editor (https://cpeditor.org)
 
 import sys
-import heapq
 import bisect
 import random
 import io, os
@@ -19,6 +18,7 @@ from math import sqrt, gcd, inf
 from array import *
 from functools import lru_cache
 from types import GeneratorType
+from heapq import *
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
@@ -81,7 +81,8 @@ def bootstrap(f, stack=[]):
 
     return wrappedfunc
 
-# 1466 ms
+
+#   ms
 if __name__ == '__main__':
     n, = RI()
     d = RILST()
@@ -93,6 +94,7 @@ if __name__ == '__main__':
     f = [[0, 0] for _ in range(n)]  # f[u]=[x,y] 代表u用子树 [最多连d个(连满)，最多连d-1个(不连满)]的情况，
 
 
+    # 1262    ms
     @bootstrap
     def dfs(u, fa):
         cs = []  # 可以连的子树
@@ -102,18 +104,56 @@ if __name__ == '__main__':
                 yield dfs(v, u)
                 full, not_full = f[v]
                 pride += full
-                diff = w + not_full - full  # 如果要连这个子树要补的差值
-                if diff > 0:
-                    cs.append(diff)
-        cs.sort(reverse=True)
+                if d[u]:
+                    diff = w + not_full - full  # 如果要连这个子树要补的差值
+                    if diff > 0:
+                        cs.append(diff)
         if not d[u]:
             f[u] = [pride, -inf]
         else:
-            f[u] = [pride, pride]
-            f[u][0] += sum(cs[:d[u]])
-            f[u][1] += sum(cs[:d[u] - 1])
+            cs.sort(reverse=True)
+            p = pride + sum(cs[:d[u] - 1])
+            f[u] = [p, p]
+            if len(cs) >= d[u]:
+                f[u][0] += cs[d[u] - 1]
+            # 实测这段优化意义不大，可能sort占得不多吧
+            # if d[u] > len(cs):
+            #     p = pride + sum(cs)
+            #     f[u] = [p, p]
+            # else:
+            #     cs.sort(reverse=True)
+            #     p = pride + sum(cs[:d[u] - 1])
+            #     f[u] = [p, p]
+            #     if len(cs) >= d[u]:
+            #         f[u][0] += cs[d[u] - 1]
         yield
 
+
+    # # 1309  ms
+    # @bootstrap
+    # def dfs(u, fa):
+    #     h = []  # 可以连的子树
+    #     pride = 0  # 一个子树不连能有多少
+    #     for v, w in g[u]:
+    #         if v != fa:
+    #             yield dfs(v, u)
+    #             full, not_full = f[v]
+    #             pride += full
+    #             diff = w + not_full - full  # 如果要连这个子树要补的差值
+    #             if diff > 0:
+    #                 if len(h) < d[u]:
+    #                     heappush(h, diff)
+    #                 else:
+    #                     heappushpop(h, diff)
+    #
+    #     if not d[u]:
+    #         f[u] = [pride, -inf]
+    #     else:
+    #         p = pride + sum(h)
+    #         f[u] = [p, p]
+    #         if len(h) == d[u]:
+    #             f[u][1] -= h[0]
+    #     yield
 
     dfs(0, -1)
     print(f[0][0])
