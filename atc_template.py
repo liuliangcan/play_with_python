@@ -11,6 +11,7 @@ from array import *
 from functools import lru_cache
 from types import GeneratorType
 from heapq import *
+
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
 RILST = lambda: list(RI())
@@ -52,6 +53,7 @@ j使用同向双指针维护，不必判<n,因为只有cnt[v]>n才会出现位�
 忽略Counter,时间复杂度O(n+n),即i、j的移动距离
 """
 
+
 def bootstrap(f, stack=[]):
     def wrappedfunc(*args, **kwargs):
         if stack:
@@ -70,8 +72,13 @@ def bootstrap(f, stack=[]):
             return to
 
     return wrappedfunc
-#   237    ms
-def solve(n, a, b):
+
+
+#       ms
+def solve():
+    n, = RI()
+    a = RILST()
+    b = RILST()
     if max(Counter(a + b).values()) > n:
         return print('No')
     print('Yes')
@@ -86,11 +93,5 @@ def solve(n, a, b):
     print(*b, sep=' ')
 
 
-
-
-
 if __name__ == '__main__':
-    n, = RI()
-    a = RILST()
-    b = RILST()
-    solve(n, a, b)
+    solve()
