@@ -1,3 +1,9 @@
+# Problem: E - Packing Under Range Regulations
+# Contest: AtCoder - AtCoder Beginner Contest 214
+# URL: https://atcoder.jp/contests/abc214/tasks/abc214_e
+# Memory Limit: 1024 MB
+# Time Limit: 3000 ms
+
 import sys
 import bisect
 import random
@@ -41,41 +47,41 @@ PROBLEM = """https://atcoder.jp/contests/abc214/tasks/abc214_e
 输出
 Yes
 No
+
+2022年12月16日
 """
-
-
-def bootstrap(f, stack=[]):
-    def wrappedfunc(*args, **kwargs):
-        if stack:
-            return f(*args, **kwargs)
-        else:
-            to = f(*args, **kwargs)
-            while True:
-                if type(to) is GeneratorType:
-                    stack.append(to)
-                    to = next(to)
-                else:
-                    stack.pop()
-                    if not stack:
-                        break
-                    to = stack[-1].send(to)
-            return to
-
-    return wrappedfunc
-
+"""按左端点L排序
+每个点p放在尽可能靠左的地方，但要<=R。
+放完p+=1。
+每次把左端点<=p的区间都拿出来，这些都可以放，但优先放R小的，因为它很快就不能放了。
+"""
 
 #       ms
 def solve():
-    n, = RI()
-    a = RILST()
-
-
-def main():
-    t = 1
-    # t, = RI()
+    t, = RI()
     for _ in range(t):
-        solve()
+        n, = RI()
+        a = []
+        for _ in range(n):
+            l, r = RI()
+            a.append((l, r))
+        a.sort()
+        j = p = 0
+        h = []
+        while j < n or h:
+            while j < n and a[j][0] <= p:
+                heappush(h, a[j][1])
+                j += 1
+            if not h:
+                p = a[j][0]
+            else:
+                if heappop(h) < p:
+                    print('No')
+                    break
+                p += 1
+        else:
+            print('Yes')
 
 
 if __name__ == '__main__':
-    main()
+    solve()
