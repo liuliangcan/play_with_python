@@ -70,12 +70,7 @@ def solve():
     a = RILST()
 
 
-def main():
-    t = 1
-    # t, = RI()
+if __name__ == '__main__':
+    t = 1  # t, = RI()
     for _ in range(t):
         solve()
-
-
-if __name__ == '__main__':
-    main()
