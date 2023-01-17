@@ -71,6 +71,7 @@ def solve():
 
 
 if __name__ == '__main__':
-    t = 1  # t, = RI()
-    for _ in range(t):
-        solve()
+    # t, = RI()
+    # for _ in range(t):
+    #     solve()
+    solve()

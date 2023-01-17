@@ -22,13 +22,14 @@ class Solution:
         for j in range(1, k):
             g = f[:]
             for i in range(j * w, n):
-                g[i] = max(g[i-1], f[i - w] + r[i])
+                g[i] = max(g[i - 1], f[i - w] + r[i])
             f = g
 
         return floor.count(1) - max(f)
 
+
 """滑窗+dp
-先用滑窗计算出以i为右端点的单个地毯能盖几个白块，记作r[i]。
+先用滑窗计算出以i为右端点的单个地毯能盖几个白块，记作r[i]。补充：滑窗个p，前缀和就可以了。
 定义：令f[i][j]为用了i张地毯，前i个块能覆盖的最多的白块。
 转移：考虑最后一张地毯的位置，显然f[i][j] = f[i-1][j-w] + r[j]
 答案：最多能覆盖的白块为max(f[-1])
