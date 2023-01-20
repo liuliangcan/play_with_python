@@ -6,7 +6,7 @@ from bisect import *
 from collections import *
 from contextlib import redirect_stdout
 from itertools import *
-from math import sqrt, gcd, inf
+from math import sqrt, gcd, inf, comb
 from array import *
 from functools import lru_cache
 from types import GeneratorType
