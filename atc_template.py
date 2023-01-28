@@ -6,13 +6,13 @@ from bisect import *
 from collections import *
 from contextlib import redirect_stdout
 from itertools import *
-from math import sqrt, gcd, inf
-# ACW没有comb
-# from math import sqrt, gcd, inf, comb
 from array import *
 from functools import lru_cache
 from types import GeneratorType
 from heapq import *
+from math import sqrt, gcd, inf
+if sys.version >= '3.8':  # ACW没有comb
+    from math import comb
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
