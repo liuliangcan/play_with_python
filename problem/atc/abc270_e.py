@@ -85,8 +85,8 @@ def solve1():
         p.append(p[-1] + x)
 
     def ok(x):
-        pos = bisect_left(b, x)  # 找到位置
-        if p[pos] + (n - pos) * x > k:
+        pos = bisect_left(b, x)  # 找到x位置
+        if p[pos] + (n - pos) * x > k:  # 计算x圈吃了多少个
             return True
         return False
 
@@ -127,7 +127,7 @@ def solve2():
     print(*a)
 
 
-#   307     ms  直接模拟+二分
+#   307     ms  直接模拟+二分 nlgk
 def solve3():
     n, k = RI()
     a = RILST()
