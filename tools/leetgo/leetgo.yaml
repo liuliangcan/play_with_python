@@ -1,0 +1,25 @@
+# leetgo project level config, global config is at C:\Users\Administrator\.config\leetgo\config.yaml
+# for more details, please refer to https://github.com/j178/leetgo
+language: zh
+code:
+  lang: python3
+  filename_template: '{{ .Id | padWithZero 4 }}.{{ .Difficulty }}.{{ .Title }}{{ if .SlugIsMeaningful }}.{{ .Slug }}.{{ .Difficulty }}{{ end }}'
+#  python3:
+  blocks:
+      - name: beforeMarker
+        template: |+
+          from bisect import *
+          from collections import *
+          from heapq import *
+          from typing import List
+      - name: beforeCode
+        template: |+
+          from sortedcontainers import SortedList
+
+
+leetcode:
+  site: https://leetcode.cn
+#  credentials:
+#    from: browser
+#editor:
+#  use: none
