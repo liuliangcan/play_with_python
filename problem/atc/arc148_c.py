@@ -59,8 +59,8 @@ PROBLEM = """https://atcoder.jp/contests/arc148/tasks/arc148_c
 提示 2：如果 v 的儿子已经亮着，就不用操作儿子了；同样地，如果 p[v] 已经亮着，就不用操作 v 自己了。"""
 
 
-#       ms
-def solve():
+#    303   ms
+def solve1():
     n, q = RI()
     p = [0, 0] + RILST()  # p[i]是i的父节点
     child = [0] * (n + 1)  # child[i]代表i有几个儿子
@@ -78,6 +78,42 @@ def solve():
             else:
                 ans += 1  # 否则自己要变暗
         print(ans)
+
+
+#    255    ms
+def solve2():
+    n, q = RI()
+    p = [0, 0] + RILST()  # p[i]是i的父节点
+    child = [0] * (n + 1)  # child[i]代表i有几个儿子
+    for i in range(2, n + 1):
+        child[p[i]] += 1
+    ans = []
+    for _ in range(q):
+        s = set(RILST()[1:])
+        ans.append(0)
+        for u in s:
+            ans[-1] += child[u] + 1
+            if p[u] in s:
+                ans[-1] -= 2
+    print(*ans, sep='\n')
+
+
+#     284   ms
+def solve():
+    n, q = RI()
+    p = [0, 0] + RILST()  # p[i]是i的父节点
+    child_me = [1] * (n + 1)  # child[i]代表i有几个儿子
+    for i in range(2, n + 1):
+        child_me[p[i]] += 1
+    ans = []
+    for _ in range(q):
+        s = set(RILST()[1:])
+        ans.append(0)
+        for u in s:
+            ans[-1] += child_me[u]
+            if p[u] in s:
+                ans[-1] -= 2
+    print(*ans, sep='\n')
 
 
 if __name__ == '__main__':
