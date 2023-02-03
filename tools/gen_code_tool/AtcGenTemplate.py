@@ -141,6 +141,7 @@ mod {self.file_name} {{
 
 // const MOD:usize = 1000000000+7;
 // {self.url}
+// 本模板由 https://github.com/liuliangcan/play_with_python/blob/main/tools/gen_code_tool/gen_template.py 自动生成;中文题面描述可移步
 fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
     let n = scan.token::<usize>();
     let mut a = vec![0i64; n];
@@ -216,7 +217,7 @@ func Test_run(t *testing.T) {{
     }}
     testutil.AssertEqualStringCase(t, testCases, 0, run)
 }}
-// 本模板由XXX自动生成,在本目录下使用go test进行case测试
+// 本模板由https://github.com/liuliangcan/play_with_python/blob/main/tools/gen_code_tool/gen_template.py自动生成,在本目录下使用go test进行case测试
 // {self.url}
 // {self.url}/submit?taskScreenName={self.file_name}            
 """)
