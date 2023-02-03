@@ -15,6 +15,7 @@ import sys
 
 from tools.gen_code_tool.AtcCaseSpider import AtcCaseSpider
 
+PYTHON_TARGET_DIR = 'F://play_with_python/problem/'
 GO_TARGET_DIR = 'F://play_with_go/problem/'
 RUST_TARGET_DIR = 'F://play_with_rust/src/problem/'
 
@@ -160,6 +161,17 @@ fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
             sys.stderr.write(f'{files_path}已存在，请手动清除后再试\n')
         return None, None
 
+    def make_python_paths(self):
+        files_path = os.path.join(PYTHON_TARGET_DIR, self.site_tag, self.contest, self.task_id)
+        if not os.path.exists(files_path):
+            os.makedirs(files_path)
+            print(f'创建目录成功{files_path}')
+            main_file = os.path.join(files_path, f'{self.file_name}.py')
+            return main_file
+        else:
+            sys.stderr.write(f'{files_path}已存在，请手动清除后再试\n')
+        return None
+
     def gen_go_main_file(self, file):
         print(f'{file},创建成功')
         with open(file, 'w') as f:
@@ -218,6 +230,7 @@ func Test_run(t *testing.T) {{
         rust = self.make_rust_paths()
         if rust:
             self.gen_rust_main_file(rust)
+        py = self.make_python_paths()
 
 
 if __name__ == '__main__':
