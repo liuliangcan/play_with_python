@@ -58,7 +58,7 @@ class AtcGenTemplate:
             main_file = os.path.join(files_path, f'{self.file_name}.rs')
             return main_file
         else:
-            sys.stderr.write(f'{files_path}已存在，请手动清除后再试\n')
+            sys.stderr.write(f'rust: {files_path}已存在，请手动清除后再试\n')
         return None
 
     def gen_rust_main_file(self, file):
@@ -70,7 +70,7 @@ class AtcGenTemplate:
         "{_out}\n"
     );""")
         cases_str = '\n'.join(cases)
-        with open(file, 'w') as f:
+        with open(file, 'w', encoding='utf-8') as f:
             print(f'创建模板文件{file}成功')
             f.write(f"""#[allow(unused)]
 use std::collections::*;
@@ -146,7 +146,7 @@ fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
     let n = scan.token::<usize>();
     let mut a = vec![0i64; n];
     for i in 0..n {{
-        a[i] = scan.token::<i64>()
+        a[i] = scan.token::<i64>();
     }}   
 }}
 """)
@@ -159,7 +159,7 @@ fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
             test_file = os.path.join(files_path, f'{self.file_name}_test.go')
             return main_file, test_file
         else:
-            sys.stderr.write(f'{files_path}已存在，请手动清除后再试\n')
+            sys.stderr.write(f'go: {files_path}已存在，请手动清除后再试\n')
         return None, None
 
     def make_python_paths(self):
@@ -170,7 +170,7 @@ fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
             main_file = os.path.join(files_path, f'{self.file_name}.py')
             return main_file
         else:
-            sys.stderr.write(f'{files_path}已存在，请手动清除后再试\n')
+            sys.stderr.write(f'py: {files_path}已存在，请手动清除后再试\n')
         return None
 
     def gen_go_main_file(self, file):

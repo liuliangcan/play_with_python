@@ -12,5 +12,5 @@
 """
 from tools.gen_code_tool.AtcGenTemplate import AtcGenTemplate
 
-url = 'https://atcoder.jp/contests/arc119/tasks/arc119_c'
+url = 'https://atcoder.jp/contests/arc148/tasks/arc148_c'
 AtcGenTemplate(url).run()
