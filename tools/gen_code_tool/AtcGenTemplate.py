@@ -84,14 +84,14 @@ fn main() {{
     solve(scan, out);
 }}
 
-#[allow(unused)]
-#[macro_export]
-macro_rules! logln {{
-    ($($arg:tt)*) => ({{
-        #[cfg(debug_assertions)]
-        println!($($arg)*);
-    }})
-}}
+// #[allow(unused)]
+// #[macro_export]
+// macro_rules! logln {{
+//     ($($arg:tt)*) => ({{
+//         #[cfg(debug_assertions)]
+//         println!($($arg)*);
+//     }})
+// }}
 
 pub struct Scanner<R> {{
     reader: R,
@@ -114,10 +114,10 @@ impl<R: ::std::io::BufRead> Scanner<R> {{
             self.buffer = input.split_whitespace().rev().map(String::from).collect();
         }}
     }}
-    pub fn token_bytes(&mut self) -> Vec<u8> {{
-        let s = self.token::<String>();
-        return s.as_bytes().into();
-    }}
+//    pub fn token_bytes(&mut self) -> Vec<u8> {{
+//        let s = self.token::<String>();
+//        return s.as_bytes().into();
+//    }}
 }}
 
 #[cfg(test)]
