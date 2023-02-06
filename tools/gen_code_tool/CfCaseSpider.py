@@ -52,11 +52,19 @@ class CfCaseSpider:
             # print(inp.xpath('./pre/text()'))
             # ['3', '#book', '#bigtown', '#big']
             data = '\n'.join(inp.xpath('./pre/text()'))
+            divs = [x for x in inp.xpath('./pre/div/text()')]  # 也有可能是一堆div
+            if divs:
+                data = '\n'.join(divs)
+
+
             ans[f'case{i}'][0] = data.strip().replace('\r\n', '\n')
         outputs = html.xpath('/html/body/div/div/div/div/div/div/div/div[@class="sample-test"]/div[@class="output"]')
         for i, outp in enumerate(outputs, start=1):
             # print(outp.xpath('./pre/text()'))
             data = '\n'.join(outp.xpath('./pre/text()'))
+            divs = [x for x in outp.xpath('./pre/div/text()')]
+            if divs:
+                data = '\n'.join(divs)
             ans[f'case{i}'][1] = data.strip().replace('\r\n', '\n')
 
         return {k: [v[0], v[1]] for k, v in
@@ -64,7 +72,8 @@ class CfCaseSpider:
 
 
 if __name__ == '__main__':
-    url = 'https://codeforces.com/problemset/problem/777/D'
+    url = 'https://codeforces.com/problemset/problem/1695/C'
+    # url =  'https://codeforces.com/problemset/problem/777/D'
     # print(os.path.basename(url))
     print(CfCaseSpider(url).cases())
     # print(CfCaseSpider(url).cases())
