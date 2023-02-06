@@ -13,7 +13,10 @@
 from tools.gen_code_tool.AtcGenTemplate import AtcGenTemplate
 from tools.gen_code_tool.CfGenTemplate import CfGenTemplate
 
-url = 'https://atcoder.jp/contests/abc272/tasks/abc272_e'
+url = 'https://codeforces.com/problemset/problem/1695/C'
+if '/submission/' in url:
+    print('是错误的题目地址，可能写成了提交地址，请检查！！！')
+    exit(-1)
 if 'atcoder' in url:
     AtcGenTemplate(url).run()
 elif 'codeforces' in url:
