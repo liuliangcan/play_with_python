@@ -19,12 +19,14 @@ from tools.gen_code_tool.CfCaseSpider import CfCaseSpider
 class CfGenTemplate(BaseGenTemplate):
     def __init__(self, problem_url='https://codeforces.com/problemset/problem/777/D'):
         # https://codeforces.com/problemset/problem/1733/D2
+
+        #https://codeforces.com/contest/1442/problem/A
         super().__init__(problem_url)
         self.url = problem_url
         self.site_tag = 'cf'
 
         parts = problem_url.split('/')
-        self.contest = f'{self.site_tag}{parts[-2]}'  # cf777  由于只给777,rust的mod模块会报命名错误，因此命名为cf777
+        self.contest = f'{self.site_tag}{parts[-3] if parts[-4] == "contest" else parts[-2]}'  # cf777  由于只给777,rust的mod模块会报命名错误，因此命名为cf777
         self.task_id = parts[-1].lower()  # d/d2 由于rust大写会报警告，这里统一转小写
         self.file_name = f"{self.contest}{self.task_id}"  # cf777D
         self.spider = CfCaseSpider
