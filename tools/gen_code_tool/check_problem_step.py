@@ -34,5 +34,5 @@ for site in site_tags:
     py = check(site, PYTHON_TARGET_DIR)
     go = check(site, GO_TARGET_DIR)
     rust = check(site, RUST_TARGET_DIR)
-    print(py-go)
-    print(py-rust)
+    print(len(py - go), py - go)
+    print(len(py - rust), py - rust)
