@@ -43,7 +43,7 @@ fn main() {{
     let scan = &mut Scanner::new(sin.lock());
     let sout = std::io::stdout();
     let out = &mut BufWriter::new(sout.lock());
-    solve(scan, out);
+    run(scan, out);
 }}
 
 pub struct Scanner<R> {{
@@ -74,18 +74,26 @@ impl<R: ::std::io::BufRead> Scanner<R> {{
 }}
 
 
-// const MOD:usize = 1000000000+7;
-// {self.url}
-// 本模板由 https://github.com/liuliangcan/play_with_python/blob/main/tools/gen_code_tool/gen_template.py 自动生成;中文题面描述可移步
+// const MOD:i64 = 1000000000+7;
 pub fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
     let n = scan.token::<usize>();
-    let mut a = vec![0i64; n];
+    let mut a = vec![0i32; n];
     for i in 0..n {{
-        a[i] = scan.token::<i64>();
+        a[i] = scan.token::<i32>();
     }}   
     let mut ans = 0;
     writeln!(out, "{{}}", ans).ok();
 }}
+
+pub fn run(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
+    // let t = scan.token::<usize>();
+    // for _ in 0..t {{
+    //     solve(scan, out)
+    // }}
+    solve(scan,out)
+}}
+// {self.url}
+// 本模板由 https://github.com/liuliangcan/play_with_python/blob/main/tools/gen_code_tool/gen_template.py 自动生成;中文题面描述可移步
 """)
 
     def gen_rust_test_file(self, file):
@@ -101,7 +109,7 @@ pub fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
                 );""")
             cases_str = '\n'.join(cases)
             f.write(f"""use super::{self.file_name}::Scanner;
-use super::{self.file_name}::solve;
+use super::{self.file_name}::run;
 #[cfg(test)]
 mod {self.file_name} {{
     use super::*;
@@ -112,7 +120,7 @@ mod {self.file_name} {{
             fn $name() {{
                 let output = &mut Vec::new();
                 let scan = &mut Scanner::new($input as &[u8]);
-                solve(scan, output);
+                run(scan, output);
                 assert_eq!($expected, std::str::from_utf8(output).unwrap());
             }}
         }};
@@ -120,7 +128,8 @@ mod {self.file_name} {{
 
     {cases_str}
 }}           
-        """)
+// {self.url}
+// 本模板由 https://github.com/liuliangcan/play_with_python/blob/main/tools/gen_code_tool/gen_template.py 自动生成;中文题面描述可移步""")
 
     def make_go_paths(self):
         """创建go文件目录，并返回文件名"""
