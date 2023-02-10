@@ -1,0 +1,195 @@
+[General]
+tab_width=4
+cursor_width=1
+geometry=@Rect(880 395 800 600)
+editor_font=@Variant(\0\0\0@\0\0\0\x10\0\x43\0o\0n\0s\0o\0l\0\x61\0s@\"\0\0\0\0\0\0\xff\xff\xff\xff\x5\x1\0\x32\x10)
+use_custom_application_font=false
+custom_application_font=@Variant(\0\0\0@\0\0\0\f\0S\0i\0m\0S\0u\0n@\"\0\0\0\0\0\0\xff\xff\xff\xff\x5\x1\0\x32\x10)
+default_language=Python
+format_on_manual_save=false
+format_on_auto_save=false
+editor_theme=Monokai
+detached_run_terminal_program=xterm
+detached_run_terminal_arguments=-e
+auto_complete_parentheses=true
+auto_remove_parentheses=true
+tab_jump_out_parentheses=false
+auto_indent=true
+auto_save=false
+auto_save_interval=1000
+auto_save_interval_type=After the last modification
+wrap_text=true
+beta=false
+replace_tabs=true
+save_tests=false
+maximized_window=true
+check_update=true
+opacity=100
+view_mode=split
+splitter_size=@ByteArray()
+right_splitter_size=@ByteArray()
+force_close=false
+show_compile_and_run_only=false
+display_eoln_in_diff=false
+save_faster=true
+default_time_limit=5000
+output_length_limit=500000
+output_display_length_limit=50000
+message_length_limit=20000
+html_diff_viewer_length_limit=50000
+open_file_length_limit=20000
+display_test_case_length_limit=500000
+testcases_matching_rules=@Variant(\0\0\0\v\0\0\0\x2\0\0\0\x10\0(\0.\0*\0)\0\\\0.\0i\0n\0\0\0\f\0\\\0\x31\0.\0\x61\0n\0s), @Variant(\0\0\0\v\0\0\0\x2\0\0\0\x10\0(\0.\0*\0)\0\\\0.\0i\0n\0\0\0\f\0\\\0\x31\0.\0o\0u\0t)
+input_file_save_path=./${basename}_${1-index}.in
+answer_file_save_path=./${basename}_${1-index}.ans
+default_file_paths_for_problem_urls=@Invalid()
+test_cases_font=@Variant(\0\0\0@\0\0\0\x10\0\x43\0o\0n\0s\0o\0l\0\x61\0s@\"\0\0\0\0\0\0\xff\xff\xff\xff\x5\x1\0\x32\x10)
+extra_bottom_margin=false
+message_logger_font=@Variant(\0\0\0@\0\0\0\x10\0\x43\0o\0n\0s\0o\0l\0\x61\0s@\"\0\0\0\0\0\0\xff\xff\xff\xff\x5\x1\0\x32\x10)
+save_file_on_compilation=false
+save_file_on_execution=false
+restore_old_problem_url=false
+open_old_file_for_old_problem_url=false
+locale=\x7b80\x4f53\x4e2d\x6587
+ui_style=Dark Fusion
+run_on_empty_testcase=false
+check_on_testcases_with_empty_output=false
+test_case_maximum_height=300
+auto_load_external_changes_if_no_unsaved_modification=true
+ask_for_loading_external_changes=true
+recent_files=F:/play_with_python/file/cf1361b.py, F:/play_with_python/file/cf1142f2.py, F:/play_with_python/file/cf1442a.py, F:/play_with_python/file/arc111_b.py, F:/play_with_python/file/cf1695c.py, F:/play_with_python/file/arc119_c.py, F:/play_with_python/file/arc148_c.py, F:/play_with_python/file/arc153_c.py, F:/play_with_python/file/abc270_e.py, F:/play_with_python/file/cf961D.py, F:/play_with_python/file/cf1661C.py, F:/play_with_python/file/cf1661D.py, F:/play_with_python/file/abc222_f.py, F:/play_with_python/file/cf1409E.py, F:/play_with_python/file/cf1691D.py, F:/play_with_python/file/cf165E.py, F:/play_with_python/file/luoguCF165E.py, F:/play_with_python/file/abc214_e.py, F:/play_with_python/file/cf777D.py, F:/play_with_python/file/luoguCF19B.py
+number_of_problems_in_contest=5
+first_time_user=false
+show_only_monospaced_font=true
+total_usage_time=876977
+promotion_dialog_shown=true
+auto_uncheck_accepted_testcases=false
+full_screen_dialog_shown=false
+display_stopwatch=false
+toggle_stopwatch_on_tab_switch=false
+hide_stopwatch_result=false
+file_problem_binding=D:/Program Files (x86)/cpeditor/abc271_e.py, https://atcoder.jp/contests/abc271/tasks/abc271_e, F:/cpeditor_code/file/abc270_f.py, https://atcoder.jp/contests/abc270/tasks/abc270_f, F:/cpeditor_docker_vol/cpeditor/file/abc259_f.py, https://atcoder.jp/contests/abc259/tasks/abc259_f, F:/cpeditor_docker_vol/cpeditor/file/abc267_f.py, https://atcoder.jp/contests/abc267/tasks/abc267_f, F:/cpeditor_docker_vol/cpeditor/file/abc273_e.py, https://atcoder.jp/contests/abc273/tasks/abc273_e, F:/cpeditor_docker_vol/cpeditor/file/acw2.py, https://www.acwing.com/problem/content/2/, F:/cpeditor_docker_vol/cpeditor/file/acw4788.py, https://www.acwing.com/problem/content/4788/, F:/play_with_python/file/abc214_e.py, https://atcoder.jp/contests/abc214/tasks/abc214_e, F:/play_with_python/file/abc222_f.py, https://atcoder.jp/contests/abc222/tasks/abc222_f, F:/play_with_python/file/abc249_f.py, https://atcoder.jp/contests/abc249/tasks/abc249_f, F:/play_with_python/file/abc266_f.py, https://atcoder.jp/contests/abc266/tasks/abc266_f, F:/play_with_python/file/abc270_e.py, https://atcoder.jp/contests/abc270/tasks/abc270_e, F:/play_with_python/file/abc272_e.py, https://atcoder.jp/contests/abc272/tasks/abc272_e, F:/play_with_python/file/arc111_b.py, https://atcoder.jp/contests/arc111/tasks/arc111_b, F:/play_with_python/file/arc119_c.py, https://atcoder.jp/contests/arc119/tasks/arc119_c, F:/play_with_python/file/arc148_c.py, https://atcoder.jp/contests/arc148/tasks/arc148_c, F:/play_with_python/file/arc153_c.py, https://atcoder.jp/contests/arc153/tasks/arc153_c, F:/play_with_python/file/cf1142f2.py, https://codeforces.com/problemset/problem/1141/F2, F:/play_with_python/file/cf1361b.py, https://codeforces.com/problemset/problem/1361/B, F:/play_with_python/file/cf1409E.py, https://codeforces.com/problemset/problem/1409/E, F:/play_with_python/file/cf1442a.py, https://codeforces.com/contest/1442/problem/A, F:/play_with_python/file/cf1490G.py, https://codeforces.com/problemset/problem/1490/G, F:/play_with_python/file/cf165E.py, https://codeforces.com/problemset/problem/165/E, F:/play_with_python/file/cf1661C.py, https://codeforces.com/contest/1661/problem/C, F:/play_with_python/file/cf1661D.py, https://codeforces.com/problemset/problem/1661/D, F:/play_with_python/file/cf1691D.py, https://codeforces.com/problemset/problem/1691/D, F:/play_with_python/file/cf1695c.py, https://codeforces.com/problemset/problem/1695/C, F:/play_with_python/file/cf1733D2.py, https://codeforces.com/problemset/problem/1733/D2, F:/play_with_python/file/cf1739D.py, https://codeforces.com/problemset/problem/1739/D, F:/play_with_python/file/cf547B.py, https://codeforces.com/problemset/problem/547/B, F:/play_with_python/file/cf777D.py, https://codeforces.com/problemset/problem/777/D, F:/play_with_python/file/cf961D.py, https://codeforces.com/contest/961/problem/D, F:/play_with_python/file/luoguCF165E.py, https://www.luogu.com.cn/problem/CF165E, F:/play_with_python/file/luoguCF19B.py, https://www.luogu.com.cn/problem/CF19B
+
+[clang_format]
+program=clang-format
+arguments=
+style=BasedOnStyle: Google
+
+[yapf]
+program=python
+arguments=-m yapf
+style="[style]\nbased_on_style = pep8"
+
+[cpp]
+template_path=
+template_cursor_position_regex=main\\(\\)
+template_cursor_position_offset_type=end
+template_cursor_position_offset_characters=4
+compile_command=c++ -Wall
+output_path=${tmpdir}/${basename}
+run_arguments=
+parentheses=@Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0(\0\0\0\x2\0\0\0)\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0{\0\0\0\x2\0\0\0}\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0[\0\0\0\x2\0\0\0]\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0\"\0\0\0\x2\0\0\0\"\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0'\0\0\0\x2\0\0\0'\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1)
+compiler_output_codec=UTF-8
+
+[java]
+template_path=
+compile_command=javac
+run_arguments=
+run_command=java
+class_name=Main
+output_path=${tmpdir}
+template_cursor_position_regex=
+template_cursor_position_offset_type=end
+template_cursor_position_offset_characters=0
+parentheses=@Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0(\0\0\0\x2\0\0\0)\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0{\0\0\0\x2\0\0\0}\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0[\0\0\0\x2\0\0\0]\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0\"\0\0\0\x2\0\0\0\"\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0'\0\0\0\x2\0\0\0'\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1)
+compiler_output_codec=UTF-8
+
+[python]
+template_path=F:\\play_with_python/atc_template.py
+template_cursor_position_regex="n, = RI()"
+template_cursor_position_offset_type=end
+template_cursor_position_offset_characters=0
+run_arguments=
+run_command=python
+parentheses=@Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0(\0\0\0\x2\0\0\0)\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0{\0\0\0\x2\0\0\0}\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0[\0\0\0\x2\0\0\0]\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0\"\0\0\0\x2\0\0\0\"\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1), @Variant(\0\0\0\t\0\0\0\x5\0\0\0\x2\0\0\0'\0\0\0\x2\0\0\0'\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1\0\0\0\x2\0\0\0\x1)
+
+[competitive_companion]
+enable=true
+connection_port=10045
+open_new_tab=true
+set_time_limit_for_tab=false
+head_comments=Problem: ${json.name}\nContest: ${json.group}\nURL: ${json.url}\nMemory Limit: ${json.memoryLimit} MB\nTime Limit: ${json.timeLimit} ms
+head_comments_time_format=yyyy-MM-dd HH:mm:ss
+head_comments_powered_by_cp_editor=false
+
+[hotkey]
+format=
+kill=
+compile_run=
+run=
+compile=
+change_view_mode=
+snippets=
+
+[hot_exit]
+enable=false
+auto_save=false
+auto_save_interval=20000
+
+[cf]
+path=F:\\play_with_python\\tools\\cf_tool\\cf.exe
+show_toast_messages=true
+
+[lsp]
+path_cpp=clangd
+path_java=
+path_python=python
+use_linting_cpp=false
+use_linting_java=false
+use_linting_python=true
+use_autocomplete_cpp=false
+use_autocomplete_java=false
+use_autocomplete_python=false
+delay_cpp=2000
+delay_java=2000
+delay_python=2000
+args_cpp=
+args_java=
+args_python=-m pyls
+
+[proxy]
+enabled=true
+type=System
+host_name=127.0.0.1
+port=1080
+user=
+password=
+
+[default_path]
+names_and_paths=@Variant(\0\0\0\v\0\0\0\x2\0\0\0\xe\0\x63\0h\0\x65\0\x63\0k\0\x65\0r\0\0\0\x30\0\x46\0:\0/\0p\0l\0\x61\0y\0_\0w\0i\0t\0h\0_\0p\0y\0t\0h\0o\0n\0/\0\x66\0i\0l\0\x65), @Variant(\0\0\0\v\0\0\0\x2\0\0\0\xe\0\x63\0o\0n\0t\0\x65\0s\0t\0\0\0\x36\0\x46\0:\0\\\0p\0l\0\x61\0y\0_\0w\0i\0t\0h\0_\0p\0y\0t\0h\0o\0n\0/\0\x63\0o\0n\0t\0\x65\0s\0t), @Variant(\0\0\0\v\0\0\0\x2\0\0\0\b\0\x66\0i\0l\0\x65\0\0\0\x30\0\x46\0:\0/\0p\0l\0\x61\0y\0_\0w\0i\0t\0h\0_\0p\0y\0t\0h\0o\0n\0/\0\x66\0i\0l\0\x65), @Variant(\0\0\0\v\0\0\0\x2\0\0\0\x10\0s\0\x65\0t\0t\0i\0n\0g\0s\0\0\0\0), @Variant(\0\0\0\v\0\0\0\x2\0\0\0\x10\0t\0\x65\0s\0t\0\x63\0\x61\0s\0\x65\0\0\0\x30\0\x46\0:\0/\0p\0l\0\x61\0y\0_\0w\0i\0t\0h\0_\0p\0y\0t\0h\0o\0n\0/\0\x66\0i\0l\0\x65)
+action\open_file\uses=${file}
+action\open_file\changes="file, testcase, checker"
+action\save_file\uses=${file}
+action\save_file\changes="file, testcase, checker"
+action\open_contest\uses=${contest}
+action\open_contest\changes="contest, file, testcase, checker"
+action\load_single_test_case\uses=${testcase}
+action\load_single_test_case\changes=testcase
+action\add_pairs_of_test_cases\uses=${testcase}
+action\add_pairs_of_test_cases\changes=testcase
+action\save_test_case_to_a_file\uses=${testcase}
+action\save_test_case_to_a_file\changes=testcase
+action\custom_checker\uses=${checker}
+action\custom_checker\changes=checker
+action\export_and_import_settings\uses=${settings}
+action\export_and_import_settings\changes=settings
+action\export_and_load_session\uses=${session}
+action\export_and_load_session\changes=session
+action\extract_and_load_snippets\uses=${snippets}
+action\extract_and_load_snippets\changes=snippets
+
+[wakatime]
+path=wakatime
+api_key=
+enable=false
+proxy=false
