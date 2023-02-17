@@ -8,7 +8,7 @@
 @ModifyTime :   2023/2/3 15:10    
 @Author     :   liushuliang
 @Version    :   1.0
-@Description:   为了保证所有题都用rust和go做了一遍，自动对比py做过的atc和cf题目，在rust和go对应目录下是否存在文件；
+@Description:   为了用rust和go补题，自动对比py做过的atc和cf题目，在rust和go对应目录下是否存在文件；
                 打印出尚未用rust/go实现的题目
 """
 import os

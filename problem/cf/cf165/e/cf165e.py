@@ -24,8 +24,11 @@ RILST = lambda: list(RI())
 DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 
 MOD = 10 ** 9 + 7
-PROBLEM = """https://www.luogu.com.cn/problem/CF165E
-有两个整数a,b。如果a&b=0，那么我们称a与b是相容的。比如90(1011010)与36(100100)相容。给出一个序列aa ，你的任务是对于每个ai，找到在序列中与之相容的aj 。如果找不到这样的数，输出-1。 贡献者：An_Account
+PROBLEM = """https://codeforces.com/problemset/problem/165/e
+https://www.luogu.com.cn/problem/CF165E
+有两个整数a,b。如果a&b=0，那么我们称a与b是相容的。比如90(1011010)与36(100100)相容。给出一个序列a ，你的任务是对于每个ai，找到在序列中与之相容的aj 。如果找不到这样的数，输出-1。 贡献者：An_Account
+输入n，(1<=n<=1e6) 
+输入a(1<=a[i]<=4e6)
 """
 """f[x] 代表 对于数值x(x不一定在a里)，f[x]是x的一个相容数(f[x]一定在a里)
 如果b是a的相容数(即f[a]=b)，存在c，c是a去掉一些1得到的，那么b一定也是c的相容数(f[c]=b)。

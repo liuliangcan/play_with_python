@@ -17,7 +17,7 @@ from tools.gen_code_tool.CfGenTemplate import CfGenTemplate
 # url = 'https://codeforces.com/problemset/problem/1695/C'
 # url = 'https://codeforces.com/problemset/problem/1733/D2'
 
-url = 'https://codeforces.com/problemset/problem/1095/E'
+url = 'https://codeforces.com/problemset/problem/1272/E'
 if '/submission/' in url:
     print('是错误的题目地址，可能写成了提交地址，请检查！！！')
     exit(-1)
