@@ -67,10 +67,11 @@ impl<R: ::std::io::BufRead> Scanner<R> {{
             self.buffer = input.split_whitespace().rev().map(String::from).collect();
         }}
     }}
-//    pub fn token_bytes(&mut self) -> Vec<u8> {{
-//        let s = self.token::<String>();
-//        return s.as_bytes().into();
-//    }}
+    #[allow(unused)]
+    pub fn token_bytes(&mut self) -> Vec<u8> {{
+        let s = self.token::<String>();
+        return s.as_bytes().into();
+    }}
 }}
 
 
