@@ -210,19 +210,25 @@ import (
     "os"
 )
 
+func solve(in io.Reader, out io.Writer) {
+	var n, ans int
+	Fscan(in, &n)
+	a := make([]int, n)
+	for i := 0; i < n; i++ {
+		Fscan(in, &a[i])
+	}
+	
+	Fprintln(out, ans)
+}
 func run(_r io.Reader, _w io.Writer) {
-    in := bufio.NewReader(_r)
-    out := bufio.NewWriter(_w)
-    defer out.Flush()
-    var n, ans int
-    Fscan(in, &n)
-    a := make([]int,n)
-    for i := 0 ; i < n; i++ {
-        Fscan(in, &a[i])
-    }
-    
-    Fprintln(out, ans)
-
+	in := bufio.NewReader(_r)
+	out := bufio.NewWriter(_w)
+	defer out.Flush()
+	//var t int
+	//for Fscan(in, &t); t > 0; t-- {
+	//	solve(in, out)
+	//}
+	solve(in, out)
 }
 
 func main() { run(os.Stdin, os.Stdout) }
