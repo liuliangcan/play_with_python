@@ -13,9 +13,9 @@
 """
 import os
 
-PYTHON_TARGET_DIR = 'F://play_with_python/problem/'
-GO_TARGET_DIR = 'F://play_with_go/problem/'
-RUST_TARGET_DIR = 'F://play_with_rust/src/problem/'
+PYTHON_TARGET_DIR = 'F://play_with_code/play_with_python/problem/'
+GO_TARGET_DIR = 'F://play_with_code/play_with_go/problem/'
+RUST_TARGET_DIR = 'F://play_with_code/play_with_rust/src/problem/'
 
 site_tags = ['atc', 'cf']
 
