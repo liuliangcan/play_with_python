@@ -63,20 +63,14 @@ from typing import List
 # @lc code=begin
 from sortedcontainers import SortedList
 
-DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-
 
 class Solution:
     def minimumTime(self, grid: List[List[int]]) -> int:
         m, n = len(grid), len(grid[0])
-        ans = -1
         if grid[0][1] > 1 and grid[1][0] > 1:
             return -1
         vis = [[10 ** 6] * n for _ in range(m)]
         vis[0][0] = 0
-
-        def inside(x, y):
-            return 0 <= x < m and 0 <= y < n
 
         q = [(0, 0, 0)]
         while q:
@@ -87,7 +81,6 @@ class Solution:
                     w = grid[a][b]
                     if w <= vis[x][y] + 1:
                         vis[a][b] = vis[x][y] + 1
-                        # q.append((a,b))
                         heappush(q, (vis[a][b], a, b))
 
                     elif (a + b) % 2 == 0:
