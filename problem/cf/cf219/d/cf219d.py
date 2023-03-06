@@ -146,7 +146,7 @@ def solve2():
     print(*ans)
 
 
-#    1402   ms
+#    1372   ms
 def solve3():
     n, = RI()
     g = [[] for _ in range(n)]
@@ -180,13 +180,49 @@ def solve3():
             f[v] = f[u] + d  # uv是正边的话，根从u->v则数量+1，反边则-1
     # print(f)
     mn = min(f)
-    ans = [i + 1 for i, v in enumerate(f) if v == mn]
     print(mn)
-    print(*ans)
+    print(*[i + 1 for i, v in enumerate(f) if v == mn])
+
+
+#    1122   ms
+def solve():
+    # 由于这题不需要dfs后根遍历，也就是第一次dfs不需要等待子节点结果即可计算(最终只需要f[0]，即0为根时的反边数量)
+    # 因此不需要逆序处理，也就是不需要order，那么两次先根遍历即可。
+    # 那么两次bfs就能搞定。
+    # 但是这样写不够通用，还是上边的代码更有参考性
+    n, = RI()
+    g = [[] for _ in range(n)]
+    for _ in range(n - 1):
+        u, v = RI()
+        u -= 1
+        v -= 1
+        g[u].append((v, 1))  # 邻居和方向
+        g[v].append((u, -1))  # 反边
+    f = [0] * n
+    fas = [-1] * n
+    q = [0]
+    while q:
+        u = q.pop()
+        for v, d in g[u]:
+            if v == fas[u]: continue
+            f[0] += (-d + 1) >> 1
+            fas[v] = u
+            q.append(v)
+    q.append(0)
+    while q:
+        u = q.pop()
+        for v, d in g[u]:
+            if v == fas[u]: continue
+            f[v] = f[u] + d
+            q.append(v)
+
+    mn = min(f)
+    print(mn)
+    print(*[i + 1 for i, v in enumerate(f) if v == mn])
 
 
 #   1714    ms
-def solve():
+def solve4():
     from typing import Callable, Generic, List, TypeVar
 
     T = TypeVar("T")
