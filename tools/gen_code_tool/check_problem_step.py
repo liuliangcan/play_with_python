@@ -30,9 +30,12 @@ def check(site, code_dir):
     return s
 
 
+cnt = []
 for site in site_tags:
     py = check(site, PYTHON_TARGET_DIR)
     go = check(site, GO_TARGET_DIR)
     rust = check(site, RUST_TARGET_DIR)
     print(len(py - go), py - go)
     print(len(py - rust), py - rust)
+    cnt.append((site, len(py)))
+print('刷题数:', cnt, f'共:{sum(x for _, x in cnt)}')
