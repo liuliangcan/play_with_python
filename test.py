@@ -27,12 +27,16 @@ if __name__ == '__main__':
     #      [range(287, 289), range(289, 291), range(291, 293), range(293, 295), range(295, 297)]]
     # for parts in zip(*p):
     #     print(parts)
-    x = [range(1,2),range(5,10)]
-    for p in x:
-        for z in p:
-            print(z)
-    for p in x:
-        for z in p:
-            print(z)
-    for p in x:
-        print(list(p))
+    text = ''
+    with open('tools/gen_code_tool/cha.txt', 'r', encoding='utf-8') as f:
+        text = f.read()
+    import re
+
+    p = re.compile(r'https://\S+[a-zA-Z0-9_]')
+    cnt = 0
+    for r in p.findall(text):
+        print(r)
+        cnt += 1
+    print(cnt)
+
+    # print(text)
