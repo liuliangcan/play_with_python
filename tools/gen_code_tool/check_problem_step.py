@@ -21,7 +21,6 @@ BEFORE_TARGET_DIR = 'F://play_with_code/play_with_python/before20221227/'
 site_tags = ['atc', 'cf']
 
 
-
 def check_cha():
     """正则提取茶的url"""
     except_url = {'https://leetcode.cn/problems/minimum-white-tiles-after-covering-with-carpets',
@@ -75,7 +74,6 @@ def gen_file_name(url):
     return file_name or url
 
 
-
 done = []  # 分别统计已整理完成的题目
 lower = set()  # 统计已经做了的题目，包括before
 for site in site_tags:
@@ -84,13 +82,13 @@ for site in site_tags:
     rust = check(site, RUST_TARGET_DIR)
     if py - go:
         print(f'尚未补齐go代码的题目{site}:{len(py - go)}', py - go)
-    if py-rust:
+    if py - rust:
         print(f'尚未补齐rust代码的题目{site}:{len(py - rust)}', py - rust)
     done.append((site, py))
 
     before = check(site, BEFORE_TARGET_DIR)
-    if before-py:
-        print(f'尚未整理的以前做的题目{site}:', len(before-py), before-py)
+    if before - py:
+        print(f'尚未整理的以前做的题目{site}:', len(before - py), before - py)
         print()
 
     for x in py | before:
