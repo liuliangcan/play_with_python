@@ -127,20 +127,43 @@ if __name__ == '__main__':
             return findKthSortedArrays(self.small, self.big, index + 1)
 
 
-    p = SortedList()
-    p.add(10)
-    p.add(10)
-    p.add(1)
-    p.add(8)
-    p.add(7)
-    p.add(10)
-    p.add(2)
-    p.add(10)
-    p.add(6)
-    p.add(10)
-    print(p)
-    print(p.bisect_left(10))
-    print(p.bisect_right(10))
-    for i in range(len(p)):
-        print(p[i])
+    # p = SortedList()
+    # p.add(10)
+    # p.add(10)
+    # p.add(1)
+    # p.add(8)
+    # p.add(7)
+    # p.add(10)
+    # p.add(2)
+    # p.add(10)
+    # p.add(6)
+    # p.add(10)
+    # print(p)
+    # print(p.bisect_left(10))
+    # print(p.bisect_right(10))
+    # for i in range(len(p)):
+    #     print(p[i])
     # print(text)
+
+def bitcnt(n):
+    c = (n & 0x5555555555555555) + ((n >> 1) & 0x5555555555555555)
+    c = (c & 0x3333333333333333) + ((c >> 2) & 0x3333333333333333)
+    c = (c & 0x0F0F0F0F0F0F0F0F) + ((c >> 4) & 0x0F0F0F0F0F0F0F0F)
+    c = (c & 0x00FF00FF00FF00FF) + ((c >> 8) & 0x00FF00FF00FF00FF)
+    c = (c & 0x0000FFFF0000FFFF) + ((c >> 16) & 0x0000FFFF0000FFFF)
+    c = (c & 0x00000000FFFFFFFF) + ((c >> 32) & 0x00000000FFFFFFFF)
+    return c
+
+def bc(x):
+    cnt = 0
+    while x:
+        x &= x - 1
+        cnt += 1
+    return cnt
+def z(x):
+    print(bc(x),bitcnt(x))
+
+z(10)
+z(100)
+z(123130)
+z(5431140)
