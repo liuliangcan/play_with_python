@@ -25,6 +25,13 @@ class BaseGenTemplate:
 
         parts = problem_url.split('/')
         self.contest = parts[-3]  # arc148
+        self.zip_contest = self.contest  # 由于cf比赛场次有几千，放到一个目录太多了，所以每100场比赛压一个文件夹
+        contest = parts[-3]
+        for i in range(len(contest)):
+            if contest[i:].isdigit():  # 把tag和场次拆开，场次划到那个100
+                c = int(contest[i:])
+                self.site_tag = contest[:i]
+                self.zip_contest = f'{self.site_tag}{c // 100 * 100}-{c // 100 * 100 + 99}'
         self.task_id = parts[-1].split('_')[1] if '_' in parts[-1] else parts[-1][-1]  # c
         self.file_name = parts[-1]  # atc148_c
         self.spider = None
@@ -189,7 +196,7 @@ mod {self.file_name} {{
 
     def make_python_paths(self):
         # 创建py文件的对应目录，但不创建文件，手动挪入py的文件
-        files_path = os.path.join(PYTHON_TARGET_DIR, self.site_tag, self.contest, self.task_id)
+        files_path = os.path.join(PYTHON_TARGET_DIR, self.site_tag, self.zip_contest,self.contest, self.task_id)
         if not os.path.exists(files_path):
             os.makedirs(files_path)
             print(f'创建目录成功{files_path}')

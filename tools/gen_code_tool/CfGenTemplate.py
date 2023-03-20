@@ -26,7 +26,12 @@ class CfGenTemplate(BaseGenTemplate):
         self.site_tag = 'cf'
 
         parts = problem_url.split('/')
-        self.contest = f'{self.site_tag}{parts[-3] if parts[-4] == "contest" else parts[-2]}'  # cf777  由于只给777,rust的mod模块会报命名错误，因此命名为cf777
+        contest = parts[-3] if parts[-4] == "contest" else parts[-2]
+        self.contest = f'{self.site_tag}{contest}'  # cf777  由于只给777,rust的mod模块会报命名错误，因此命名为cf777
+        self.zip_contest = self.contest  # 由于cf比赛场次有几千，放到一个目录太多了，所以每100场比赛压一个文件夹
+        if contest.isdigit():
+            c = int(contest)  # 场次划到那个100
+            self.zip_contest = f'{self.site_tag}{c//100*100}-{c//100*100+99}'
         self.task_id = parts[-1].lower()  # d/d2 由于rust大写会报警告，这里统一转小写
         self.file_name = f"{self.contest}{self.task_id}"  # cf777D
         self.spider = CfCaseSpider
