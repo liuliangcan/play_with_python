@@ -31,7 +31,7 @@ class BaseGenTemplate:
             if contest[i:].isdigit():  # 把tag和场次拆开，场次划到那个100
                 c = int(contest[i:])
                 self.site_tag = contest[:i]
-                self.zip_contest = f'{self.site_tag}{c // 100 * 100}-{c // 100 * 100 + 99}'
+                self.zip_contest = f'{self.site_tag}{c // 100 * 100}_{c // 100 * 100 + 99}'
         self.task_id = parts[-1].split('_')[1] if '_' in parts[-1] else parts[-1][-1]  # c
         self.file_name = parts[-1]  # atc148_c
         self.spider = None
@@ -143,7 +143,7 @@ mod {self.file_name} {{
 
     def make_go_paths(self):
         """创建go文件目录，并返回文件名"""
-        files_path = os.path.join(GO_TARGET_DIR, self.site_tag, self.contest, self.task_id)
+        files_path = os.path.join(GO_TARGET_DIR, self.site_tag, self.zip_contest, self.contest, self.task_id)
         if not os.path.exists(files_path):
             os.makedirs(files_path)
             main_file = os.path.join(files_path, f'{self.file_name}.go')
@@ -181,11 +181,11 @@ mod {self.file_name} {{
                 self.add_rust_mod_rs(mod_file, nxt)
                 p = os.path.join(p, nxt)  # 父目录更新
 
-        files_path = os.path.join(RUST_TARGET_DIR, self.site_tag, self.contest, self.task_id)
+        files_path = os.path.join(RUST_TARGET_DIR, self.site_tag, self.zip_contest, self.contest, self.task_id)
         if not os.path.exists(files_path):
             os.makedirs(files_path)
             create_mod_rs(os.path.join(RUST_TARGET_DIR, self.site_tag),
-                          (self.contest, self.task_id, self.file_name))  # 逐层添加mod.rs
+                          (self.zip_contest,self.contest, self.task_id, self.file_name))  # 逐层添加mod.rs
             main_file = os.path.join(files_path, f'{self.file_name}.rs')
             test_file = os.path.join(files_path, f'{self.file_name}_test.rs')
             self.add_rust_mod_rs(os.path.join(files_path, 'mod.rs'), f'{self.file_name}_test')
@@ -196,7 +196,7 @@ mod {self.file_name} {{
 
     def make_python_paths(self):
         # 创建py文件的对应目录，但不创建文件，手动挪入py的文件
-        files_path = os.path.join(PYTHON_TARGET_DIR, self.site_tag, self.zip_contest,self.contest, self.task_id)
+        files_path = os.path.join(PYTHON_TARGET_DIR, self.site_tag, self.zip_contest, self.contest, self.task_id)
         if not os.path.exists(files_path):
             os.makedirs(files_path)
             print(f'创建目录成功{files_path}')
