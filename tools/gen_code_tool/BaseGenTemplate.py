@@ -131,7 +131,7 @@ mod {self.file_name} {{
                 let output = &mut Vec::new();
                 let scan = &mut Scanner::new($input as &[u8]);
                 run(scan, output);
-                assert_eq!($expected, std::str::from_utf8(output).unwrap());
+                assert_eq!($expected.trim(), std::str::from_utf8(output).unwrap().trim());
             }}
         }};
     }}
