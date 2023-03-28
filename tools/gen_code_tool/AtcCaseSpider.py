@@ -42,7 +42,7 @@ class AtcCaseSpider:
         import requests
         payload = {}
         headers = {}
-
+        print(self.url)
         response = requests.request("GET", self.url, headers=headers, data=payload)
         text = response.text
         # print(text)

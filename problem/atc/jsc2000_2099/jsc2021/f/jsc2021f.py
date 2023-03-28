@@ -11,7 +11,7 @@ import io, os
 from bisect import *
 
 if sys.hexversion == 50924784:
-    sys.stdin = open('abcinput.txt')
+    sys.stdin = open('../../../../../before20221227/atc/abcinput.txt')
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
@@ -151,5 +151,3 @@ if __name__ == '__main__':
         qs.append(RILST())
 
     solve(n, m, q, qs)
-    x = 2+4+7*2+7*7*4+7*7*7*4 +7*7*7*7*4
-    print(x)
