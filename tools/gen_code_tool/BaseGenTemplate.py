@@ -49,7 +49,7 @@ use std::io::{{BufRead, BufWriter, Write}};
 #[allow(unused)]
 pub fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
     let n = scan.token::<usize>();
-    let mut a = vec![0i64; n];
+    let mut a = vec![0; n];
     for i in 0..n {{
         a[i] = scan.token::<i64>();
     }}   
