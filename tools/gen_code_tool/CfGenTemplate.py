@@ -32,6 +32,7 @@ class CfGenTemplate(BaseGenTemplate):
         if contest.isdigit():
             c = int(contest)  # 场次划到那个100
             self.zip_contest = f'{self.site_tag}{c//100*100}_{c//100*100+99}'
+
         self.task_id = parts[-1].lower()  # d/d2 由于rust大写会报警告，这里统一转小写
         self.file_name = f"{self.contest}{self.task_id}"  # cf777D
         self.spider = CfCaseSpider

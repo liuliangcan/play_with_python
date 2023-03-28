@@ -30,8 +30,8 @@ class AtcGenTemplate(BaseGenTemplate):
         for i in range(len(contest)):
             if contest[i:].isdigit():
                 c = int(contest[i:])  # 场次划到那个100
-                self.site_tag = contest[:i]
-                self.zip_contest = f'{self.site_tag}{c//100*100}_{c//100*100+99}'
+                self.zip_contest = f'{contest[:i]}{c//100*100}_{c//100*100+99}'
+                break
         self.task_id = parts[-1].split('_')[1] if '_' in parts[-1] else parts[-1][-1]  # c
         self.file_name = parts[-1]  # atc148_c
         self.spider = AtcCaseSpider
