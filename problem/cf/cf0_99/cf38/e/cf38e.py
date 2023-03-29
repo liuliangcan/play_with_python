@@ -11,7 +11,7 @@ import io, os
 from bisect import *
 
 if sys.hexversion == 50924784:
-    sys.stdin = open('cfinput.txt')
+    sys.stdin = open('../../../../../before20221227/cf/cfinput.txt')
 
 # input = sys.stdin.readline
 # input_int = sys.stdin.buffer.readline
