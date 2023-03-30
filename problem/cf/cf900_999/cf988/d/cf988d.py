@@ -5,21 +5,6 @@
 # Time Limit: 4000 ms
 
 import sys
-import bisect
-import random
-import io, os
-from bisect import *
-from collections import *
-from contextlib import redirect_stdout
-from itertools import *
-from array import *
-from functools import lru_cache
-from types import GeneratorType
-from heapq import *
-from math import sqrt, gcd, inf
-
-if sys.version >= '3.8':  # ACW没有comb
-    from math import comb
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
@@ -92,7 +77,7 @@ def solve1():
     print(*ans)
 
 
-#       ms
+#   358    ms
 def solve():
     n, = RI()
     a = set(RILST())
@@ -100,17 +85,14 @@ def solve():
     ans = [mx]
     for x in a:
         for k in range(33):
-            if x + (1 << k) > mx:
+            t = x + (1 << k)
+            if t > mx:
                 break
-            t = [x]
-            if (x + (1 << k)) in a:
-                t.append(x + (1 << k))
+            if t in a:
+                ans = [x, t]
                 if (x + (1 << (k + 1))) in a:
-                    t.append(x + (1 << (k + 1)))
                     print(3)
-                    return print(*t)
-                if len(t) > len(ans):
-                    ans = t[:]
+                    return print(*ans, x + (1 << (k + 1)))
 
     print(len(ans))
     print(*ans)
