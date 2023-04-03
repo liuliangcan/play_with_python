@@ -5,8 +5,18 @@ import sys
 from math import inf
 
 if os.getenv('LOCALCFTEST'):
-    sys.stdin = open('cfinput.txt')
+    sys.stdin = open('../../../../../before20221227/cf/cfinput.txt')
+"""https://codeforces.com/problemset/problem/788/A
 
+输入 n(<=1e5) 和长为 n 的整数数组 a(-1e9<=a[i]<=1e9)。
+在满足 1<=l<r<=n 的前提下，输出 f(l,r) 的最大值（下列式子中的数组下标从 1 开始）。"""
+"""https://codeforces.com/contest/788/submission/118121760
+
+提示 1：奇偶性相同的 l，(-1)^(i-l) 的变化规律是一样的。
+
+提示 2：求的是 abs(a[i]-a[i+1])*(-1)^(i-l) 的最大子段和。
+
+提示 3：对 a 和 a[1:] 分别求一下，取最大值。"""
 if __name__ == '__main__':
     n = int(input())
     arr = list(map(int, input().split()))
