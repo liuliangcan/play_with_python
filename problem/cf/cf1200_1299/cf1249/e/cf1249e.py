@@ -10,7 +10,7 @@ import bisect
 import random
 
 if sys.hexversion == 50924784:
-    sys.stdin = open('cfinput.txt')
+    sys.stdin = open('../../../../../before20221227/cf/cfinput.txt')
 else:
     input = sys.stdin.readline
 MOD = 10 ** 9 + 7
@@ -35,7 +35,7 @@ def RILST():
 走楼梯从 i 层到 i+1 层需要 a[i] 秒。
 坐电梯从 i 层到 i+1 层需要 b[i] 秒。
 如果你要从某一层开始坐电梯，你需要额外等待 c 秒。
-
+ 
 输出从第 1 层走楼梯或者坐电梯到每一层，分别最少需要多少秒。
 """
 
