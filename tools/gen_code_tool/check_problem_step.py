@@ -42,7 +42,7 @@ todo = check_cha()
 
 def check(site, code_dir):
     """检查对应的目录里的py文件"""
-    except_files = {'cf.cpp', 'AtcCaseSpider.py', 'AtcLocalTest.py'}
+    except_files = {'cf.cpp', 'AtcCaseSpider.py', 'AtcLocalTest.py', 'test_request.py', 'abcinput.txt'}
     s = set()
     for root, dirs, files in os.walk(os.path.join(code_dir, site)):
         for file in files:
