@@ -12,6 +12,9 @@ code:
           from collections import *
           from heapq import *
           from typing import List
+          from itertools import *
+          from math import inf
+          from functools import cache
       - name: beforeCode
         template: |+
           from sortedcontainers import SortedList
