@@ -126,7 +126,6 @@ if __name__ == '__main__':
 
             return findKthSortedArrays(self.small, self.big, index + 1)
 
-
     # p = SortedList()
     # p.add(10)
     # p.add(10)
@@ -145,6 +144,7 @@ if __name__ == '__main__':
     #     print(p[i])
     # print(text)
 
+
 def bitcnt(n):
     c = (n & 0x5555555555555555) + ((n >> 1) & 0x5555555555555555)
     c = (c & 0x3333333333333333) + ((c >> 2) & 0x3333333333333333)
@@ -154,16 +154,27 @@ def bitcnt(n):
     c = (c & 0x00000000FFFFFFFF) + ((c >> 32) & 0x00000000FFFFFFFF)
     return c
 
+
 def bc(x):
     cnt = 0
     while x:
         x &= x - 1
         cnt += 1
     return cnt
-def z(x):
-    print(bc(x),bitcnt(x))
 
-z(10)
-z(100)
-z(123130)
-z(5431140)
+
+def z(x):
+    print(bc(x), bitcnt(x))
+
+
+# z(10)
+# z(100)
+# z(123130)
+# z(5431140)
+s = "Only the 11 CAPItalic"
+print(*[chr(ord('Z') - ord(c) + ord('A')) if c.isupper() else c for c in s], sep='')
+print(*[chr(155 - ord(c)) if c.isupper() else c for c in s], sep='')
+print(*[chr(155 - ord(c)) if 'A' <= c <= 'Z' else c for c in s], sep='')
+print(*map(lambda c:chr(155-ord(c))if c.isupper()else c,s),sep='')
+print(ord('Z') + ord('A'))
+3905.44
