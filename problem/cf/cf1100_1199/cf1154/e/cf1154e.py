@@ -62,7 +62,6 @@ PROBLEM = """https://codeforces.com/problemset/problem/1154/E
 - 注意代码里的s其实可以不删除，mx发现是0的时候跳出即可。
 ---
 - 原来数组删除可以用双链表模拟，~~淦~~。
-- 原来维护最大值也不用这么麻烦，直接维护个下标类似mex往下减就行了。。。
 """
 """https://codeforces.com/contest/1154/submission/201766208
 
@@ -72,7 +71,9 @@ PROBLEM = """https://codeforces.com/problemset/problem/1154/E
 双向链表可以用数组实现，维护 prev 和 next。
 """
 
+
 class DSU:
+
     def __init__(self, n):
         self.fathers = list(range(n))
 
@@ -92,8 +93,153 @@ class DSU:
         return True
 
 
-#  638     ms
+class LNode:
+    __slots__ = 'pre', 'nxt', 'val'
+
+    def __init__(self, val, pre=None, nxt=None):
+        self.val, self.pre, self.nxt = val, pre, nxt
+
+    def insert_back(self, v):
+        nxt = self.nxt
+        new = LNode(v, pre=self, nxt=self.nxt)
+        self.nxt = nxt.pre = new
+        return new
+
+    def insert_front(self, v):
+        pre = self.pre
+        new = LNode(v, pre=pre, nxt=self)
+        self.pre = pre.nxt = new
+        return new
+
+    def delete(self):
+        self.pre.nxt = self.nxt
+        self.nxt.pre = self.pre
+        return self.val
+
+
+class LinkedList:
+    """双向链表，可以用来模拟一些删除数组中的元素的情况"""
+
+    def __init__(self):
+        self.head = LNode(0)
+        self.tail = LNode(0, pre=self.head)
+        self.head.nxt = self.tail
+        self.size = 0
+
+    def __len__(self):
+        return self.size
+
+    def append(self, v):
+        """在链表尾添加元素  O(1)"""
+        pre = self.tail.pre
+        cur = LNode(v, nxt=self.tail, pre=pre)
+        self.tail.pre = pre.nxt = cur
+        self.size += 1
+        return cur
+
+    def appendleft(self, v):
+        """在链表头添加元素 O(1)"""
+        nxt = self.head.nxt
+        cur = LNode(v, pre=self.head, nxt=nxt)
+        self.head.nxt = nxt.pre = cur
+        self.size += 1
+        return cur
+
+    def delete_node(self, node):
+        """删除一个节点 O(1)"""
+        node.delete()
+        self.size -= 1
+        return node.val
+
+    def front(self):
+        """获取第一个节点 O(1)"""
+        return self.head.nxt
+
+    def last(self):
+        """获取最后一个节点 O(1)"""
+        return self.tail.pre
+
+    def __getitem__(self, idx):
+        """按下标索引节点最坏O(n),首尾结点O(1),取决于离两端的距离"""
+        if idx >= self.size or -idx > self.size:
+            raise Exception(f'下标越界:{idx} of {self.size}')
+        if idx < 0:
+            idx = self.size + idx
+        if idx < (self.size >> 1):
+            cur = self.head
+            for _ in range(idx + 1):
+                cur = cur.nxt
+            return cur
+        else:
+            cur = self.tail
+            for _ in range(self.size - idx):
+                cur = cur.pre
+            return cur
+
+    def clear(self):
+        """清空链表 O(1)"""
+        self.head.nxt = self.tail
+        self.tail.pre = self.head
+        self.size = 0
+
+    def __repr__(self):
+        ans = []
+        cur = self.head.nxt
+        while cur != self.tail:
+            ans.append(cur.val)
+            cur = cur.nxt
+        return str(ans)
+
+
+#    342   ms
 def solve():
+    n, k = RI()
+    p = RILST()
+    idx = [0] * n
+    lst = LinkedList()
+    mx = [None] * n
+    for i, v in enumerate(p):
+        idx[v - 1] = i
+        lst.append(v - 1)
+        # mx[v - 1] = lst.last()
+        mx[v - 1] = lst[-1]
+    # print(lst)
+    # print(mx)
+    ans = [0] * n
+    cnt = 0
+    m = n - 1
+    while True:
+        while m >= 0 and not mx[m]:  # 找现存最大值
+            m -= 1
+        if m < 0: break  # 没有最大值
+        i = mx[m]
+        for _ in range(k):  # 向右删k个
+            i = i.nxt
+            if i is lst.tail:
+                break
+            v = i.delete()
+            mx[v] = None
+            ans[idx[v]] = cnt + 1
+        i = mx[m]
+        for _ in range(k):  # 向左删k个
+            i = i.pre
+            if i is lst.head:
+                break
+            v = i.delete()
+            mx[v] = None
+            ans[idx[v]] = cnt + 1
+        mx[m].delete()
+        mx[m] = None
+        ans[idx[m]] = cnt + 1
+        # print(m,ans)
+        # print(lst)
+        cnt ^= 1
+
+    print(*ans, sep='')
+
+
+#  638     ms
+def solve1():
     n, k = RI()
     p = RILST()
     s = {v: i for i, v in enumerate(p, start=1)}  # 记录每个数的下标
