@@ -62,6 +62,7 @@ PROBLEM = """https://codeforces.com/problemset/problem/1154/E
 - 注意代码里的s其实可以不删除，mx发现是0的时候跳出即可。
 ---
 - 原来数组删除可以用双链表模拟，~~淦~~。
+- 原来维护最大值也不用这么麻烦，直接维护个下标类似mex往下减就行了。。。
 """
 """https://codeforces.com/contest/1154/submission/201766208
 
