@@ -171,10 +171,35 @@ def z(x):
 # z(100)
 # z(123130)
 # z(5431140)
-s = "Only the 11 CAPItalic"
-print(*[chr(ord('Z') - ord(c) + ord('A')) if c.isupper() else c for c in s], sep='')
-print(*[chr(155 - ord(c)) if c.isupper() else c for c in s], sep='')
-print(*[chr(155 - ord(c)) if 'A' <= c <= 'Z' else c for c in s], sep='')
-print(*map(lambda c:chr(155-ord(c))if c.isupper()else c,s),sep='')
-print(ord('Z') + ord('A'))
-3905.44
+# s = "Only the 11 CAPItalic"
+# print(*[chr(ord('Z') - ord(c) + ord('A')) if c.isupper() else c for c in s], sep='')
+# print(*[chr(155 - ord(c)) if c.isupper() else c for c in s], sep='')
+# print(*[chr(155 - ord(c)) if 'A' <= c <= 'Z' else c for c in s], sep='')
+# print(*map(lambda c:chr(155-ord(c))if c.isupper()else c,s),sep='')
+# print(ord('Z') + ord('A'))
+# 3905.44
+
+a = [0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1]
+
+
+def max_steady_1(a):
+    p = -1
+    ans = 0
+    for i, v in enumerate(a):
+        if v == 0:
+            p = i
+        else:
+            ans = max(ans, i - p)
+    return ans
+
+
+def max_steady_1_(a):
+    n = len(a)
+    f = a[:]
+    for i in range(1, n):
+        if a[i]:
+            f[i] += f[i - 1]
+    return max(f)
+
+
+print(max_steady_1_(a))

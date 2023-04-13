@@ -98,23 +98,8 @@ class LNode:
 
     def __init__(self, val, pre=None, nxt=None):
         self.val, self.pre, self.nxt = val, pre, nxt
-
-    def insert_back(self, v):
-        nxt = self.nxt
-        new = LNode(v, pre=self, nxt=self.nxt)
-        self.nxt = nxt.pre = new
-        return new
-
-    def insert_front(self, v):
-        pre = self.pre
-        new = LNode(v, pre=pre, nxt=self)
-        self.pre = pre.nxt = new
-        return new
-
-    def delete(self):
-        self.pre.nxt = self.nxt
-        self.nxt.pre = self.pre
-        return self.val
+    def __str__(self):
+        return f'LNode({self.val})'
 
 
 class LinkedList:
@@ -147,9 +132,26 @@ class LinkedList:
 
     def delete_node(self, node):
         """删除一个节点 O(1)"""
-        node.delete()
+        node.pre.nxt = node.nxt
+        node.nxt.pre = node.pre
         self.size -= 1
-        return node.val
+        return node
+
+    def insert_after(self, node, v):
+        """在指定节点node后边添加一个节点，赋值v,O(1)"""
+        nxt = node.nxt
+        new = LNode(v, pre=node, nxt=nxt)
+        node.nxt = nxt.pre = new
+        self.size += 1
+        return new
+
+    def insert_before(self, node, v):
+        """在指定节点node前边添加一个节点，赋值v,O(1)"""
+        pre = node.pre
+        new = LNode(v, pre=pre, nxt=node)
+        node.pre = pre.nxt = new
+        self.size += 1
+        return new
 
     def front(self):
         """获取第一个节点 O(1)"""
@@ -204,6 +206,8 @@ def solve():
         # mx[v - 1] = lst.last()
         mx[v - 1] = lst[-1]
     # print(lst)
+    # print(lst[0],lst[1],lst[2],lst[3],lst[4],lst[5])
+    # print(lst[-1],lst[-5],lst[-2],lst[-3],lst[-4],lst[-5])
     # print(mx)
     ans = [0] * n
     cnt = 0
@@ -217,7 +221,7 @@ def solve():
             i = i.nxt
             if i is lst.tail:
                 break
-            v = i.delete()
+            v = lst.delete_node(i).val
             mx[v] = None
             ans[idx[v]] = cnt + 1
         i = mx[m]
@@ -225,10 +229,10 @@ def solve():
             i = i.pre
             if i is lst.head:
                 break
-            v = i.delete()
+            v = lst.delete_node(i).val
             mx[v] = None
             ans[idx[v]] = cnt + 1
-        mx[m].delete()
+        lst.delete_node(mx[m])
         mx[m] = None
         ans[idx[m]] = cnt + 1
         # print(m,ans)
