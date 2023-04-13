@@ -42,6 +42,7 @@ def lower_bound(lo: int, hi: int, key):
             lo = mid
     return hi
 
+
 def bootstrap(f, stack=[]):
     def wrappedfunc(*args, **kwargs):
         if stack:
