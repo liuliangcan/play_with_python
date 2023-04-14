@@ -99,7 +99,7 @@ YES
 """
 
 #   374    ms
-def solve2():
+def solve():
     n, k = RI()
     s, = RS()
     k2 = (n-k+2).bit_length()
