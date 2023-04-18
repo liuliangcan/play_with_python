@@ -18,6 +18,7 @@ RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
 RILST = lambda: list(RI())
 DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
+print = lambda d: sys.stdout.write(str(d) + "\n")
 
 MOD = 10 ** 9 + 7
 PROBLEM = """
