@@ -11,7 +11,7 @@ RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
 RILST = lambda: list(RI())
 DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
-# print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法
+print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法
 
 MOD = 10 ** 9 + 7
 PROBLEM = """https://codeforces.com/problemset/problem/1485/F
@@ -69,19 +69,20 @@ f[i] = f[i+1] + ... f[n] + 1
     - f[v] = sum(f)   , ai位置填v-s,sum=v,这时无论前边是啥都可以，因此f[v]=sum(f)
 - 记ans = sum(f)，那么每次转移后，ans=sum(f)*2-f[0](重复的部分),s==0时，加v和直接填v是一样的，去掉一次。
 """
+"""https://www.luogu.com.cn/blog/doubeecat/solution-cf1485f"""
 
-#   155    ms
+#   264    ms
 def solve():
     n, = RI()
     b = RILST()
-    cnt = Counter([0])  # cnt[s]代表遍历到当前数字时，前缀和为s时的方案数
-    total_add = 0  # 全局移位，即每个s都加上
+    f = Counter([0])  # cnt[s]代表遍历到当前数字时，前缀和为s时的方案数
+    s = 0  # f下标的移位
     ans = 1
     for v in b:
-        t = (ans - cnt[0-total_add]) % MOD  # t 表示 i-1 的所有方案中 sum 不为 0 的情形
-        ans = (ans + t) % MOD
-        total_add += v  # 本来的情况直接加上 bi 的情形
-        cnt[v - total_add] += t
+        t = f[s]  # f[s]其实是f[0]因为下标整体偏移了s
+        f[s] = ans
+        s += v
+        ans = (ans+ans-t)%MOD
     print(ans)
 
 
