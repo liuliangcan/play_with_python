@@ -1,6 +1,7 @@
 # play_with_python
 python刷题记录
-
+- 这个项目组合了几个工具，可以方便的打cf/atc/cc/acw/牛客..等主流平台。
+- 主要是省去local test case的复制粘贴工作。
 ### 项目食用方法
 #### 准备工作
 - pycharm (必须)*(本工程)*
@@ -19,6 +20,9 @@ python刷题记录
     3. (可选)选项-设置-扩展-CF Tool
 - Competitive Companion: 直接安装即可。
 - cf-tool: 需要初始化 `cf config`，具体[教程](https://github.com/liuliangcan/cf-tool#usage)。
+  - 先login
+  - 然后 add a template,当然选pypy 64,其余的模板文件路径啥的随便选，反正我们也不用cf tool创建模板；文件后缀是py。
+  - 然后 set default template，设置我们刚才add的那项即可。
 
 #### 使用
 1. 打开cpeditor和pycharm等着。
