@@ -19,3 +19,14 @@ python刷题记录
     3. (可选)设置-扩展-CF Tool
 - Competitive Companion: 直接安装即可。
 - cf-tool: 需要初始化 `cf config`，具体[教程](https://github.com/liuliangcan/cf-tool#usage)。
+
+#### 使用
+1. 打开cpeditor和pycharm等着。
+2. 用装好插件的chrome打开一道cf题目。
+3. 点击右上角的Competitive Companion绿色图标。
+4. 2秒后cpeditor会自动new出新的模板文件，包括本题的case。
+5. 切换到cpeditor  ctrl+s会把文件保存到本地。
+6. 切换到pycharm ~/file路径下找到这个文件。
+7. 敲代码。
+8. 切到cpeditor，点击运行测试。
+9. 若你配置了cf tool，那么可以直接提交。(当然仅限于cf题目)
