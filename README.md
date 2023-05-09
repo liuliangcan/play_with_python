@@ -14,9 +14,9 @@ python刷题记录
 - pycharm: 这个就不说了，下载工程后找个路径打开。（若放在F:\play_with_code\play_with_python下，那么后边的配置会非常简单)
 - cpeditor: 下载完成后直接导入我的配置文件tools/cp_editor/play_python_in_disk_f_code.cpeditor
   - 若你的py工程不是上述位置，则需要单独修改文件路径相关的配置，包括：
-    1. 设置-文件路径-默认路径-file
-    2. 设置-语言-python-Python模板-模板路径
-    3. (可选)设置-扩展-CF Tool
+    1. 选项-设置-文件路径-默认路径-file
+    2. 选项-设置-语言-python-Python模板-模板路径
+    3. (可选)选项-设置-扩展-CF Tool
 - Competitive Companion: 直接安装即可。
 - cf-tool: 需要初始化 `cf config`，具体[教程](https://github.com/liuliangcan/cf-tool#usage)。
 
@@ -25,7 +25,7 @@ python刷题记录
 2. 用装好插件的chrome打开一道cf题目。
 3. 点击右上角的Competitive Companion绿色图标。
 4. 2秒后cpeditor会自动new出新的模板文件，包括本题的case。
-5. 切换到cpeditor  ctrl+s会把文件保存到本地。
+5. 切换到cpeditor  ctrl+s会把文件保存到本地(注意保存到~/file/)。
 6. 切换到pycharm ~/file路径下找到这个文件。
 7. 敲代码。
 8. 切到cpeditor，点击运行测试。
