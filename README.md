@@ -30,3 +30,7 @@ python刷题记录
 7. 敲代码。
 8. 切到cpeditor，点击运行测试。
 9. 若你配置了cf tool，那么可以直接提交。(当然仅限于cf题目)
+---
+#### 打lc。
+- tools/leetgo 这个路径下是lc命令行[leetgo](https://github.com/j178/leetgo),大佬开发的。
+- 但我还不熟练。使用方式见大佬的git。
