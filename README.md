@@ -32,5 +32,9 @@ python刷题记录
 9. 若你配置了cf tool，那么可以直接提交。(当然仅限于cf题目)
 ---
 #### 打lc。
-- tools/leetgo 这个路径下是lc命令行[leetgo](https://github.com/j178/leetgo),大佬开发的。
+- tools/leetgo 这个路径下是lc命令行工具[leetgo](https://github.com/j178/leetgo),大佬开发的。
 - 但我还不熟练。使用方式见大佬的git。
+- 有一点小bug:
+  - 工具可以自动读取浏览器的cookie来登录，但是若你的登录权限已过期，它识别不出来，需要你再登一次浏览器。
+  - 若你装了多浏览器，最好手动退出到只剩一个。否则工具找到第一个“自认合法”的浏览器就不继续了。
+- 总之别忘了leetgo init
