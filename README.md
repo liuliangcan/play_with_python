@@ -1,7 +1,7 @@
 # play_with_python
 python刷题记录
 
-### 项目实用方法
+### 项目食用方法
 #### 准备工作
 - pycharm (必须)*(本工程)*
 - 安装一个:(必须)[cpeditor](https://cpeditor.org/zh/docs/)
