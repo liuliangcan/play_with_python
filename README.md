@@ -9,7 +9,7 @@ python刷题记录
   - git:[Competitive Companion](https://github.com/jmerle/competitive-companion)
   - chrome store:[Competitive Companion](https://chrome.google.com/webstore/detail/competitive-companion/cjnmckjndlpiamhfimnnjmnckgghkjbl)
 - [cf_tool](https://github.com/liuliangcan/cf-tool):(可选)你可能想直接用cpeditor提交cf，需要这个命令行工具
-    - 原项目不再维护，但不支持pypy64,因此我重新编译了这个项目，使它支持pypy64，可以直接使用这个exe:~/tools/cf_tool
+    - 原项目不再维护，但不支持pypy64，因此我重新编译了这个项目，使它支持pypy64，可以直接使用这个exe:~/tools/cf_tool
 #### 配置
 - pycharm: 这个就不说了，下载工程后找个路径打开。（若放在F:\play_with_code\play_with_python下，那么后边的配置会非常简单)
 - cpeditor: 下载完成后直接导入我的配置文件tools/cp_editor/play_python_in_disk_f_code.cpeditor
