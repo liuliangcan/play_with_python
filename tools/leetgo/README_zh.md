@@ -26,24 +26,49 @@
 - 同时支持 leetcode.com (美国站) 和 leetcode.cn (中国站)
 - 自动从浏览器中读取 LeetCode 的 Cookie，无需手动提供
 - 自动在你喜欢的编辑器中打开生成的代码文件
+- 使用 OpenAI 发现并自动修复你代码中问题 (Experimental)
 
 ## 编程语言支持
 
 `leetgo` 可以为大多数语言生成样例代码，以及为部分语言生成本地测试代码。
 
+以 Go 语言为例，`leetgo pick 257` 会生成如下代码：
+
+```go
+// 省略一些代码...
+// @lc code=begin
+
+func binaryTreePaths(root *TreeNode) (ans []string) {
+
+	return
+}
+
+// @lc code=end
+
+func main() {
+	stdin := bufio.NewReader(os.Stdin)
+	root := Deserialize[*TreeNode](ReadLine(stdin))
+	ans := binaryTreePaths(root)
+	fmt.Println("output: " + Serialize(ans))
+}
+```
+
+这是一个完整的可运行的程序，你可以直接运行它，输入测试样例，比对结果。`leetgo test -L` 会自动按照 `testcases.txt` 中的 case 运行这个程序，并且比对结果。
+
 本地测试意味着你可以在你的机器上运行你的代码，输入测试样例比对结果，你可以使用 Debugger 来单步调试你的代码，更容易的找出代码中的问题。
 
-本地测试需要为每一种语言做单独的适配，所以目前仅支持部分语言(其实只支持 Go)，下表是目前的支持情况：
+本地测试需要为每一种语言做单独的适配，所以目前仅支持部分语言，下表是目前的支持情况：
 
 <!-- BEGIN MATRIX -->
 |  | Generation | Local testing |
 | --- | --- | --- |
 | Go | :white_check_mark: | :white_check_mark: |
-| Python | :white_check_mark: | Not yet |
-| C++ | :white_check_mark: | Not yet |
-| Rust | :white_check_mark: | Not yet |
+| Python | :white_check_mark: | :white_check_mark: |
+| C++ | :white_check_mark: | :white_check_mark: |
+| Rust | :white_check_mark: | :white_check_mark: |
 | Java | :white_check_mark: | Not yet |
 | JavaScript | :white_check_mark: | Not yet |
+| TypeScript | :white_check_mark: | Not yet |
 | PHP | :white_check_mark: | Not yet |
 | C | :white_check_mark: | Not yet |
 | C# | :white_check_mark: | Not yet |
@@ -62,10 +87,9 @@
 你可以直接从 [release 页面](https://github.com/j178/leetgo/releases) 下载最新的可执行程序，添加可执行权限、加入 `PATH` 后使用。
 
 ### 使用 `go install`
- 
+
 ```shell
-git clone git@github.com:j178/leetgo.git
-cd leetgo && go install
+go install github.com/j178/leetgo@latest
 ```
 
 ### macOS/Linux 使用 [HomeBrew](https://brew.sh/)
@@ -93,17 +117,18 @@ Available Commands:
   info                    Show question info
   test                    Run question test cases
   submit                  Submit solution
-  fix                     Use OpenAI GPT-3 API to fix your solution code (just for fun)
+  fix                     Use ChatGPT API to fix your solution code (just for fun)
   edit                    Open solution in editor
-  extract                 Extract solution code from generated file
   contest                 Generate contest questions
   cache                   Manage local questions cache
   config                  Show configurations
+  open                    Open one or multiple question pages in a browser
   help                    Help about any command
 
 Flags:
   -v, --version       version for leetgo
   -l, --lang string   language of code to generate: cpp, go, python ...
+      --site string   leetcode site: cn, us
   -y, --yes           answer yes to all prompts
   -h, --help          help for leetgo
 
@@ -119,6 +144,8 @@ Use "leetgo [command] --help" for more information about a command.
 leetgo pick two-sum          # two-sum 是题目的 slug，是最准确的 qid
 leetgo pick 1                # 1 是题目的 ID
 leetgo pick today            # today 表示今天的每日一题
+leetgo pick yesterday        # `yesterday` 表示昨天的每日一题
+leetgo pick today-1          # `today-1` 表示昨天的每日一题，与 `yesterday` 一样. `today-2`, `today-3` 等同理。
 leetgo contest weekly100     # weekly100 表示第100场周赛
 leetgo test last             # last 表示最近一个生成的题目
 leetgo test weekly100/1      # weekly100/1 表示第100场周赛的第一个题目
@@ -153,44 +180,35 @@ code:
   # Available attributes: Id, Slug, Title, Difficulty, Lang, SlugIsMeaningful
   # Available functions: lower, upper, trim, padWithZero, toUnderscore
   filename_template: '{{ .Id | padWithZero 4 }}{{ if .SlugIsMeaningful }}.{{ .Slug }}{{ end }}'
+  # Generate question description into a separate file
+  separate_description_file: true
   # Functions that modify the generated code
   modifiers:
     - name: removeUselessComments
   go:
     out_dir: go
-    # Overrides the default code.filename_template
-    filename_template: ""
-    # Replace some blocks of the generated code
-    blocks:
-      - name: beforeMarker
-        template: |
-          package main
-
-          {{ if .NeedsDefinition -}} import . "github.com/j178/leetgo/testutils/go" {{- end }}
     # Functions that modify the generated code
     modifiers:
       - name: removeUselessComments
       - name: changeReceiverName
       - name: addNamedReturn
       - name: addMod
-    # Go module path for the generated code
-    go_mod_path: ""
   python3:
     out_dir: python
-    # Overrides the default code.filename_template
-    filename_template: ""
+    # Python executable that creates the venv
+    executable: python3
   cpp:
     out_dir: cpp
-    # Overrides the default code.filename_template
-    filename_template: ""
-  java:
-    out_dir: java
-    # Overrides the default code.filename_template
-    filename_template: ""
+    # C++ compiler
+    cxx: g++
+    # C++ compiler flags (our Leetcode I/O library implementation requires C++17)
+    cxxflags:
+      - -O2
+      - -std=c++17
   rust:
     out_dir: rust
-    # Overrides the default code.filename_template
-    filename_template: ""
+  java:
+    out_dir: java
 # LeetCode configuration
 leetcode:
   # LeetCode site, https://leetcode.com or https://leetcode.cn
@@ -221,7 +239,9 @@ editor:
   use: none
   # Custom command to open files
   command: ""
-  # Arguments to the command
+  # Arguments to the command.
+  # String contains {{.CodeFile}}, {{.TestFile}}, {{.DescriptionFile}}, {{.TestCasesFile}} will be replaced with corresponding file path.
+  # {{.Files}} will be substituted with the list of all file paths.
   args: []
 ```
 <!-- END CONFIG -->
@@ -233,10 +253,8 @@ editor:
 有三种方式为 `leetgo` 提供认证:
 
 - 从浏览器中直接读取。
-  
-  这是最方便的方法，也是默认的行为。目前支持 Chrome，FireFox，Safari[^1]，Edge。
 
-  如果你需要其他浏览器的支持，请告诉我们~
+  这是最方便的方法，也是默认的行为。目前支持 Chrome，FireFox，Safari[^1]，Edge。
 
   ```yaml
   leetcode:
@@ -279,7 +297,7 @@ editor:
 ## 进阶用法
 
 1. template 相关
-  
+
     `leetgo` 的配置中有许多支持 Go template，如果你熟悉 Go template 语法的话，可以配置出更加个性化的文件名和代码模板。
 
 2. Blocks
@@ -321,7 +339,7 @@ editor:
         - script: |
             function modify(code) {
               return "// hello world\n" + code;
-            } 
+            }
     ```
 
 ## FAQ
@@ -336,6 +354,8 @@ Debug 模式下 `leetgo` 会输出详细的日志，请复制这些日志，并�
 
 欢迎大家参与这个项目的开发，如果你不知道如何开始，这些 [Good first issues](https://github.com/j178/leetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 是很好的起步点，
 你也可以看看这些 [help wanted](https://github.com/j178/leetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) issues。
+
+如果你想为一个新的语言添加本地测试的支持，请参考 [#112](https://github.com/j178/leetgo/issues/112)。
 
 提交前请使用 `golangci-lint run --fix` 来修复代码格式问题。
 

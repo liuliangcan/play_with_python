@@ -8,16 +8,16 @@
 [![Discord](https://img.shields.io/discord/1069106479744962582?label=discord&logo=discord)](https://discord.gg/bHsEwQQj9m)
 [![Twitter Follow](https://img.shields.io/twitter/follow/niceoe)](https://twitter.com/niceoe)
 
-`leetgo` is a command-line tool for LeetCode that provides almost all the functionality of LeetCode, 
-allowing you to do all of your LeetCode exercises without leaving the terminal. 
-It can automatically generate **skeleton code and test cases**, support **local testing and debugging**, 
-and you can use any IDE you like to solve problems. 
+`leetgo` is a command-line tool for LeetCode that provides almost all the functionality of LeetCode,
+allowing you to do all of your LeetCode exercises without leaving the terminal.
+It can automatically generate **skeleton code and test cases**, support **local testing and debugging**,
+and you can use any IDE you like to solve problems.
 
 And `leetgo` also supports real-time generation of **contest questions**, submitting all questions at once, so your submissions are always one step ahead!
 
 [![asciicast](https://asciinema.org/a/7R2lnZj7T0hEuJ49SH2lZ04NG.svg)](https://asciinema.org/a/7R2lnZj7T0hEuJ49SH2lZ04NG)
 
-## Highlight of features
+## Features
 
 - Generate description, skeleton code and testing code for a question
 - Customize the code template for generated code, use modifiers to pre-process code
@@ -26,10 +26,35 @@ And `leetgo` also supports real-time generation of **contest questions**, submit
 - Support for both leetcode.com and leetcode.cn
 - Automatically read cookies from browser, no need to enter password
 - Automatically open question files in your favourite editor
+- Use OpenAI to automatically discover and fix issues in the code (Experimental)
 
 ## Language support
 
 `leetgo` supports code generation for most languages, and local testing for some languages.
+
+In the Go language, running `leetgo pick 257` will generate the following code:
+
+```go
+// Omitted some code...
+// @lc code=begin
+
+func binaryTreePaths(root *TreeNode) (ans []string) {
+
+	return
+}
+
+// @lc code=end
+
+func main() {
+	stdin := bufio.NewReader(os.Stdin)
+	root := Deserialize[*TreeNode](ReadLine(stdin))
+	ans := binaryTreePaths(root)
+	fmt.Println("output: " + Serialize(ans))
+}
+```
+
+This is a complete and runnable program. You can run it directly, input the test cases, and compare the results. 
+`leetgo test -L` will automatically run this program with the test cases in `testcases.txt` and compare the results.
 
 Local testing means that you can run the test cases on your local machine, so you can use a debugger to debug your code.
 
@@ -39,11 +64,12 @@ Local testing requires more work to implement for each language, so not all lang
 |  | Generation | Local testing |
 | --- | --- | --- |
 | Go | :white_check_mark: | :white_check_mark: |
-| Python | :white_check_mark: | Not yet |
-| C++ | :white_check_mark: | Not yet |
-| Rust | :white_check_mark: | Not yet |
+| Python | :white_check_mark: | :white_check_mark: |
+| C++ | :white_check_mark: | :white_check_mark: |
+| Rust | :white_check_mark: | :white_check_mark: |
 | Java | :white_check_mark: | Not yet |
 | JavaScript | :white_check_mark: | Not yet |
+| TypeScript | :white_check_mark: | Not yet |
 | PHP | :white_check_mark: | Not yet |
 | C | :white_check_mark: | Not yet |
 | C# | :white_check_mark: | Not yet |
@@ -62,10 +88,9 @@ and many other languages are planned. (Help wanted, contributions welcome!)
 You can download the latest binary from the [release page](https://github.com/j178/leetgo/releases).
 
 ### Install via go
- 
+
 ```shell
-git clone git@github.com:j178/leetgo.git
-cd leetgo && go install
+go install github.com/j178/leetgo@latest
 ```
 
 ### Install via [HomeBrew](https://brew.sh/) on macOS/Linux
@@ -93,17 +118,18 @@ Available Commands:
   info                    Show question info
   test                    Run question test cases
   submit                  Submit solution
-  fix                     Use OpenAI GPT-3 API to fix your solution code (just for fun)
+  fix                     Use ChatGPT API to fix your solution code (just for fun)
   edit                    Open solution in editor
-  extract                 Extract solution code from generated file
   contest                 Generate contest questions
   cache                   Manage local questions cache
   config                  Show configurations
+  open                    Open one or multiple question pages in a browser
   help                    Help about any command
 
 Flags:
   -v, --version       version for leetgo
   -l, --lang string   language of code to generate: cpp, go, python ...
+      --site string   leetcode site: cn, us
   -y, --yes           answer yes to all prompts
   -h, --help          help for leetgo
 
@@ -113,13 +139,15 @@ Use "leetgo [command] --help" for more information about a command.
 
 ### Question Identifier
 
-Many `leetgo` commands rely on `qid` to find the leetcode question. `qid` is a simplified question 
+Many `leetgo` commands rely on `qid` to find the leetcode question. `qid` is a simplified question
 identifier defined by leetgo, which includes the following forms (using the two-sum problem as an example):
 
 ```shell
 leetgo pick two-sum          # `two-sum` is the question slug
 leetgo pick 1                # `1` is the question id
 leetgo pick today            # `today` means daily question
+leetgo pick yesterday        # `yesterday` means the question of yesterday
+leetgo pick today-1          # `today-1` means the question of yesterday, same as `yesterday`. `today-2`, `today-3` etc are also supported.
 leetgo contest weekly100     # `weekly100` means the 100th weekly contest
 leetgo test last             # `last` means the last generated question
 leetgo test weekly100/1      # `weekly100/1` means the first question of the 100th weekly contest
@@ -131,10 +159,10 @@ leetgo test last/            # `last/` means all questions of the last generated
 
 ## Configuration
 
-Leetgo uses two levels of configuration files, the global configuration file located at `~/.config/leetgo/config.yaml` and the local configuration file located at `leetgo.yaml` in the project root. 
+Leetgo uses two levels of configuration files, the global configuration file located at `~/.config/leetgo/config.yaml` and the local configuration file located at `leetgo.yaml` in the project root.
 
-These configuration files are created during the `leetgo init` process. 
-The local configuration file in the project overrides the global configuration. 
+These configuration files are created during the `leetgo init` process.
+The local configuration file in the project overrides the global configuration.
 
 It is generally recommended to use the global configuration as the default configuration and customize it in the project by modifying the `leetgo.yaml` file.
 
@@ -158,44 +186,35 @@ code:
   # Available attributes: Id, Slug, Title, Difficulty, Lang, SlugIsMeaningful
   # Available functions: lower, upper, trim, padWithZero, toUnderscore
   filename_template: '{{ .Id | padWithZero 4 }}{{ if .SlugIsMeaningful }}.{{ .Slug }}{{ end }}'
+  # Generate question description into a separate file
+  separate_description_file: true
   # Functions that modify the generated code
   modifiers:
     - name: removeUselessComments
   go:
     out_dir: go
-    # Overrides the default code.filename_template
-    filename_template: ""
-    # Replace some blocks of the generated code
-    blocks:
-      - name: beforeMarker
-        template: |
-          package main
-
-          {{ if .NeedsDefinition -}} import . "github.com/j178/leetgo/testutils/go" {{- end }}
     # Functions that modify the generated code
     modifiers:
       - name: removeUselessComments
       - name: changeReceiverName
       - name: addNamedReturn
       - name: addMod
-    # Go module path for the generated code
-    go_mod_path: ""
   python3:
     out_dir: python
-    # Overrides the default code.filename_template
-    filename_template: ""
+    # Python executable that creates the venv
+    executable: python3
   cpp:
     out_dir: cpp
-    # Overrides the default code.filename_template
-    filename_template: ""
-  java:
-    out_dir: java
-    # Overrides the default code.filename_template
-    filename_template: ""
+    # C++ compiler
+    cxx: g++
+    # C++ compiler flags (our Leetcode I/O library implementation requires C++17)
+    cxxflags:
+      - -O2
+      - -std=c++17
   rust:
     out_dir: rust
-    # Overrides the default code.filename_template
-    filename_template: ""
+  java:
+    out_dir: java
 # LeetCode configuration
 leetcode:
   # LeetCode site, https://leetcode.com or https://leetcode.cn
@@ -226,7 +245,9 @@ editor:
   use: none
   # Custom command to open files
   command: ""
-  # Arguments to the command
+  # Arguments to the command.
+  # String contains {{.CodeFile}}, {{.TestFile}}, {{.DescriptionFile}}, {{.TestCasesFile}} will be replaced with corresponding file path.
+  # {{.Files}} will be substituted with the list of all file paths.
   args: []
 ```
 <!-- END CONFIG -->
@@ -239,9 +260,8 @@ editor:
 There are three ways to make cookies available to `leetgo`:
 
 - Read cookies from browser automatically.
-  
+
   Currently, `leetgo` supports Chrome, FireFox, Safari[^1], Edge.
-  If you want to support other browsers, please let us know!
 
   ```yaml
   leetcode:
@@ -250,7 +270,7 @@ There are three ways to make cookies available to `leetgo`:
   ```
 
 - Provide cookies in config file.
-  
+
   You can get your cookies named `LEETCODE_SESSION` and `csrftoken` from browser's developer tools.
 
   ```yaml
@@ -294,7 +314,7 @@ You can use custom template to generate your own filename, code, etc.
 A code file is composed of different blocks, you can overwrite some of them to provide your own snippets.
 
 | Available blocks |
-| -- | 
+| -- |
 | header |
 | description |
 | title |
@@ -332,7 +352,7 @@ code:
     - script: |
         function modify(code) {
           return "// hello world\n" + code;
-        } 
+        }
 ```
 
 ## FAQ
@@ -343,8 +363,10 @@ Some common problems can be found in the [Q&A](https://github.com/j178/leetgo/di
 
 ## Contributions welcome!
 
-[Good First Issues](https://github.com/j178/leetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are a good place to start, 
+[Good First Issues](https://github.com/j178/leetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are a good place to start,
 and you can also check out some [Help Wanted](https://github.com/j178/leetgo/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) issues.
+
+If you want to add local testing support for a new language, please refer to [#112](https://github.com/j178/leetgo/issues/112).
 
 Before submitting a PR, please run `golangci-lint run --fix` to fix lint errors.
 
@@ -357,4 +379,4 @@ Here are some awesome projects that inspired me to create this project:
 - https://github.com/budougumi0617/leetgode
 - https://github.com/skygragon/leetcode-cli
 
-[^1]: For Safari on MacOS, you may need to grant `Full Disk Access` privilege to your terminal app which you would like to run `leetgo`.
+[^1]: For Safari on macOS, you may need to grant `Full Disk Access` privilege to your terminal app which you would like to run `leetgo`.
