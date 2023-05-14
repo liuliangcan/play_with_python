@@ -20,6 +20,9 @@ RILST = lambda: list(RI())
 DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 # print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法
 
+DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
+DIRS8 = [(0, 1),(1, 1), (1, 0), (1, -1), (0, -1), (-1, -1),(-1, 0),  (-1, 1)] # →↘↓↙←↖↑↗
+
 MOD = 10 ** 9 + 7
 PROBLEM = """
 """
