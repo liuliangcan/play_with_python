@@ -11,6 +11,7 @@ from functools import lru_cache, reduce
 from types import GeneratorType
 from heapq import *
 from math import sqrt, gcd, inf
+
 if sys.version >= '3.8':  # ACW没有comb
     from math import comb
 
@@ -21,7 +22,7 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 # print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法
 
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
-DIRS8 = [(0, 1),(1, 1), (1, 0), (1, -1), (0, -1), (-1, -1),(-1, 0),  (-1, 1)] # →↘↓↙←↖↑↗
+DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
 
 MOD = 10 ** 9 + 7
 PROBLEM = """
