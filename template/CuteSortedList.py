@@ -14,7 +14,7 @@ from functools import reduce
 from operator import iadd
 
 
-class SortedList:
+class CuteSortedList:
     def __init__(self, iterable=[], _load=200):
         """Initialize sorted list instance."""
         values = sorted(iterable)
