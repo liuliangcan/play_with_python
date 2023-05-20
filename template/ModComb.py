@@ -1,5 +1,8 @@
+from collections import Counter
+
 
 class ModComb:
+    """通过O(n)预处理逆元，达到O(1)询问组合数"""
     def __init__(self, n, p):
         """
         初始化，为了防止模不一样，因此不写默认值，强制要求调用者明示
