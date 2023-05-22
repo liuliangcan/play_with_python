@@ -13,7 +13,8 @@ RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
 RILST = lambda: list(RI())
 DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 print = lambda d: sys.stdout.write(
-    str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，实测这个快。
+    str(d) + "\n"
+)  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，实测这个快。
 
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
 DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0),
@@ -110,10 +111,10 @@ class UnionFind:
         """Find the sets containing the objects and merge them all."""
         # Find the heaviest root according to its weight.
         roots = iter(
-            sorted(
-                {self[x] for x in objects}, key=lambda r: self.weights[r], reverse=True
-            )
-        )
+            sorted({self[x]
+                    for x in objects},
+                   key=lambda r: self.weights[r],
+                   reverse=True))
         try:
             root = next(roots)
         except StopIteration:
@@ -217,6 +218,98 @@ def solve4():
 
 # 3135  47.95 MB
 def solve():
+    n, m = RI()
+    es = [[] for _ in range(m)]
+    for _ in range(m):
+        u, v, c = RI()
+        if u > v:
+            u, v = v, u
+        es[c - 1].append((u - 1, v - 1))
+    st = int(m ** 0.5) + 1
+
+    dsu = list(range(n))
+
+    def find_fa(x):
+        t = x
+        while dsu[x] != x:
+            x = dsu[x]
+        while t != x:
+            dsu[t], t = x, dsu[t]
+        return x
+
+    ans = [{} for _ in range(n)]
+    # ans = {}
+    q, = RI()
+    qs = []
+    for _ in range(q):
+        u, v = RI()
+        if u > v:
+            u, v = v, u
+        qs.append((u - 1, v - 1))
+        ans[u - 1][v - 1] = 0
+        # ans[u - 1,v - 1] = 0
+    s = list(set(qs))
+    # print(s)
+    for ee in es:
+        if not ee:
+            continue
+        for u, v in ee:  # 只重置要用到的节点，由于是遍历边，重置总次数2*m
+            dsu[u] = u
+            dsu[v] = v
+        # print(st)
+        # print(len(ee))
+        if len(ee) >= st:  # 这种颜色最多有√m种
+            for u, v in s:  # 由于这里会查询不在这个颜色里的点，因此也重置他们
+                dsu[u] = u
+                dsu[v] = v
+            for u, v in ee:
+                u, v = find_fa(u), find_fa(v)
+                dsu[u] = v
+            for u, v in s:  # O(q)
+                if find_fa(u) == find_fa(v):
+                    ans[u][v] += 1
+                    # ans[u,v] += 1
+        else:  # 2 * √m个点，直接排序暴力预处理
+            ps = []
+            for u, v in ee:  # 只重置要用到的节点，由于是遍历边，重置总次数2*m
+                ps.append(u)
+                ps.append(v)
+            for u, v in ee:
+                u, v = find_fa(u), find_fa(v)
+                dsu[u] = v
+
+            ps = sorted(set(ps))
+            ss = defaultdict(set)
+            for u in ps:
+                ss[find_fa(u)].add(u)
+            for sss in ss.values():
+                sss = sorted(sss)
+                for i in range(len(sss) - 1):
+                    u = sss[i]
+                    for j in range(i + 1, len(sss)):
+                        v = sss[j]
+                        if v in ans[u]:
+                            ans[u][v] += 1
+                            # ans[u,v] += 1
+
+            # ln = len(ps)
+            # # print(ps)
+            # for i in range(ln - 1):
+            #     u = ps[i]
+            #     fu = find_fa(u)
+            #     for j in range(i + 1, ln):
+            #         v = ps[j]
+            #         if v in ans[u] and fu == find_fa(v):
+            #             ans[u][v] += 1
+            #             # ans[u,v] += 1
+
+    for u, v in qs:
+        # print(ans[u,v])
+        print(ans[u][v])
+
+
+# 3135  47.95 MB
+def solve5():
     n, m = RI()
     es = [[] for _ in range(m)]
     for _ in range(m):
