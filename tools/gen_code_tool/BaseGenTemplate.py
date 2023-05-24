@@ -46,23 +46,43 @@ use std::collections::*;
 use std::io::{{BufRead, BufWriter, Write}};
 
 // const MOD:i64 = 1000000000+7;
-#[allow(unused)]
-pub fn solve(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
-    let n = scan.token::<usize>();
-    let mut a = Vec::with_capacity(n);
-    for i in 0..n {{
-        a.push(scan.token::<i64>());
-    }}   
-    let mut ans = 0;
-    writeln!(out, "{{}}", ans).ok();
-}}
 
+pub struct Program {{
+    // n: usize,
+    // clock: usize,
+    // a: Vec<usize>,
+    // ans: Vec<usize>,
+    // time: Vec<usize>,
+}}
+impl Program {{
+    pub fn new() -> Self {{
+        Self {{
+            // n: 0,
+            // clock: 0,
+            // a: Vec::new(),
+            // ans: Vec::new(),
+            // time: Vec::new(),
+        }}
+    }}
+    #[allow(unused)]
+    pub fn solve(&mut self, scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
+        let mut n = scan.token::<usize>();
+        let mut a = Vec::with_capacity(n);
+        for i in 0..n {{
+            a.push(scan.token::<i64>());
+        }}
+        let mut ans = 0;
+
+        writeln!(out,"{{}}",ans).ok();
+    }}
+}}
 pub fn run(scan: &mut Scanner<impl BufRead>, out: &mut impl Write) {{
-    // let t = scan.token::<usize>();
-    // for _ in 0..t {{
-    //     solve(scan, out)
+    let mut p = Program::new();
+
+    // for _ in 0..scan.token::<usize>(){{
+    //     p.solve(scan, out)
     // }}
-    solve(scan,out)
+    p.solve(scan, out)
 }}
 
 #[allow(unused)]
@@ -101,8 +121,7 @@ impl<R: ::std::io::BufRead> Scanner<R> {{
         return s.as_bytes().into();
     }}
 }}
-
-// {self.url}
+// https://codeforces.com/contest/786/problem/C
 // 本模板由 https://github.com/liuliangcan/play_with_python/blob/main/tools/gen_code_tool/gen_template.py 自动生成;中文题面描述可移步
 """)
 
