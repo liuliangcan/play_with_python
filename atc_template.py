@@ -1,6 +1,7 @@
 import sys
-import bisect
 import random
+from types import GeneratorType
+import bisect
 import io, os
 from bisect import *
 from collections import *
@@ -8,10 +9,8 @@ from contextlib import redirect_stdout
 from itertools import *
 from array import *
 from functools import lru_cache, reduce
-from types import GeneratorType
 from heapq import *
 from math import sqrt, gcd, inf
-
 if sys.version >= '3.8':  # ACW没有comb
     from math import comb
 
@@ -23,7 +22,7 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
 DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
-
+RANDOM = random.randrange(2 ** 62)
 MOD = 10 ** 9 + 7
 PROBLEM = """
 """
