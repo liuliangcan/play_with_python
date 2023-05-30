@@ -16,13 +16,6 @@ class PrimeTable:
                 if i % p == 0:
                     break
 
-        # # 埃氏筛O(nlgn),由于切片的原因，仅标记质数的场景下比线性筛表现更好。
-        # is_primes = [1] * (n + 1)
-        # is_primes[0] = is_primes[1] = 0  # 0和1不是质数
-        # for i in range(2, int((n + 1) ** 0.5) + 1):
-        #     if is_primes[i]:
-        #         is_primes[i * i::i] = [0] * ((n - 1 - i * i) // i + 1)
-        # self.primes = [i for i, v in enumerate(is_primes)]
 
     def is_prime(self, x: int):
         """检测是否是质数，最坏是O(sqrt(x)"""
@@ -99,3 +92,13 @@ class PrimeTable:
 # # 求质数
 # primes = PrimeTable(10 ** 6).primes
 # print(pt.get_factors(1000))
+
+
+# def tag_primes_eratosthenes(n):  # 返回一个长度n的数组p，如果i是质数则p[i]=1否则p[i]=0
+#     primes = [1]*n
+#     primes[0] = primes[1] = 0  # 0和1不是质数
+#     for i in range(2,int(n**0.5)+1):
+#         if primes[i]:
+#             primes[i * i::i] = [0] * ((n - 1 - i * i) // i + 1)
+#     return primes
+# primes = tag_primes_eratosthenes(5*10**5+5)
