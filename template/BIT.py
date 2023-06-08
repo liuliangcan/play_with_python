@@ -78,6 +78,14 @@ class BinIndexTree:
                 l = mid
         return r
 
+    def kth(self, s):
+        """返回<=s的最小下标"""
+        pos = 0
+        for j in range(18, -1, -1):
+            if pos + (1 << j) <= self.size and self.c[pos + (1 << j)] <= s:
+                pos += (1 << j)
+                s -= self.c[pos]
+        return pos
     def lowbit(self, x):
         return x & -x
 
@@ -298,3 +306,18 @@ class Solution:
             for j in range(n):
                 res[i][j] = tree.query_point(i + 1, j + 1)
         return res
+
+# a = [1,2,30,2]
+# t = BinIndexTree(a)
+# print(t.kth(0))
+# print(t.kth(1))
+# print(t.kth(2))
+# print(t.kth(3))
+# print(t.kth(32))
+# print(t.kth(33))
+# print(t.kth(34))
+# print(t.kth(35))
+# print(t.kth(36))
+# print(t.kth(37))
+# print(t.kth(38))
+# print(t.kth(39))
