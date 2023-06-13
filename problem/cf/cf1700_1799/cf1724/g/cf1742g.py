@@ -14,7 +14,7 @@ print = lambda d: sys.stdout.write(
     str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，确实会快。
 
 MOD = 10 ** 9 + 7
-PROBLEM = """最多取30次max
+PROBLEM = """最多取30次max 
 """
 
 
