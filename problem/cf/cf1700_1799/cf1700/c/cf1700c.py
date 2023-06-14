@@ -58,7 +58,17 @@ PROBLEM = """https://codeforces.com/problemset/problem/1700/C
 36
 33
 """
+"""https://codeforces.com/problemset/submission/1700/209616776
 
+用差分思考，计算 a 的差分数组 d。
+
+操作 1 变成给 d[0]-=1，d[i]+=1。
+操作 2 变成给 d[i]-=1。
+操作 3 变成给 d[0]+=1。
+
+根据这些操作，把所有 d[i] 变成 0。
+
+相似题目：见 2023.2.8 的茶"""
 
 
 #    124   ms
