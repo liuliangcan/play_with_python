@@ -35,14 +35,15 @@ class Solution:
 
         for i in range(1, mask):
             if need[i] & i != need[i]: continue  # i存在前置课程没学，这个状态就非法
-            j = i ^ need[i]  # 当前状态去除前置，则是最后一学期可以学的课
+
+            p = j = i ^ need[i]  # 当前状态去除前置，则是最后一学期可以学的课
             if j.bit_count() <= k:  # 如果这学期要学的少于k，则可以直接学
                 f[i] = f[need[i]] + 1
                 continue
             while j:
-                if j.bit_count() <= k and need[j] & (i ^ j) == need[j]:
+                if j.bit_count() == k:
                     f[i] = min(f[i], f[i ^ j] + 1)
-                j = (j - 1) & i
+                j = (j - 1) & p
         # print(f)
         # print(need)
         return f[-1]
