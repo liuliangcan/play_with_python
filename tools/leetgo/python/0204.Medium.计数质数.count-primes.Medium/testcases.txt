@@ -1,0 +1,14 @@
+input:
+10
+output:
+4
+
+input:
+0
+output:
+0
+
+input:
+1
+output:
+0
