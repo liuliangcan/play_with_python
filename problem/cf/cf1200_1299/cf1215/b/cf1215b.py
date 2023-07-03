@@ -5,21 +5,6 @@
 # Time Limit: 2000 ms
 
 import sys
-import random
-from types import GeneratorType
-import bisect
-import io, os
-from bisect import *
-from collections import *
-from contextlib import redirect_stdout
-from itertools import *
-from array import *
-from functools import lru_cache, reduce
-from heapq import *
-from math import sqrt, gcd, inf
-
-if sys.version >= '3.8':  # ACW没有comb
-    from math import comb
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
@@ -30,7 +15,6 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
 DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0),
          (-1, 1)]  # →↘↓↙←↖↑↗
-RANDOM = random.randrange(2 ** 62)
 MOD = 10 ** 9 + 7
 # MOD = 998244353
 PROBLEM = """https://codeforces.com/problemset/problem/1215/B
@@ -63,8 +47,9 @@ f[i][0/1]为以i为右端点的所有子段中，有多少个子段乘积为正/
 实现时可以滚动优化省去第一层。
 """
 
-#       ms
-def solve():
+
+#  155     ms
+def solve1():
     n, = RI()
     a = RILST()
 
@@ -73,6 +58,21 @@ def solve():
     for v in a[1:]:
         if v > 0:
             x, y = x + 1, y
+        else:
+            x, y = y, x + 1
+        p += x
+        n += y
+    print(n, p)
+
+
+#  108     ms
+def solve():
+    n, = RI()
+
+    p = n = x = y = 0
+    for v in RI():
+        if v > 0:
+            x += 1
         else:
             x, y = y, x + 1
         p += x
