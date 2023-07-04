@@ -1,0 +1,9 @@
+input:
+[5,4,2,4]
+output:
+8
+
+input:
+[1,2,3]
+output:
+6
