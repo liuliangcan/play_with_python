@@ -55,7 +55,7 @@ class GetRateFactory:
         from tools.get_my_rate.GetRateCodeforces import GetRateCodeforces
         from tools.get_my_rate.GetRateLeetcodeCN import GetRateLeetcodeCN
         from tools.get_my_rate.GetRateNowcoder import GetRateNowcoder
-        if 'awc' in tag or tag.lower() == 'acwing':
+        if 'acw' in tag or tag.lower() == 'acwing':
             return GetRateAcwing(user)
         if 'lccn' in tag or tag.lower() == 'leetcodecn':
             return GetRateLeetcodeCN(user)
