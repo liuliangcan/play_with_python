@@ -14,23 +14,22 @@ from functools import cache
 # @lc code=begin
 from sortedcontainers import SortedList
 
+
 class Solution:
     def maxSubarraySumCircular(self, nums: List[int]) -> int:
-        n = len(nums)
-        f = [0]*n
-        f[0] = nums[0]
-        for i in range(n):
-            f[i] = max(f[i-1],0)+nums[i]
-        ans = max(f)
-        if ans > 0:
-            mn = inf
-            p,pmx = 0,0
-            for v in nums:
-                p += v
-                mn = min(mn,p-pmx)
-                pmx = max(pmx,p)
-            ans = max(ans,sum(nums)-mn)
+        p = 0
+        mx = mn = 0
+        ans = max(nums)
+        if ans <= 0:
+            return ans
+        s = sum(nums)
+        for v in nums:
+            p += v
+            ans = max(ans, p - mn, s - p + mx)  # 最大子段、s-最小子段(不可尝试移除整个数组,这种最优解只会是max(nums)<=0,特判)
+            mn = min(mn, p)
+            mx = max(mx, p)
         return ans
+
 
 # @lc code=end
 
