@@ -38,7 +38,10 @@ PROBLEM = """https://codeforces.com/contest/1811/problem/E
 考虑9进制：把所有数字都去掉4的话，那么其实每位只有9个选项，而且大小顺序是不变的。从1开始数的话，找出这个9进制的k即可，然后把每一位换成对应的数字。
 直接用连除拆解每一位。
 """
+"""想用二分+数位DP？先别急，有更简单的做法。
+既然不能包含 4，那我们相当于在用 9 进制计数，所以把 k 转换成 9 进制就行了（>=4 的数位 +1）。
 
+https://codeforces.com/contest/1811/submission/216062310"""
 
 def my_bisect_left(a, x, lo=None, hi=None, key=None):
     """
