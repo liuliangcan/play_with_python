@@ -5,6 +5,7 @@
 # Time Limit: 1000 ms
 
 import sys
+from collections import deque
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
