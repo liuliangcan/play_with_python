@@ -282,6 +282,52 @@ def solve1():
         cnt ^= 1
     print(*ans, sep='')
 
+#    514   ms
+def solve2():
+    n, k = RI()
+    p = [1] + RILST()
 
+    pos = {v: i for i, v in enumerate(p)}
+    mx, pre, suf = n, list(range(n + 1)), list(range(n + 2))
+
+    def find(fa, x):
+        t = x
+        while x != fa[x]:
+            x = fa[x]
+        while t != x:
+            t, fa[t] = fa[t], x
+        return x
+
+    def union(fa, x, y):
+        x, y = find(fa, x), find(fa, y)
+        fa[x] = y
+        return y
+
+    cnt = 0
+    ans = [0] * (n + 1)
+    while mx:
+        while mx and mx not in pos:
+            mx -= 1
+        if mx == 0: break
+        ps = pos[mx]
+
+        def delete(i):
+            pos.pop(p[i])
+            ans[i] = cnt + 1
+            return union(pre, i, i - 1), union(suf, i, i + 1)
+
+        delete(ps)
+        i = find(suf, ps)
+        for _ in range(k):
+            if i == n + 1:
+                break
+            i = delete(i)[1]
+        i = find(pre, ps)
+        for _ in range(k):
+            if i == 0:
+                break
+            i = delete(i)[0]
+        cnt ^= 1
+    print(*ans[1:], sep='')
 if __name__ == '__main__':
     solve()
