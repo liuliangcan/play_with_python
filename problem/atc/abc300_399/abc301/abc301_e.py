@@ -52,8 +52,73 @@ PROBLEM = """给一个m行n列的矩阵，其中矩阵的每个位置：
 """
 
 
-#       ms
+#   1378      ms
 def solve():
+    n, m, t = RI()
+    g = []  # 存地图
+    oo = []  # 存糖果位置
+    st = en = None  # 存起止
+    for i in range(n):
+        s, = RS()
+        g.append(s)
+        for j, c in enumerate(s):
+            if c == 'S':
+                st = (i, j)
+            elif c == 'G':
+                en = (i, j)
+            elif c == 'o':
+                oo.append((i, j))
+    co = [st, en] + oo  # 编码糖果和起止
+    ln = len(co)  # 最多共20个位置
+    dis = [[t+1] * ln for _ in range(ln)]  # 每个位置到互相的距离，邻接矩阵dis[i][j]代表从位置i到j的步数;inf可以用t+1代替
+
+    def bfs(i):  # 计算第i个节点到其它节点最短路，计算20次，构建所有位置的理解矩阵
+        x, y = co[i]
+        d = [[t+1] * m for _ in range(n)]  # inf可以用t+1代替
+        d[x][y] = 0
+        q = deque([(x, y)])
+        while q:
+            x, y = q.popleft()
+            c = d[x][y] + 1
+            for a, b in (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1):
+                if 0 <= a < n and 0 <= b < m and g[a][b] != '#':
+                    if c < d[a][b]:
+                        d[a][b] = c
+                        q.append((a, b))
+        for j, (x, y) in enumerate(co):  # 给邻接矩阵赋值
+            dis[i][j] = d[x][y]
+
+    for i in range(ln):
+        bfs(i)
+    if dis[0][1] > t:  # t步到不了终点
+        return print(-1)
+
+    mask = 1 << ln
+    f = [[t+1] * mask for _ in range(ln)]  # f[i][j]代表状态j时，最后到达节点i的最短步数
+    f[0][1] = 0  # 起始在0，状态是1,  0步
+    for i in range(1, mask):
+        if not i & 1: continue
+        ones, zeros = [], []
+        for j in range(ln):  # 因为要从当前状态的一个结束为止转移到不在当前状态的位置里，为了避免ln*ln,把两种位置先拆出来。
+            if i >> j & 1:
+                ones.append(j)
+            else:
+                zeros.append(j)
+
+        for j in ones:  # 从j出发，尝试到达其他位置
+            # if f[j][i] < inf:  # 只有这个状态可达，才枚举从它向别的走：比如状态'11'，无法从位置0走
+            if f[j][i] < t:  # 只有这个状态可达，才枚举从它向别的走：比如状态'11'，无法从位置0走;其实超过t后边的就不用讨论了哈哈
+                for k in zeros:
+                    f[k][i | (1 << k)] = min(f[k][i | (1 << k)], f[j][i] + dis[j][k])
+
+    ans = 0
+    for i in range(mask):  # 枚举所有状态里，结束位置是终点的，且它的最短路在t内，则答案就是状态里的糖果数
+        if f[1][i] <= t:
+            ans = max(ans, bin(i).count('1') - 2)  # 注意从i状态里减去起止位置
+    print(ans)
+
+#    4000   ms
+def solve1():
     m, n, t = RI()
     g = []
     cnt = 2
