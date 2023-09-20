@@ -11,8 +11,7 @@ class Kmp:
         for i in range(1, n):
             while j and t[i] != t[j]:
                 j = pi[j - 1]  # 失配后缩短期望匹配长度
-            if t[i] == t[j]:
-                j += 1  # 多配一个
+            j += t[i] == t[j]  # 多配一个
             pi[i] = j
 
     def find_all_yield(self, s):
@@ -21,8 +20,7 @@ class Kmp:
         for i, v in enumerate(s):
             while j and v != t[j]:
                 j = pi[j - 1]
-            if v == t[j]:
-                j += 1
+            j += v == t[j]
             if j == n:
                 yield i - j + 1
                 j = pi[j - 1]
