@@ -75,3 +75,45 @@ class Solution:
         ]
         m = matrix_pow_mod(m, k)
         return m[0][s != t]
+
+
+MOD = 10 ** 9 + 7
+
+import numpy as np
+
+
+class Solution:
+    def countVowelPermutation(self, n: int) -> int:
+        """https://leetcode.cn/problems/count-vowels-permutation/description/
+        定义f[i][0~4]表示长为i+1的字符串，最后结尾是aeiou的种类数
+        显然f[0][0:5] = [1,1,1,1,1]
+        下边g = f[i-1]
+        f[i][0] = 0g[0] + 1g[1] + 1g[2] + 0g[3] + 1g[4]
+        f[i][1] = 1g[0] + 0g[1] + 1g[2] + 0g[3] + 0g[4]
+        f[i][2] = 0g[0] + 1g[1] + 0g[2] + 1g[3] + 0g[4]
+        f[i][3] = 0g[0] + 0g[1] + 1g[2] + 0g[3] + 0g[4]
+        f[i][4] = 0g[0] + 0g[1] + 1g[2] + 1g[3] + 0g[4]
+        """
+        if n == 1:
+            return 5
+        m = np.mat([
+            [0, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0],
+            [0, 1, 0, 1, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 1, 0]
+        ])
+        f0 = np.mat([
+            [1],
+            [1],
+            [1],
+            [1],
+            [1],
+        ])
+        n -= 1
+        while n:
+            if n & 1:
+                f0 = m * f0 % MOD
+            m = m * m % MOD
+            n >>= 1
+        return int(f0.sum()) % MOD
