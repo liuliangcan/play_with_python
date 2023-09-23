@@ -79,7 +79,7 @@ class BinIndexTree:
         return r
 
     def kth(self, s):
-        """返回<=s的最小下标"""
+        """返回>=s的最小下标"""
         pos = 0
         for j in range(18, -1, -1):
             if pos + (1 << j) <= self.size and self.c[pos + (1 << j)] <= s:
