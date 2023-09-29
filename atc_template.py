@@ -11,7 +11,7 @@ from array import *
 from functools import lru_cache, reduce
 from heapq import *
 from math import sqrt, gcd, inf
-if sys.version >= '3.8':  # ACW没有comb
+if not sys.version.startswith('3.5.3'):  # ACW没有comb
     from math import comb
 
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
