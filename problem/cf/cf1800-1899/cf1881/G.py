@@ -74,135 +74,53 @@ class BinIndexTreeRUPQ:
         return x & -x
 
 
-#       ms
+#    1887   ms
 def solve():
     n, m = RI()
     s, = RS()
-
+    k = max(2, int(sqrt(n)))  # 分块宽度
     bit = BinIndexTreeRUPQ(n)
-    for i, v in enumerate(s, start=1):
-        bit.add_interval(i, i, ord(v))
+    for i, c in enumerate(s, start=1):
+        bit.add_interval(i, i, ord(c) - ord('a'))
 
-    class IntervalTreeRURQSum:
-        """区间加，区间求和"""
+    def check_one(l, r):  # 检查这小段是否合法，保证长度小，可以暴力
+        x, y = -1, -2
+        for i in range(l, r + 1):
+            z = bit.query_point(i)
+            if z == x or z == y:
+                return False
+            x, y = y, z
+        return True
 
-        def __init__(self, size):
-            self.size = size
-            self.interval_tree = [0 for _ in range(size * 4)]
-            # self.lazys = [0 for _ in range(size * 4)]
-            self.build(1, 1, size)
+    def check(l, r):  # 查询[l,r]是否合法，不保证长度小
+        if r - l <= k:
+            return check_one(l, r)
+        p1, p2 = (l - 1) // k, (r - 1) // k
+        for i in range(p1 + 1, p2):  # 内含的完整块有不合法的就不行
+            if not fen[i]:
+                return False
+        if not check_one(l, min(r, fenk[p1 + 1][0] + 1)):  # 第一段，顺便连上第二块的前俩位置
+            return False
+        if not check_one(max(l, fenk[p2 - 1][1] - 1), r):  # 最后一段，顺便连倒数第二块的后俩位置
+            return False
+        for i in range(p1 + 1, p2 - 1):  # 中间完整块，讨论边界的4块。
+            if not check_one(max(l, fenk[i][1] - 1), min(r, fenk[i + 1][0] + 1)):
+                return False
+        return True
 
-        def build(self, p, l, r):
-            tree = self.interval_tree
-            if l == r:
-                tree[p] = 1
+    fenk = [(i + 1, min(i + k, n)) for i in range(0, n, k)]
+    fen = [check_one(l, r) for l, r in fenk]
 
-                # if l == 1:
-                #     print(tree[p])
-                return
-            mid = (l + r) // 2
-            self.build(p << 1, l, mid)
-            self.build(p << 1 | 1, mid + 1, r)
-            self.update_from_son(p, l, r)
-
-        def update_from_son(self, p, l, r):
-            tree = self.interval_tree
-            if not tree[p << 1] or not tree[p << 1 | 1]:
-                tree[p] = 0
-                return
-            mid = (l + r) // 2
-            b, c = bit.query_point(mid), bit.query_point(mid + 1)
-            if b == c:
-                tree[p] = 0
-                return
-            if l < mid:
-                a = bit.query_point(mid - 1)
-                if a == c:
-                    tree[p] = 0
-                    return
-            if mid + 1 < r:
-                d = bit.query_point(mid + 2)
-                if b == d:
-                    tree[p] = 0
-                    return
-            tree[p] = 1
-
-        # def give_lay_to_son(self, p, l, r):
-        #     interval_tree = self.interval_tree
-        #     lazys = self.lazys
-        #     if lazys[p] == 0:
-        #         return
-        #     mid = (l + r) // 2
-        #     interval_tree[p * 2] += lazys[p] * (mid - l + 1)
-        #     interval_tree[p * 2 + 1] += lazys[p] * (r - mid)
-        #     lazys[p * 2] += lazys[p]
-        #     lazys[p * 2 + 1] += lazys[p]
-        #     lazys[p] = 0
-
-        def add_interval(self, p, l, r, x, y):
-            """
-            把[x,y]区域全修改
-            """
-            if y < l or r < x:
-                return
-            interval_tree = self.interval_tree
-            # lazys = self.lazys
-            if x <= l and r <= y:
-                # interval_tree[p] += val * (r - l + 1)
-                # lazys[p] += val
-                return
-            # self.give_lay_to_son(p, l, r)
-            mid = (l + r) // 2
-
-            if x <= mid:
-                self.add_interval(p * 2, l, mid, x, y)
-            if mid < y:
-                self.add_interval(p * 2 + 1, mid + 1, r, x, y)
-            self.update_from_son(p, l, r)
-
-        def sum_interval(self, p, l, r, x, y):
-            if y < l or r < x:
-                return 1
-            if x <= l and r <= y:
-                # if l == r and x==y==1:
-                #     print(p,x,y,l,r,self.interval_tree[p])
-                return self.interval_tree[p]
-
-            mid = (l + r) // 2
-
-            if x <= mid:
-                z = self.sum_interval(p * 2, l, mid, x, y)
-                if not mid < y or not z:
-                    return z
-            if mid < y:
-                z = self.sum_interval(p * 2 + 1, mid + 1, r, x, y)
-                if not x <= mid or not z:
-                    return z
-            b, c = bit.query_point(mid), bit.query_point(mid + 1)
-            if b == c:
-                return 0
-            if l < mid and x < mid:
-                a = bit.query_point(mid - 1)
-                if a == c:
-                    return 0
-            if mid + 1 < r and mid + 1 < y:
-                d = bit.query_point(mid + 2)
-                if b == d:
-                    return 0
-
-            return 1
-
-    tree = IntervalTreeRURQSum(n)
-    # print(tree.sum_interval(1, 1, n, 1, 1))
     for _ in range(m):
-        t, *op = RI()
+        t, *ops = RI()
         if t == 1:
-            l, r, x = op
-            bit.add_interval(l, r, x)
-            tree.add_interval(1, 1, n, l, r)
+            l, r, x = ops
+            bit.add_interval(l, r, x)  # 用bit来RUPQ，取模26即可
+            for p in (l - 1) // k, (r - 1) // k:  # 只需要更新首尾所在的两个段，其余段不变
+                fen[p] = check_one(*fenk[p])
         else:
-            l, r = op
-            print(['NO', 'YES'][tree.sum_interval(1, 1, n, l, r)])
+            l, r = ops
+            print(['NO', 'YES'][check(l, r)])
 
 
 if __name__ == '__main__':
