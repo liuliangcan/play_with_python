@@ -133,21 +133,21 @@ class BinIndexTreeRURQ:
         # 如果size 是数字，那就设置size和空数据；如果size是数组，那就是a
         if isinstance(size_or_nums, int):
             self.size = size_or_nums
-            self.c = [0 for _ in range(self.size + 5)]
-            self.c2 = [0 for _ in range(self.size + 5)]
+            self.d = [0 for _ in range(self.size + 5)]
+            self.d2 = [0 for _ in range(self.size + 5)]
         else:
             self.size = len(size_or_nums)
-            self.c = [0 for _ in range(self.size + 5)]
-            self.c2 = [0 for _ in range(self.size + 5)]
+            self.d = [0 for _ in range(self.size + 5)]
+            self.d2 = [0 for _ in range(self.size + 5)]
             for i, v in enumerate(size_or_nums):
                 self.add_interval(i + 1, i + 1, v)
 
-    def add_point(self, c, i, v):  # 单点增加,下标从1开始;不支持直接调用，这里增加的是差分数组的单点,同步修改c2
+    def _add_point(self, c, i, v):  # 单点增加,下标从1开始;不支持直接调用，这里增加的是差分数组的单点,同步修改c2
         while i <= self.size:
             c[i] += v
             i += -i&i
 
-    def sum_prefix(self, c, i):  # 前缀求和，下标从1开始；不支持直接调用，这里求和的是差分数组的前缀和;传入c决定怎么计算，但是不要直接调用 无视吧
+    def _sum_prefix(self, c, i):  # 前缀求和，下标从1开始；不支持直接调用，这里求和的是差分数组的前缀和;传入c决定怎么计算，但是不要直接调用 无视吧
         s = 0
         while i >= 1:
             s += c[i]
@@ -155,17 +155,17 @@ class BinIndexTreeRURQ:
         return s
 
     def add_interval(self, l, r, v):  # 区间加，下标从1开始，把[l,r]闭区间都加v
-        self.add_point(self.c, l, v)
-        self.add_point(self.c, r + 1, -v)
-        self.add_point(self.c2, l, (l-1)*v)
-        self.add_point(self.c2, r + 1, -v*r)
+        self._add_point(self.d, l, v)
+        self._add_point(self.d, r + 1, -v)
+        self._add_point(self.d2, l, (l - 1) * v)
+        self._add_point(self.d2, r + 1, -v * r)
 
     def sum_interval(self, l, r):  # 区间求和，下标从1开始，返回闭区间[l,r]上的求和
-        return self.sum_prefix(self.c, r) * r - self.sum_prefix(self.c2, r) - self.sum_prefix(self.c, l - 1) * (
-                l - 1) + self.sum_prefix(self.c2, l - 1)
+        return self._sum_prefix(self.d, r) * r - self._sum_prefix(self.d2, r) - self._sum_prefix(self.d, l - 1) * (
+                l - 1) + self._sum_prefix(self.d2, l - 1)
 
     def query_point(self, i):  # 单点询问值，下标从1开始，返回i位置的值
-        return self.sum_prefix(self.c, i)
+        return self._sum_prefix(self.d, i)
 
     def lowbit(self, x):
         return x & -x
