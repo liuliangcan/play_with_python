@@ -105,7 +105,7 @@ def solve():
         """按照这组cpu去跑任务"""
         h_cpu = [(0, -c, i) for i, (c, _) in enumerate(cpus)]  # cpu堆，(空闲时间，算力(取反)，cpu编号)
         h_cpu.sort()
-        answer = [-inf, []]
+        answer = [-inf, [], inf]
         answer[1].append((0, 2, 0, cpus[0][1]))  # 先把三种核切到对应状态
         answer[1].append((0, 2, 6, cpus[6][1]))
         answer[1].append((0, 2, 7, cpus[7][1]))
@@ -119,6 +119,8 @@ def solve():
             answer[1].append((st, 0, task_id, cpu_id))
             # print(cpu_p,w,c)
             s_cost += cpu_p * w / c  # 功耗*时间
+            if s_cost >= ans[2]:
+                return answer
             et = st + w / c  # 结束时间
             if t and et > t:
                 # print(f'无法完成任务{task_id},工作量{w},要求时间{t},实际时间{et},采用核为{cpu_id},算力{c}')
@@ -136,12 +138,15 @@ def solve():
             w, _ = tasks[task_id]
             answer[1].append((cur_time, 0, task_id, cpu_id))
             s_cost += cpu_p * w / c  # 计算功耗
+            if s_cost >= ans[2]:
+                return answer
             cur_time += w / c  # 注意整数和浮点型有转换，这里变成浮点
             p = int(cur_time) // 4 * 4
             if cur_time > p:
                 p += 4
             cur_time = p  # 这里变成整数
         answer[0] = s_cycles / s_cost
+        answer[2] = s_cost
         # print(f"{s_cycles / s_cost:.3f}")
         return answer
 
@@ -156,9 +161,10 @@ def solve():
                 if in_degree[v] == 0:
                     q.append(v)
         return order
+
     # cpu_small, cpu_mid, cpu_big = cpu_small_status[0], cpu_mid_status[0], cpu_big_status[0]
 
-    ans = [-inf, []]
+    ans = [-inf, [], inf]
     # 组合所有频点（一定记得优化
     for cpu_big in cpu_big_status:
         for cpu_mid in cpu_mid_status:
@@ -166,7 +172,7 @@ def solve():
                 cpus = [cpu_small] * 4 + [cpu_mid] * 3 + [cpu_big]  # 把8个cpu都调到高算力
                 ordered_tasks, other_tasks = fenzu(cpus)
                 other_tasks_order = get_other_task_in_order()
-                ans = [-inf, []]
+
                 cur = get_answer(cpus, other_tasks_order)
                 if cur[0] == -inf:
                     break
