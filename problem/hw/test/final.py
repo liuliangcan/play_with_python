@@ -175,7 +175,7 @@ def solve():
     if ans[0] > -inf:
         for v in ans[1]:
             print(*v)
-        print(ans[0])
+        print(f'{ans[0]:.3f}')
     else:
         for v in ans[1]:
             print(*v)
