@@ -2,6 +2,7 @@ import datetime
 import random
 from bisect import bisect_left
 from heapq import heappush, heappop
+
 """尝试构造输入数据
 1. 构造三种cpu。
 2. 构造n个任务,随机任务计算量。
@@ -45,29 +46,29 @@ print(n, task)
 h = [(0, c, i) for i, c in enumerate(cpus)]  # 空闲时间和cpu
 h.sort()
 time = 0
-result = []  # 第i个任务第几秒分配给了谁，啥时候完成,工作量
+result = []  # 第i个任务啥时候完成，第几秒分配给了谁，,工作量
 for i, w in enumerate(task):
     t, c, cpu_id = heappop(h)
     bt = int(t) // 4 * 4  # 小于t的那个4的倍数
     if t > bt:  # 如果超过了，则下一个4秒才能使用这个cpu
         bt += 4
-    result.append((bt, cpu_id, bt + w / c, w))
+    result.append((bt + w / c, bt, cpu_id, w, i))
     heappush(h, (bt + w / c, c, i))
+result.sort()  # 按结束时间排序
 print(result)
-# 按开始执行的时间分组任务，那么后边的时间可以依赖前边的时间,result是按顺序分配任务，因此开始时间是有序的，二分进行random
+
+# 按开始执行的时间分组任务，那么后边的时间可以依赖前边的时间,result是结束时间排序，二分进行random
 # m = random.randint(1, n*(n+1)//2)  # 边数
 m = random.randint(1, 5)
 edges = []
-keys_task = set()
 for _ in range(m):
     while True:
-        v = random.randint(0, n - 1)
-        if result[v][0] != 0:
-            p = bisect_left(result, (result[v][0], 0, 0, 0)) - 1
+        y = random.randint(0, n - 1)  # 随一个下标作为v
+        if result[y][1] != 0:  # 这个v的开始时间
+            p = bisect_left(result, (result[y][1], 0, 0, 0, 0)) - 1  # 找到小于这个开始时间的结束时间
             if p >= 0:
-                u = random.randint(0, p)
-                edges.append((u + 1, v + 1))
-                keys_task.add(v)
+                x = random.randint(0, p)
+                edges.append((result[x][-1] + 1, result[y][-1] + 1))
                 break
 print(m, edges)
 
@@ -80,10 +81,10 @@ with open(filename, 'w+') as f:
             p.extend([c, cc])
         f.write(' '.join(map(str, p)) + '\n')
     f.write(f'{n} {m}\n')
-    for i, (bt, cpu_id, et, w) in enumerate(result):
+    for et, bt, cpu_id, w, task_id in result:
         k = random.randint(0, 1)  # 1是关键任务，给个期限
         if k:
-            k = int(et) + random.randint(1,5)  # 完成时间可以向后一点
+            k = int(et) + random.randint(1, 5)  # 完成时间可以向后一点
         f.write(f'{w} {k}\n')
     for u, v in edges:
         f.write(f'{u} {v}\n')
