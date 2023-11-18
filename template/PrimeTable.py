@@ -26,16 +26,24 @@ class PrimeTable:
         return True
 
     def prime_factorization(self, x: int):
-        """分解质因数，复杂度
+        """分解质因数，复杂度；建议x不要超过n^2,这样可以在prime里枚举
         1. 若x>n则需要从2模拟到sqrt(x)，如果中间x降到n以下则走2；最坏情况，不含低于n的因数，则需要开方复杂度
         2. 否则x质因数的个数，那么最多就是O(lgx)"""
         n, min_div = self.n, self.min_div
-        for p in range(2, int(x ** 0.5) + 1):
-            if x <= n: break
+        for p in self.primes:  # 在2~sqrt(x)的质数表上遍历，会快一些
+            if x <= n or p * p > x:
+                break
             if x % p == 0:
                 cnt = 0
                 while x % p == 0: cnt += 1; x //= p
                 yield p, cnt
+        if x > n * n:
+            for p in range(n, int(x ** 0.5) + 1):  # 分解质因数不要直接遍历2~sqrt(x)的自然数，
+                if x <= n: break
+                if x % p == 0:
+                    cnt = 0
+                    while x % p == 0: cnt += 1; x //= p
+                    yield p, cnt
         while 1 < x <= n:
             p, cnt = min_div[x], 0
             while x % p == 0: cnt += 1; x //= p
