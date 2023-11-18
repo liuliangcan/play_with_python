@@ -1,22 +1,13 @@
 import sys
-import random
-from types import GeneratorType
-import bisect
-import io, os
-from bisect import *
 from collections import *
-from contextlib import redirect_stdout
-from itertools import *
-from array import *
-from functools import lru_cache, reduce
 from heapq import *
-from math import sqrt, gcd, inf
+from math import  inf
 
 if not sys.version.startswith('3.5.3'):  # ACW没有comb
     from math import comb
 
-RI = lambda: map(int, sys.stdin.buffer.readline().split())
-RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
+RI = lambda: map(int, sys.stdin.readline().split())
+RS = lambda: map(bytes.decode, sys.stdin.readline().strip().split())
 RILST = lambda: list(RI())
 DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 # print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，确实会快。
@@ -24,50 +15,12 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
 DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0),
          (-1, 1)]  # →↘↓↙←↖↑↗
-RANDOM = random.randrange(2 ** 62)
 MOD = 10 ** 9 + 7
 # MOD = 998244353
 PROBLEM = """
 """
 
 
-def lower_bound(lo: int, hi: int, key):
-    """由于3.10才能用key参数，因此自己实现一个。
-    :param lo: 二分的左边界(闭区间)
-    :param hi: 二分的右边界(闭区间)
-    :param key: key(mid)判断当前枚举的mid是否应该划分到右半部分。
-    :return: 右半部分第一个位置。若不存在True则返回hi+1。
-    虽然实现是开区间写法，但为了思考简单，接口以[左闭,右闭]方式放出。
-    """
-    lo -= 1  # 开区间(lo,hi)
-    hi += 1
-    while lo + 1 < hi:  # 区间不为空
-        mid = (lo + hi) >> 1  # py不担心溢出，实测py自己不会优化除2，手动写右移
-        if key(mid):  # is_right则右边界向里移动，目标区间剩余(lo,mid)
-            hi = mid
-        else:  # is_left则左边界向里移动，剩余(mid,hi)
-            lo = mid
-    return hi
-
-
-def bootstrap(f, stack=[]):
-    def wrappedfunc(*args, **kwargs):
-        if stack:
-            return f(*args, **kwargs)
-        else:
-            to = f(*args, **kwargs)
-            while True:
-                if type(to) is GeneratorType:
-                    stack.append(to)
-                    to = next(to)
-                else:
-                    stack.pop()
-                    if not stack:
-                        break
-                    to = stack[-1].send(to)
-            return to
-
-    return wrappedfunc
 
 
 class PrimeTable:
@@ -89,16 +42,24 @@ class PrimeTable:
                     break
 
     def prime_factorization(self, x: int):
-        """分解质因数，复杂度
+        """分解质因数，复杂度；建议x不要超过n^2,这样可以在prime里枚举
         1. 若x>n则需要从2模拟到sqrt(x)，如果中间x降到n以下则走2；最坏情况，不含低于n的因数，则需要开方复杂度
         2. 否则x质因数的个数，那么最多就是O(lgx)"""
         n, min_div = self.n, self.min_div
-        for p in range(2, int(x ** 0.5) + 1):
-            if x <= n: break
+        for p in self.primes:  # 在2~sqrt(x)的质数表上遍历，会快一些
+            if x <= n or p * p > x:
+                break
             if x % p == 0:
                 cnt = 0
                 while x % p == 0: cnt += 1; x //= p
                 yield p, cnt
+        if x > n*n:
+            for p in range(n, int(x ** 0.5) + 1):  # 分解质因数不要直接遍历2~sqrt(x)的自然数，
+                if x <= n: break
+                if x % p == 0:
+                    cnt = 0
+                    while x % p == 0: cnt += 1; x //= p
+                    yield p, cnt
         while 1 < x <= n:
             p, cnt = min_div[x], 0
             while x % p == 0: cnt += 1; x //= p
@@ -108,14 +69,57 @@ class PrimeTable:
 
 
 
-pt = PrimeTable(10 ** 6)
+pt = PrimeTable(10 ** 4)
 
-
+primes = pt.primes
 # print(list(pt.prime_factorization(1)))
 # print(list(pt.prime_factorization(10)))
 # print(list(pt.prime_factorization(13)))
 
 def solve():
+    """01bfs"""
+    n, a, b = RI()
+    arr = RILST()
+
+    def fff(x):
+        res = 0
+        for p in primes:
+            if x <= 1: break
+            while x % p == 0:
+                res += p
+                x //= p
+        if x > 1: res += x
+        return res % n + 1
+    g = [[] for _ in range(2 * n + 3)]
+    for i, v in enumerate(arr, start=1):
+        f = sum(x * y for x, y in pt.prime_factorization(v)) % n + 1
+        # f = fff(v)
+        ff = f + n + 1  # 跳到虚拟节点，边权0;出虚拟节点，边权1
+        g[ff].append((i, 1))
+        g[i].append((ff, 0))
+        if f <= n:  # 互跳节点
+            g[i].append((f, 1))
+            g[f].append((i, 1))
+
+    q = deque([a])
+    dis = [inf] * (2 * n + 3)
+    dis[a] = 0
+    while q:
+        u = q.popleft()
+        c = dis[u]
+        if u == b:
+            return print(c)
+        for v, w in g[u]:
+            if c + w < dis[v]:
+                dis[v] = c + w
+                if w:
+                    q.append(v)
+                else:
+                    q.appendleft(v)
+    print(-1)
+
+def solve1():
+    """dij 74ms"""
     n, a, b = RI()
     arr = RILST()
     g = [[] for _ in range(2 * n + 3)]
