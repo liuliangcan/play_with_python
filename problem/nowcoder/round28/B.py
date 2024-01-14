@@ -1,3 +1,9 @@
+# Problem: 小红的字符串
+# Contest: NowCoder
+# URL: https://ac.nowcoder.com/acm/contest/73239/B
+# Memory Limit: 524288 MB
+# Time Limit: 2000 ms
+
 import sys
 import random
 from types import GeneratorType
@@ -21,9 +27,10 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 # print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，确实会快。
 
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
-DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
-RANDOM = random.randrange(2 ** 62)
-MOD = 10 ** 9 + 7
+DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0),
+         (-1, 1)]  # →↘↓↙←↖↑↗
+RANDOM = random.randrange(2**62)
+MOD = 10**9 + 7
 # MOD = 998244353
 PROBLEM = """
 """
@@ -49,6 +56,7 @@ def lower_bound(lo: int, hi: int, key):
 
 
 def bootstrap(f, stack=[]):
+
     def wrappedfunc(*args, **kwargs):
         if stack:
             return f(*args, **kwargs)
@@ -70,8 +78,13 @@ def bootstrap(f, stack=[]):
 
 #       ms
 def solve():
-    n, = RI()
-    a = RILST()
+    s, = RS()
+    ans = []
+    for i in range(len(s)-1):
+        ans.append(s[i:i+2])
+    ans.sort()
+    print(*ans,sep='\n')
+
 
 
 if __name__ == '__main__':

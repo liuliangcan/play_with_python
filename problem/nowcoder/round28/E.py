@@ -1,3 +1,9 @@
+# Problem: 小红的好数组
+# Contest: NowCoder
+# URL: https://ac.nowcoder.com/acm/contest/73239/E
+# Memory Limit: 524288 MB
+# Time Limit: 2000 ms
+
 import sys
 import random
 from types import GeneratorType
@@ -11,6 +17,7 @@ from array import *
 from functools import lru_cache, reduce
 from heapq import *
 from math import sqrt, gcd, inf
+
 # if not sys.version.startswith('3.5.3'):  # ACW没有comb
 #     from math import comb
 
@@ -21,7 +28,8 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 # print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，确实会快。
 
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
-DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
+DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0),
+         (-1, 1)]  # →↘↓↙←↖↑↗
 RANDOM = random.randrange(2 ** 62)
 MOD = 10 ** 9 + 7
 # MOD = 998244353
@@ -70,8 +78,22 @@ def bootstrap(f, stack=[]):
 
 #       ms
 def solve():
-    n, = RI()
-    a = RILST()
+    n, k = RI()
+    a, b = k // 2, (k + 1) // 2  # 1~k的偶数个数，奇数个数
+    # 121 121 121 三个一循环
+    ans = pow(a, n, MOD)  # 全填偶数
+    x, y = divmod(n, 3)
+    # 121开头
+    two = x + int(y >= 2)
+    ans += pow(a, two, MOD) * pow(b, n - two, MOD) % MOD
+    # 211开头
+    two = x + int(y >= 1)
+    ans += pow(a, two, MOD) * pow(b, n - two, MOD) % MOD
+    # 112开头
+    two = x
+    ans += pow(a, two, MOD) * pow(b, n - two, MOD) % MOD
+
+    print(ans % MOD)
 
 
 if __name__ == '__main__':
