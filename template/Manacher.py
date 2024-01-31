@@ -9,6 +9,11 @@
 1. 由于用dp对称位置加速，我们发现当dp[i]的右端点<R时，镜像位置左端点一定>L,那么当前位置无需继续扩展（否则对称位置也能扩展）。
 2. 因此每个位置只会作为右边界被扩展成功一次，每个中心点只会扩展失败一次。因此总体是O(n)
 一篇很清晰的讲解：https://leetcode.cn/problems/palindrome-partitioning-ii/solutions/369625/manacher-o1pan-duan-ren-yi-zi-chuan-shi-fou-hui-we/
+例题:
+1. 找最长回文串：https://leetcode.cn/problems/longest-palindromic-substring/description/
+2. 计数所有回文串，注意ans += (v//2+1)//2：https://leetcode.cn/problems/palindromic-substrings/description/
+3. 按回文分割，求具体方案，dp/状压枚举：https://leetcode.cn/problems/palindrome-partitioning/description/
+4. 按回文分割，求最少分割数，dp+马拉车O(1)判回文：https://leetcode.cn/problems/palindrome-partitioning-ii/description/
 """
 
 
@@ -16,9 +21,7 @@ class Manacher:
     def __init__(self, s):
         """马拉车用dp加速中心扩展法"""
         self.s = s
-        s1 = ['#']  # 增加扩展字符
-        for c in s:
-            s1.extend([c, '#'])
+        s1 = '#'+'#'.join(s)+'#'  # 增加扩展字符
         n = len(s1)
         f = self.f = [1] * n  # 扩展串上以i为中心的最长回文串长度
         l, r = 0, -1
