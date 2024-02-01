@@ -40,7 +40,7 @@ class DualHeap:
 
     def make_balance(self):
         """调整small和large的大小，使small中达到k个（或清空large）"""
-        k = self.k if self.k else (self.small_size + self.large_size + 1) // 2  # 如果self.k是0，表示前后要balance
+        k = self.k or (self.small_size + self.large_size + 1) // 2  # 如果self.k是0，表示前后要balance
         if self.small_size > k:
             heappush(self.large, -self.small[0])
             self.sum_kth += heappop(self.small)  # 其实是-=负数
