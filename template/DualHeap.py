@@ -13,7 +13,7 @@ from heapq import *
 
 
 class DualHeap:
-    """对顶堆，实时计算当前集合前k小的元素和(如果k=-1,则保持平衡，0<=small-large<=1)。每个操作均摊时间复杂度O(lgn)，总体O(nlgn)。682ms"""
+    """对顶堆，实时计算当前集合前k小的元素和(如果k设0,则保持平衡，0<=small-large<=1)。每个操作均摊时间复杂度O(lgn)，总体O(nlgn)。682ms"""
 
     def __init__(self, k=0):
         self.k = k  # 如果k=0，表示保持两个堆一样大(0<=small-large<=1),此时-small[0]就是中位数
