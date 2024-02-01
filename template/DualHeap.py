@@ -16,7 +16,7 @@ class DualHeap:
     """对顶堆，实时计算当前集合前k小的元素和(如果k=-1,则保持平衡，0<=small-large<=1)。每个操作均摊时间复杂度O(lgn)，总体O(nlgn)。682ms"""
 
     def __init__(self, k=0):
-        self.k = k  # 如果k=0，表示保持两个堆一样大(0<=small-large<=1)
+        self.k = k  # 如果k=0，表示保持两个堆一样大(0<=small-large<=1),此时-small[0]就是中位数
         self.small = []  # 大顶堆存较小的k个数，注意py默认小顶堆，因此需要取反
         self.large = []  # 小顶堆存较大的剩余数
         self.delay_rm = Counter()  # 延时删除标记
