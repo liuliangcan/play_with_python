@@ -1,6 +1,6 @@
 
 class StringHash:
-    # 字符串哈希，用O(n)时间预处理，用O(1)时间获取段的哈希值
+    """字符串哈希，用O(n)时间预处理，用O(1)时间获取段的哈希值"""
     def __init__(self, s):
         n = len(s)
         self.BASE = BASE = 131  # 进制 131,131313
@@ -11,9 +11,8 @@ class StringHash:
             p[i] = (p[i - 1] * BASE) % MOD
             h[i] = (h[i - 1] * BASE % MOD + ord(s[i - 1])) % MOD
 
-            # 用O(1)时间获取开区间[l,r)（即s[l:r]）的哈希值
-
     def get_hash(self, l, r):
+        """用O(1)时间获取开区间[l,r)（即s[l:r]）的哈希值"""
         return (self.h[r] - self.h[l] * self.p[r - l] % self.MOD) % self.MOD
 
     # # 用O(1)时间获取开区间[l,r)（即s[l:r]）的哈希值
