@@ -12,20 +12,14 @@ z[i]表示s[i:]和s[0:]的最长公共前缀长度.
 特殊: 规定z[0]=0。
 例题:
 1. Z函数匹配前后缀。https://leetcode.cn/problems/minimum-time-to-revert-word-to-initial-state-ii/description/
+2. 前后中缀匹配：Z函数+前后缀分解 https://codeforces.com/problemset/problem/126/B
+3.
 """
 
 
 class ZFunction:
     # def __init__(self, s):
-    #     n = len(s)
-    #     self.z = z = [0] * n
-    #     l = r = 0
-    #     for i in range(1, n):
-    #         if i <= r:
-    #             z[i] = min(z[i - l], r - i + 1)
-    #         while i + z[i] < n and s[z[i]] == s[i + z[i]]:
-    #             l, r = i, i + z[i]
-    #             z[i] += 1
+
     def __init__(self, s):
         n = len(s)
         self.z = z = [0] * n
@@ -40,22 +34,35 @@ class ZFunction:
             if i + z[i] - 1 > r:
                 l = i
                 r = i + z[i] - 1
-    # @staticmethod
-    # def find_all_match_pos(s, t):
-    #     """从s中找到所有t的位置"""
-    #     s = t + '#' + s
-    #     n = len(t)
-    #     z = ZFunction(s).z
-    #     ans = []
-    #     for i in range(n + 1, n + len(s) + 2):
-    #         if z[i] == n:
-    #             ans.append(i - n - 1)
-    #     return ans
-class Solution:
-    def minimumTimeToInitialState(self, word: str, k: int) -> int:
-        z = ZFunction(word).z
-        n = len(word)
-        for i in range(k,n,k):
-            if z[i] == n-i:
-                return i//k
-        return (n+k-1)//k
+    @staticmethod
+    def find_all_match_pos(s, t):
+        """从s中找到所有t的位置"""
+        s = t + '#' + s
+        n = len(t)
+        z = ZFunction(s).z
+        ans = []
+        for i in range(n + 1, len(s)):
+            if z[i] == n:
+                ans.append(i - n - 1)
+        return ans
+# class Solution:
+#     def minimumTimeToInitialState(self, word: str, k: int) -> int:
+#         z = ZFunction(word).z
+#         n = len(word)
+#         for i in range(k,n,k):
+#             if z[i] == n-i:
+#                 return i//k
+#         return (n+k-1)//k
+#
+# s = 'aeebcbefef'
+# t = 'ef'
+# print(ZFunction.find_all_match_pos(s,t))
+#     n = len(s)
+#     self.z = z = [0] * n
+#     l = r = 0
+#     for i in range(1, n):
+#         if i <= r:
+#             z[i] = min(z[i - l], r - i + 1)
+#         while i + z[i] < n and s[z[i]] == s[i + z[i]]:  # 更简单的写法，但是慢一点
+#             l, r = i, i + z[i]
+#             z[i] += 1
