@@ -19,11 +19,11 @@ z[i]表示s[i:]和s[0:]的最长公共前缀长度.
 例题:
 1. Z函数匹配前后缀。https://leetcode.cn/problems/minimum-time-to-revert-word-to-initial-state-ii/description/
 2. 前后中缀匹配：Z函数+前后缀分解 https://codeforces.com/problemset/problem/126/B
+3. 找所有匹配: https://leetcode.cn/problems/number-of-subarrays-that-match-a-pattern-ii/
 """
 
 
 class ZFunction:
-    # def __init__(self, s):
 
     def __init__(self, s):
         n = len(s)
@@ -39,6 +39,7 @@ class ZFunction:
             if i + z[i] - 1 > r:
                 l = i
                 r = i + z[i] - 1
+
     @staticmethod
     def find_all_match_pos(s, t):
         """从s中找到所有t的位置"""
