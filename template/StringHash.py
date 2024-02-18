@@ -1,11 +1,15 @@
 import random
 
+RANDOM = random.randint(37, 100)  # 这里一定搞个全局的，切记切记
+
+
 class StringHash:
     """字符串哈希，用O(n)时间预处理，用O(1)时间获取段的哈希值"""
+
     def __init__(self, s):
         n = len(s)
-        self.BASE = BASE = 131+random.randint(37, 100)  # 进制 131,131313
-        self.MOD = MOD = 10 ** 9 + random.randint(7, 10000)  # 10**9+7,998244353,10**13+7
+        self.BASE = BASE = 131 + RANDOM  # 进制 131,131313
+        self.MOD = MOD = 10 ** 9 + RANDOM  # 10**9+7,998244353,10**13+7
         self.h = h = [0] * (n + 1)
         self.p = p = [1] * (n + 1)
         for i in range(1, n + 1):
