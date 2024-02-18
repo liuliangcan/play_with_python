@@ -1,6 +1,6 @@
 import random
 
-RANDOM = random.randint(37, 100)  # 这里一定搞个全局的，切记切记
+RANDOM = random.randint(37, 100)  # 这里一定搞个全局的，切记切记：如果题目里需要对多个字符串分别哈希，同样的base和mod才能比较
 
 
 class StringHash:
