@@ -9,7 +9,7 @@ class StringHash:
     def __init__(self, s):
         n = len(s)
         self.BASE = BASE = 131 + RANDOM  # 进制 131,131313
-        self.MOD = MOD = 10 ** 9 + RANDOM  # 10**9+7,998244353,10**13+7
+        self.MOD = MOD = 10 ** 13 + RANDOM  # 10**9+7,998244353,10**13+7
         self.h = h = [0] * (n + 1)
         self.p = p = [1] * (n + 1)
         for i in range(1, n + 1):
