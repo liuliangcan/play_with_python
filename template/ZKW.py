@@ -1,5 +1,6 @@
 """迭代写法的zwk线段树，注意是0-indexed"""
 
+
 class ZKW:
     # n = 1
     # size = 1
@@ -113,9 +114,7 @@ class ZKW:
         return 0
 
     def update(self, k):
-        self.d[k] = self.op(self.d[2 * k], self.d[2 * k + 1])
+        self.d[k] = self.op(self.d[k << 1], self.d[k << 1 | 1])
 
     def __str__(self):
         return str([self.get(i) for i in range(self.n)])
-
-
