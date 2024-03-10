@@ -28,7 +28,22 @@ MOD = 10 ** 9 + 7
 PROBLEM = """
 """
 
-
+def iii():  # 牛客输入格式有bug
+    num = 0
+    neg = False
+    while True:
+        c = sys.stdin.read(1)
+        if c == '-':
+            neg = True
+            continue
+        elif c < '0' or c > '9':
+            continue
+        while True:
+            num = 10 * num + ord(c) - ord('0')
+            c = sys.stdin.read(1)
+            if c < '0' or c > '9':
+                break
+        return -num if neg else num
 def lower_bound(lo: int, hi: int, key):
     """由于3.10才能用key参数，因此自己实现一个。
     :param lo: 二分的左边界(闭区间)
