@@ -105,6 +105,8 @@ def solve():
             return print('0' * i)
         b = 495 - a % 495
         if b < 10 ** i:
+            b = str(b)
+            b = '0'*(i-len(b))+b
             return print(b)
 
 
