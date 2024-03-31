@@ -11,6 +11,7 @@ from array import *
 from functools import lru_cache, reduce
 from heapq import *
 from math import sqrt, gcd, inf
+
 # if not sys.version.startswith('3.5.3'):  # ACW没有comb
 #     from math import comb
 
@@ -28,6 +29,7 @@ MOD = 10 ** 9 + 7
 PROBLEM = """
 """
 
+
 def iii():  # 牛客输入格式有bug
     num = 0
     neg = False
@@ -44,6 +46,8 @@ def iii():  # 牛客输入格式有bug
             if c < '0' or c > '9':
                 break
         return -num if neg else num
+
+
 def lower_bound(lo: int, hi: int, key):
     """由于3.10才能用key参数，因此自己实现一个。
     :param lo: 二分的左边界(闭区间)
