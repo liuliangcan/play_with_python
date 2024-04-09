@@ -1,5 +1,15 @@
 """
-@File       :   DSU.py    
+@File       :   DSU.py
+
+        fa = list(range(n))
+
+        def find(x):
+            t = x
+            while x != fa[x]:
+                x = fa[x]
+            while t != x:
+                fa[t], t = x, fa[t]
+            return x
 - 并查集（Disjoint Set Union），有时命名为UnionFind。是一种家族合并算法。
 - 并查集的基本结构:一个数组fa:fa[i]代表i的父亲(祖宗)节点是谁。有了父节点信息可以一直向下查找到祖宗。
 - 路径压缩的并查集，合并和查询的复杂都是均摊约O(1)。有论证说最坏情况下平均复杂度上O(lgn)。
@@ -167,3 +177,4 @@ class UnionFind:
 #     uf.union(1,2)
 #     print(uf.weights[uf[1]])
 #     print(list(uf.to_sets()))
+
