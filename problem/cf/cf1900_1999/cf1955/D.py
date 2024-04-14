@@ -92,14 +92,50 @@ def bootstrap(f, stack=[]):
 
     return wrappedfunc
 
+class FuckHashIntDict(dict):
 
+    def __init__(self, seq):
+        if seq is not None:
+            import _collections_abc
+            if isinstance(seq, _collections_abc.Mapping):
+                super().__init__({k ^ RANDOM: v for k, v in seq.items()})
+            else:
+                super().__init__()
+                for v in seq:
+                    self[v] += 1
+
+    def __missing__(self, key):
+        return 0
+
+    def __setitem__(self, key, value):
+        super().__setitem__(key ^ RANDOM, value)
+
+    def __getitem__(self, item):
+        return super().__getitem__(item ^ RANDOM)
+
+    def __contains__(self, item):
+        return super().__contains__(item ^ RANDOM)
+
+    def items(self):
+        for k, v in super().items():
+            yield k ^ RANDOM, v
+
+    def keys(self):
+        for k in super().keys():
+            yield k ^ RANDOM
+
+    def __repr__(self):
+        return '{0}'.format({k ^ RANDOM: v for k, v in super().items()})
+
+cnt = [0]*(10**6+1)
 #       ms
 def solve():
     n, m, k = RI()
     a = RILST()
     b = RILST()
     cb = Counter(sorted(b))
-    cnt = Counter()
+    for v in a:
+        cnt[v] = 0
     ans = 0
     match = 0
     q = deque()
