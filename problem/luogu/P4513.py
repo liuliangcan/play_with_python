@@ -95,7 +95,7 @@ class IntervalTree:
         return max(a1, b1, b3 + a4), a2 + b2, max(a3, a2 + b3), max(b4, b2 + a4)
 
 
-class ZKW:
+class ZKW1:
     # n = 1
     # size = 1
     # log = 2
@@ -177,14 +177,14 @@ class ZKW:
 
 
 #    必须开快写 979  ms
-def solve():
+def solve2():
     n, m = RI()
     a = []
     for _ in range(n):
         v, = RI()
         a.append(v)
 
-    tree = ZKW(a)
+    tree = ZKW1(a)
     for _ in range(m):
         t, a, b = RI()
         if t == 1:
@@ -193,6 +193,154 @@ def solve():
             print(tree.query(a - 1, b)[0])
         else:
             tree.set(a - 1, b)
+
+
+class ZKW:
+    # n = 1
+    # size = 1
+    # log = 2
+    # d = [0]
+    # op = None
+    # e = 10 ** 15
+    """自低向上非递归写法线段树，0_indexed
+    tmx = ZKW(pre, max, -2 ** 61)
+    """
+    __slots__ = ('n', 'op', 'e', 'log', 'size', 'd')
+
+    def __init__(self, V, OP, E):
+        """
+        V: 原数组
+        OP: 操作:max,min,sum
+        E: 每个元素默认值
+        """
+        self.n = len(V)
+        self.op = OP
+        self.e = E
+        self.log = (self.n - 1).bit_length()
+        self.size = 1 << self.log
+        self.d = [E for i in range(2 * self.size)]
+        for i in range(self.n):
+            self.d[self.size + i] = V[i]
+        for i in range(self.size - 1, 0, -1):
+            self.update(i)
+
+    def set(self, p, x):
+        # assert 0 <= p and p < self.n
+        update = self.update
+        p += self.size
+        self.d[p] = x
+        for i in range(1, self.log + 1):
+            update(p >> i)
+
+    def get(self, p):
+        # assert 0 <= p and p < self.n
+        return self.d[p + self.size]
+
+    def query(self, l, r):  # [l,r)左闭右开
+        # assert 0 <= l and l <= r and r <= self.n
+        sml, smr, op, d = self.e, self.e, self.op, self.d
+
+        l += self.size
+        r += self.size
+
+        while l < r:
+            if l & 1:
+                sml = op(sml, d[l])
+                l += 1
+            if r & 1:
+                smr = op(d[r - 1], smr)
+                r -= 1
+            l >>= 1
+            r >>= 1
+        return self.op(sml, smr)
+
+    def all_query(self):
+        return self.d[1]
+
+    def max_right(self, l, f):
+        """返回l右侧第一个不满足f的位置"""
+        # assert 0 <= l and l <= self.n
+        # assert f(self.e)
+        if l == self.n:
+            return self.n
+        l += self.size
+
+        sm, op, d, size = self.e, self.op, self.d, self.size
+        while True:
+            while l % 2 == 0:
+                l >>= 1
+            if not (f(op(sm, d[l]))):
+                while l < size:
+                    l = 2 * l
+                    if f(op(sm, d[l])):
+                        sm = op(sm, d[l])
+                        l += 1
+                return l - size
+            sm = op(sm, d[l])
+            l += 1
+            if (l & -l) == l:
+                break
+        return self.n
+
+    def min_left(self, r, f):
+        """返回r左侧连续满足f的最远位置的位置"""
+        # assert 0 <= r and r < self.n
+        # assert f(self.e)
+        if r == 0:
+            return 0
+        r += self.size
+        sm, op, d, size = self.e, self.op, self.d, self.size
+
+        while True:
+            r -= 1
+            while r > 1 and (r % 2):
+                r >>= 1
+            if not (f(op(d[r], sm))):
+                while r < size:
+                    r = (2 * r + 1)
+                    if f(op(d[r], sm)):
+                        sm = op(d[r], sm)
+                        r -= 1
+                return r + 1 - size
+            sm = op(d[r], sm)
+            if (r & -r) == r:
+                break
+        return 0
+
+    def update(self, k):
+        self.d[k] = self.op(self.d[k << 1], self.d[k << 1 | 1])
+
+    def __str__(self):
+        return str([self.get(i) for i in range(self.n)])
+
+
+#    MLE
+def solve3():
+    n, m = RI()
+    a = []
+    for _ in range(n):
+        v, = RI()
+        a.append(v)
+    """
+    (v, v, v, v)
+    x,y,z,k = x1+x2, max(y1,y2,k1+z2),max(z1, x1+z2), max(k2,k1+x2)
+    """
+
+    def op(x, y):
+        x1, y1, z1, k1 = x  # 和，最大子段和，最大前缀和，最大后缀和, 答案是ret[1]
+        x2, y2, z2, k2 = y
+        return x1 + x2, max(y1, y2, k1 + z2), max(z1, x1 + z2), max(k2, k1 + x2)
+
+    tree = ZKW([(v, v, v, v) for v in a], op, (-inf, -inf, -inf, -inf))
+    for _ in range(m):
+        t, a, b = RI()
+        if t == 1:
+            if a > b:
+                a, b = b, a
+            print(tree.query(a - 1, b)[1])
+        else:
+            tree.set(a - 1, (b,b,b,b))
+
 
 
 #     TLE+MLE  ms
