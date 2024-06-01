@@ -78,14 +78,22 @@ class BinIndexTree:
                 l = mid
         return r
 
-    def kth(self, s):
-        """返回>=s的最小下标"""
+    def kth_upper(self, s):
+        """返回>=s的最大下标，注意这个是upperbound-1"""
         pos = 0
         for j in range(18, -1, -1):
             if pos + (1 << j) <= self.size and self.c[pos + (1 << j)] <= s:
                 pos += (1 << j)
                 s -= self.c[pos]
         return pos
+    def kth_lower(self, s):
+        """返回>=s的最小下标，注意这个是upperbound-1"""
+        pos = 0
+        for j in range(18, -1, -1):
+            if pos + (1 << j) <= self.size and self.c[pos + (1 << j)] < s:
+                pos += (1 << j)
+                s -= self.c[pos]
+        return pos + 1
     def lowbit(self, x):
         return x & -x
 
