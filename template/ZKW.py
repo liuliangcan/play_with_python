@@ -1,4 +1,4 @@
-"""迭代写法的zwk线段树，注意是0-indexed"""
+"""迭代写法的zwk线段树，注意是0-indexed，注意query的时候是左闭右开[l,r)"""
 
 
 class ZKW:
@@ -118,3 +118,20 @@ class ZKW:
 
     def __str__(self):
         return str([self.get(i) for i in range(self.n)])
+
+
+"""
+区间最大子段，带修改：P4513 小白逛公园 https://www.luogu.com.cn/problem/P4513  注意这题这么写会MLE，还是需要写4个数组去做，可以过
+    def op(x, y):
+        x1, y1, z1, k1 = x  # 和，最大子段和，最大前缀和，最大后缀和, 答案是ret[1]
+        x2, y2, z2, k2 = y
+        return x1 + x2, max(y1, y2, k1 + z2), max(z1, x1 + z2), max(k2, k1 + x2)
+    tree = ZKW([(v, v, v, v) for v in a], op, (-inf, -inf, -inf, -inf))
+    
+区间打家劫舍 3165. 不包含相邻元素的子序列的最大和: https://leetcode.cn/problems/maximum-sum-of-subsequence-with-non-adjacent-elements/description/
+    def op(x,y):
+        f11,f10,f01,f00 = x 
+        g11,g10,g01,g00 = y 
+        return max(f11+g01,f10+g11), max(f10+g10,f11+g00),max(f00+g11,f01+g01),max(f00+g10,f01+g00)
+    zkw = ZKW([(v,0,0,0) for v in nums],op,(0,0,0,0)
+"""
