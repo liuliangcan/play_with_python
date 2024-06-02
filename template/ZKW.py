@@ -64,8 +64,8 @@ class ZKW:
         return self.d[1]
 
     def max_right(self, l, f):
-        """返回l右侧第一个不满足f的位置"""
-        # assert 0 <= l and l <= self.n
+        """返回l右侧query(l,p)第一个不满足f的位置p"""
+        # assert 0 <= l and l < self.n
         # assert f(self.e)
         if l == self.n:
             return self.n
@@ -89,8 +89,8 @@ class ZKW:
         return self.n
 
     def min_left(self, r, f):
-        """返回r左侧连续满足f的最远位置的位置"""
-        # assert 0 <= r and r < self.n
+        """返回r左侧query(p,r)连续满足f的最远位置的位置,注意这个r要按开区间写，即+1"""
+        # assert 0 < r and r <= self.n
         # assert f(self.e)
         if r == 0:
             return 0
@@ -134,4 +134,6 @@ class ZKW:
         g11,g10,g01,g00 = y 
         return max(f11+g01,f10+g11), max(f10+g10,f11+g00),max(f00+g11,f01+g01),max(f00+g10,f01+g00)
     zkw = ZKW([(v,0,0,0) for v in nums],op,(0,0,0,0)
+    
+区间与：zkw = ZKW(nums,and_,-1)   # -1就是全1，相当于(1<<n)-1  https://leetcode.cn/problems/find-subarray-with-bitwise-and-closest-to-k/
 """
