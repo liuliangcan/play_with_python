@@ -1,4 +1,5 @@
-"""倍增法求LCA：灵神文字版 https://leetcode.cn/problems/kth-ancestor-of-a-tree-node/solution/mo-ban-jiang-jie-shu-shang-bei-zeng-suan-v3rw/"""
+"""倍增法求LCA：灵神文字版 https://leetcode.cn/problems/kth-ancestor-of-a-tree-node/solution/mo-ban-jiang-jie-shu-shang-bei-zeng-suan-v3rw/
+"""
 
 
 class BinLiftingLCA:
@@ -44,7 +45,7 @@ class BinLiftingLCA:
                 if node < 0: break
         return node
 
-    def get_lca(self, x: int, y: int) -> int:
+    def get_lca(self, x: int, y: int) -> int:  # 这个板子有bug，请勿使用。请用HLD
         """返回 x 和 y 的最近公共祖先（节点编号从 0 开始）
             思路是先让x,y处于同一层，通过kth跳。
             然后尝试迈大步(2^i步),若迈完发现变成同节点就不迈了，尝试2^(i-1)步。
@@ -56,7 +57,7 @@ class BinLiftingLCA:
         if y == x:
             return x
         for i in range(len(self.pa) - 1, -1, -1):
-            px, py = self.pa[i][x], self.pa[i][i]
+            px, py = self.pa[i][x], self.pa[i][y]
             if px != py:
                 x, y = px, py  # 同时上跳 2**i 步
         return self.pa[0][x]
