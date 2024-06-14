@@ -11,13 +11,10 @@ diff[u]+=x,diff[v]+=x,diff[o]-=2*x;
 """
 
 
-
-
-
 class HLD:
     def __init__(self, g, root):
         # 无论是点还是dfn还是dep，都从1开始，默认0是无
-        n = len(g)-1
+        n = len(g) - 1
         self.g = g
         self.fa = fa = [0] * (n + 1)  # 父节点，0表示无父节点
         self.size = size = [1] * (n + 1)  # 子树大小
@@ -30,7 +27,7 @@ class HLD:
         st = [root]
         dep[root] = 1
         tot = 1
-        while st:
+        while st:  # 第一次dfs：求fa\depth\size\hson
             u = st.pop()
             rank[tot] = u  # 临时算一个非重儿子优先的dfn序，用于自底向上计算size
             tot += 1
@@ -45,7 +42,7 @@ class HLD:
                 size[u] += size[v]
                 if size[v] > size[son[u]]: son[u] = v  # 更新重儿子
 
-        for u in rank[1:]:  # 自上而下更新链起点
+        for u in rank[1:]:  # 自上而下更新链起点  第二次dfs：求top\优先访问重儿子的dfn\rank
             for v in g[u]:
                 if v == son[u]: top[v] = top[u]
         st = [root]
@@ -59,7 +56,6 @@ class HLD:
             for v in g[u]:
                 if v != fa[u] and v != son[u]: st.append(v)
             st.append(son[u])
-
 
     def lca(self, u, v):  # 求u和v的最近公共祖先节点,复杂度lgn
         fa = self.fa
@@ -77,8 +73,6 @@ class HLD:
         return dep[u] + dep[v] - 2 * dep[self.lca(u, v)]
 
 
-
-
 class DiffOnTreePoint:
     """点差分 u~v简单路上所有边权+=x, o=lca(u,v), p = parent[o]
     diff[u]+=x,
@@ -87,14 +81,13 @@ class DiffOnTreePoint:
     diff[p]-=x;"""
 
     def __init__(self, g, root=1, lca=None, a=None):  # 注意节点编号是1-indexed
-        self.n = n = len(g)-1
+        self.n = n = len(g) - 1
         self.lca = lca or HLD(g, root)  # 不传就重新算
         self.diff = [0] * (n + 1)  # 树上差分,用0作为根的父节点
-        self.a = a[:] if a else [0] * (n+1)  # 传了就用它初始化；默认不修改，去掉切片则直接改
+        self.a = a[:] if a else [0] * (n + 1)  # 传了就用它初始化；默认不修改，去掉切片则直接改
         self.rank = self.lca.rank
         self.fa = self.lca.fa  # 用0作为根的父节点
         self.g = g
-
 
     def add_route(self, u, v, w):
         """把u~v简单路径上的所有点权+w"""
@@ -113,9 +106,6 @@ class DiffOnTreePoint:
             self.a[u] += d[u]
         # print(self.a)
         return self.a  # self.a[u]表示u的点权
-
-
-
 
 
 class DiffOnTreeEdge:
@@ -146,4 +136,3 @@ class DiffOnTreeEdge:
             self.a[u] += d[u]
 
         return self.a  # self.a[u]表示以u为更低层的边权
-
