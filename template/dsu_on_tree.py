@@ -20,7 +20,7 @@ dsu on tree 名字很离谱其实和并查集没有关系。
 -- 每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献；但全局性的属性比如mx等可以直接重置
 -- 同上条，由于清空动作的存在，每次贡献答案时，其实当前信息集储存的就是'本子树',并未储存其他任何兄弟子树或者其它。
 
-例题：
+例题：https://codeforces.com/blog/entry/44351
     - cf375d 算是模板，离线查询子树上有多少种颜色超过k个：Tree and Queries  https://codeforces.com/problemset/problem/375/D
     - CF741D
     - CF600E 模板 通过这个发现，每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献  lomsat gelral  https://codeforces.com/problemset/problem/600/E
