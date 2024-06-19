@@ -1,4 +1,6 @@
 """树上启发式合并
+一般用来解决不带修（可离线）的子树内询问，复杂度一般是O(q+nlogn)
+
 dsu on tree 名字很离谱其实和并查集没有关系。
 指的是小集合向大集合暴力合并：
     用一个信息集维护大集合(重儿子)的信息。小集合(轻儿子们)的信息用完了删掉。
@@ -16,11 +18,13 @@ dsu on tree 名字很离谱其实和并查集没有关系。
 
 -- 由于根节点到任意节点的路径上，轻边不超过O(logn)条，因此每个节点被暴力合并的次数不会超过O(logn)。
 -- 每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献；但全局性的属性比如mx等可以直接重置
+-- 同上条，由于清空动作的存在，每次贡献答案时，其实当前信息集储存的就是'本子树',并未储存其他任何兄弟子树或者其它。
+
 例题：
     - cf375d 算是模板，离线查询子树上有多少种颜色超过k个：Tree and Queries  https://codeforces.com/problemset/problem/375/D
     - CF741D
     - CF600E 模板 通过这个发现，每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献  lomsat gelral  https://codeforces.com/problemset/problem/600/E
-    - CF1709E XOR TREE
+    - CF1709E XOR TREE  利用树上前缀xor推公式，但有操作要移除整颗子树的点集，以后都不再贡献，因此可以在dfn上用链式并查集合并连续区间  https://codeforces.com/problemset/problem/1709/E
 """
 
 
