@@ -1,26 +1,38 @@
-"""树上启发式合并
-dsu on tree 名字很离谱其实和并查集没有关系。
-指的是小集合向大集合暴力合并：
-    用一个信息集维护大集合(重儿子)的信息。小集合(轻儿子们)的信息用完了删掉。
-    这样保证每个节点被暴力合并的次数不超过O(logn)次。因此总复杂度做到O(nlogn)
-需要用到重链剖分的轻重儿子性质，以及dfn序（不用dfn序也可以，轻儿子贡献时直接递归）
+# Problem: E. Lomsat gelral
+# Contest: Codeforces - Educational Codeforces Round 2
+# URL: https://codeforces.com/problemset/problem/600/e
+# Memory Limit: 256 MB
+# Time Limit: 2000 ms
 
-步骤：
-1. 先重链剖分，求出rank、dfn序、fa、son等信息
-2. 自底向上处理：
-    - 对每个子树，先处理轻儿子（会删除信息），再处理重儿子（不删）
-    - 处理完儿子，当前信息集会保留重儿子的信息，然后暴力遍历所有轻儿子的子树上每个节点，向信息集贡献。然后贡献点u，计算当前子树答案。
-    - 计算完子树答案，看看本子树是否需要移除（即u是别人的轻儿子），如果需要移除，则暴力遍历移除。
-    - 以上暴力过程，可以dfs，也可以在dfn序上搞。
-    - py的话全过程用栈模拟，因此能用dfn序的都用dfn序。
+import sys
+import random
+from types import GeneratorType
+import bisect
+import io, os
+from bisect import *
+from collections import *
+from contextlib import redirect_stdout
+from itertools import *
+from array import *
+from functools import lru_cache, reduce
+from heapq import *
+from math import sqrt, gcd, inf
 
--- 由于根节点到任意节点的路径上，轻边不超过O(logn)条，因此每个节点被暴力合并的次数不会超过O(logn)。
--- 每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献；但全局性的属性比如mx等可以直接重置
-例题：
-    - cf375d 算是模板，离线查询子树上有多少种颜色超过k个：Tree and Queries  https://codeforces.com/problemset/problem/375/D
-    - CF741D
-    - CF600E 模板 通过这个发现，每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献  lomsat gelral  https://codeforces.com/problemset/problem/600/E
-    - CF1709E XOR TREE
+# if not sys.version.startswith('3.5.3'):  # ACW没有comb
+#     from math import comb
+
+RI = lambda: map(int, sys.stdin.buffer.readline().split())
+RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
+RILST = lambda: list(RI())
+DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
+# print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，确实会快。
+
+DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
+DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
+RANDOM = random.randrange(2 ** 62)
+MOD = 10 ** 9 + 7
+# MOD = 998244353
+PROBLEM = """
 """
 
 
@@ -106,46 +118,33 @@ class HLD:
 
 #       ms
 def solve():
-    n, m = RI()
-    a = [1] + RILST()
+    n, = RI()
+    a = [0] + RILST()
     g = [[] for _ in range(n + 1)]
     for _ in range(n - 1):
         u, v = RI()
         g[u].append(v)
         g[v].append(u)
-    qs = [[] for _ in range(n + 1)]
-    for i in range(m):
-        u, k = RI()
-        qs[u].append((i, k))
+
     hld = HLD(g, 1)
     rank, fa, dfn, son, size = hld.rank, hld.fa, hld.dfn, hld.son, hld.size
-    cnt = [0] * (10 ** 5 + 1)
-    cs = [0] * (10 ** 5 + 1)
-    ans = [0] * m
+    cnt = [0] * (n + 1)  # cnt 颜色计数
+    mx = cur = 0  # 当前最多的颜色是谁
+    ans = [0] * (n + 1)
 
-    def dfs(u, keep):  # py dfs跑不过，改用栈模拟
-        for v in g[u]:
-            if son[u] != v != fa[u]:
-                dfs(v, False)
-        if son[u]: dfs(son[u], True)
-        for v in g[u]:
-            if son[u] != v != fa[u]:
-                for i in range(dfn[v], dfn[v] + size[v]):
-                    c = a[rank[i]]
-                    cnt[c] += 1
-                    cs[cnt[c]] += 1
+    def add(u):
+        nonlocal mx, cur
         c = a[u]
         cnt[c] += 1
-        cs[cnt[c]] += 1
-        for i, k in qs[u]:
-            ans[i] = cs[k]
-        if not keep:
-            for i in range(dfn[u], dfn[u] + size[u]):
-                c = a[rank[i]]
-                cs[cnt[c]] -= 1
-                cnt[c] -= 1
+        if cnt[c] > mx:
+            mx = cnt[c]
+            cur = c
+        elif cnt[c] == mx:
+            cur += c
 
-    # dfs(1,True)
+    def delete(u):
+        c = a[u]
+        cnt[c] -= 1
 
     st = [(1, False, True)]  # root,是否keep贡献(重儿子),入栈标记
     while st:
@@ -161,18 +160,22 @@ def solve():
             for v in g[u]:  # 处理所有轻儿子的贡献
                 if son[u] != v != fa[u]:
                     for i in range(dfn[v], dfn[v] + size[v]):
-                        c = a[rank[i]]
-                        cnt[c] += 1
-                        cs[cnt[c]] += 1
-            c = a[u]  # 三行本节点贡献答案
-            cnt[c] += 1
-            cs[cnt[c]] += 1
-            for i, k in qs[u]:
-                ans[i] = cs[k]
+                        add(rank[i])
+            add(u)
+
+            ans[u] = cur
             if not keep:  # 如果本子树是轻儿子，那就移除贡献
                 for i in range(dfn[u], dfn[u] + size[u]):
-                    c = a[rank[i]]
-                    cs[cnt[c]] -= 1
-                    cnt[c] -= 1
+                    delete(rank[i])
+                mx = cur = 0
+    print(*ans[1:])
 
-    print(*ans, sep='\n')
+
+if __name__ == '__main__':
+    t = 0
+    if t:
+        t, = RI()
+        for _ in range(t):
+            solve()
+    else:
+        solve()
