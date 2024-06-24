@@ -25,6 +25,7 @@ dsu on tree 名字很离谱其实和并查集没有关系。
     - CF741D
     - CF600E 模板 通过这个发现，每次clear其实都会把所有数据清空,但为了时间，依然是通过遍历节点移除贡献  lomsat gelral  https://codeforces.com/problemset/problem/600/E
     - CF1709E XOR TREE  利用树上前缀xor推公式，但有操作要移除整颗子树的点集，以后都不再贡献，因此可以在dfn上用链式并查集合并连续区间  https://codeforces.com/problemset/problem/1709/E
+    - abc359g 和 CF1709E，发现有时不要迷信这个模板，不如每个节点直接维护一个set/count之类的汇总信息，小的向大的合并，好写且不一定差，尤其适用于同层子树之间要计算什么的情况。
 """
 
 

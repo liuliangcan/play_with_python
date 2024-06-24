@@ -36,8 +36,82 @@ PROBLEM = """
 """
 
 
-#       ms
+# 543ms
 def solve():
+    n, = RI()
+    g = [[] for _ in range(n + 1)]
+    for _ in range(n - 1):
+        u, v = RI()
+        g[u].append(v)
+        g[v].append(u)
+    a = [0] + RILST()
+    fa = [0] * (n + 1)  # 父节点，0表示无父节点
+    size = [1] * (n + 1)  # 子树大小
+    son = [0] * (n + 1)  # 重儿子，0表示无儿子
+    dfn = [0] * (n + 1)  # dfs序，子树终点的dfs序是dfn[i]+size[i]-1
+    rank = [0] * (n + 1)  # dfs序为i的节点编号
+    depth = [0] * (n + 1)
+    st = [(1, 0)]
+    tot = 1
+    d = [0] * (n + 1)
+    while st:  # 第一次dfs：求fa\depth\size\hson
+        u, p = st.pop()
+        d[u] = p ^ a[u]
+        dfn[u] = tot
+        rank[tot] = u  # 临时算一个非重儿子优先的dfn序，用于自底向上计算size
+        tot += 1
+        for v in g[u]:
+            if v == fa[u]: continue
+            fa[v] = u  # 父节点
+            depth[v] = depth[u] + 1
+            st.append((v, d[u]))
+    for u in rank[:0:-1]:  # 自底向上
+        for v in g[u]:
+            if v == fa[u]: continue
+            size[u] += size[v]
+            if size[v] > size[son[u]]: son[u] = v  # 更新重儿子
+    cnt, deep = [0] * (n + 1), [0] * (n + 1)
+    # c, d = Counter(), Counter()
+    ans = 0
+    st = [(1, False, True)]  # root,是否keep贡献(重儿子),入栈标记
+    while st:
+        u, keep, in_ = st.pop()
+        if in_:
+            st.append((u, keep, False))  # 注册自己的出栈动作
+            if son[u]:
+                st.append((son[u], True, True))  # 重儿子先入栈，后出栈处理
+            for v in g[u]:
+                if son[u] != v != fa[u]:
+                    st.append((v, False, True))  # 轻儿子先处理
+        else:
+            for v in g[u]:  # 处理所有轻儿子的贡献
+                if son[u] != v != fa[u]:
+                    for i in range(dfn[v], dfn[v] + size[v]):
+                        x = rank[i]
+                        c = a[x]
+                        ans += (depth[x] - depth[u]) * cnt[c] + (deep[c] - cnt[c] * depth[u])
+
+                    for i in range(dfn[v], dfn[v] + size[v]):
+                        x = rank[i]
+                        c = a[x]
+                        deep[c] += depth[x]
+                        cnt[c] += 1
+            c = a[u]
+            ans += deep[c] - cnt[c] * depth[u]
+            cnt[c] += 1
+            deep[c] += depth[u]
+            if not keep:
+                for i in range(dfn[u], dfn[u] + size[u]):
+                    x = rank[i]
+                    c = a[x]
+                    deep[c] -= depth[x]
+                    cnt[c] -= 1
+
+    print(ans)
+
+
+#   1251    ms
+def solve1():
     n, = RI()
     g = [[] for _ in range(n + 1)]
     for _ in range(n - 1):
