@@ -1,20 +1,29 @@
 import sys
-import random
+
 from types import GeneratorType
 import bisect
 import io, os
-from bisect import *
-from collections import *
+from bisect import bisect_left, bisect_right
+from collections import Counter, defaultdict, deque
 from contextlib import redirect_stdout
-from itertools import *
+from itertools import accumulate, combinations, permutations
+# combinations(a,k)a序列选k个 组合迭代器
+# permutations(a,k)a序列选k个 排列迭代器
 from array import *
 from functools import lru_cache, reduce
-from heapq import *
-from math import sqrt, gcd, inf
+from heapq import heapify, heappop, heappush
+from math import ceil, floor, sqrt, pi, factorial, gcd, log, log10, log2, inf
+from random import randint, choice, shuffle, randrange
+# randint(a,b)从[a,b]范围随机选择一个数
+# choice(seq)seq可以是一个列表,元组或字符串,从seq中随机选取一个元素
+# shuffle(x)将一个可变的序列x中的元素打乱
+from string import ascii_lowercase, ascii_uppercase, digits
+# 小写字母，大写字母，十进制数字
+from decimal import Decimal, getcontext
 
-# if not sys.version.startswith('3.5.3'):  # ACW没有comb
-#     from math import comb
-
+# Decimal(s) 实例化Decimal对象,一般使用字符串
+# getcontext().prec=100 修改精度
+# sys.setrecursionlimit(10**6) #调整栈空间
 RI = lambda: map(int, sys.stdin.buffer.readline().split())
 RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
 RILST = lambda: list(RI())
@@ -23,7 +32,7 @@ DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
 
 DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
 DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
-RANDOM = random.randrange(2 ** 62)
+RANDOM = randrange(2 ** 62)
 MOD = 10 ** 9 + 7
 # MOD = 998244353
 PROBLEM = """
