@@ -136,4 +136,27 @@ class ZKW:
     zkw = ZKW([(v,0,0,0) for v in nums],op,(0,0,0,0)
     
 区间与：zkw = ZKW(nums,and_,-1)   # -1就是全1，相当于(1<<n)-1  https://leetcode.cn/problems/find-subarray-with-bitwise-and-closest-to-k/
+
+区间rk2的计数：在线带修询问区间内第二大的数的计数，用字典存卡常；  https://atcoder.jp/contests/abc343/tasks/abc343_f
+    这题也可以存前两个的下标,改一下加号就行: https://codeforces.com/problemset/problem/1927/D
+    def f(a, b, c, d):
+        if a == c:
+            return a, b + d
+        elif a < c:
+            return c, d
+        else:
+            return a, b
+
+    def op(x, y):
+        if x > y:
+            x, y = y, x
+        if x[0] == y[0]:
+            a, b = x[0], x[1] + y[1]
+            c, d = f(x[2], x[3], y[2], y[3])
+        else:
+            a, b = y[0], y[1]
+            c, d = f(x[0], x[1], y[2], y[3])
+        return a, b, c, d
+
+    zkw = ZKW([(v, 1, 0, 0) for v in a], op, (0, 0, 0, 0))
 """
