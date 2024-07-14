@@ -387,7 +387,14 @@ class ODT:
                 r = node.r
         return lines
 
-
+    def sum_interval(self, l, r):
+        tree = self.tree
+        begin = self.split(l)
+        end = self.split(r + 1)
+        ans = 0
+        for i in range(begin, end):
+            ans += tree[i].v * (tree[i].r - tree[i].l + 1)
+        return ans
 
 #  	1714 ms
 def solve(n, m, a, b, qs):
