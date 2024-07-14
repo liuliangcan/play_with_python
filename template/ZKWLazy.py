@@ -217,4 +217,20 @@ class ZKWLazy:
     composition = lambda f,g:f^g  # 合并两次异或操作     
     id_ = 0  # 默认lazytag，对异或来说就是0
     zkw = ZKWLazy(op,e,mapping,composition,id_,[(1,int(v==1)) for v in nums1])
+同时存在覆盖和区间加,询问区间和：
+    op = lambda x, y: (x[0] + y[0], x[1] + y[1])  # 两个节点合并
+    e = (0, 1)  # 求和，节点区间长度
+
+    def mapping(f, x):  # mapping(f,x)把x节点应用f,f[0]是覆盖,f[1]是add
+        a, b = x
+        if f[0] is not None:  # 如果有覆盖则优先覆盖
+            a = f[0] * b
+        return a + f[1] * b, b  # 如果有add则加上
+
+    def composition(f, g):  # 合并两个tag,如果新tag是覆盖，则直接修改覆盖，add置0
+        if f[0]: return f[0], 0
+        return g[0], f[1] + g[1]
+
+    id_ = (None, 0)  # lazy 默认值
+    tree = ZKWLazy(op, e, mapping, composition, id_, n + 1)
 """
