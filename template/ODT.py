@@ -50,7 +50,9 @@ MOD = 10 ** 9 + 7
 3
 -1
 """
+import gc;
 
+gc.disable()
 MAX_LEVEL = 20  # 建议设置成lg(n),n是数据长度，20满足1e6,32满足1e10。由于跳表复杂度lgn，所以通常n<2e5,20就够
 P_FACTOR = 0.25
 
@@ -331,12 +333,60 @@ class ODT:
         tree.add(ODTNode(l, r, v))
 
     def query_point(self, pos):
-        """ 单点查询pos位置的值 """
+        """ 单点查询pos位置的值 lgn """
         tree = self.tree
         p, v, v1 = tree.bisect_left_kvp(ODTNode(pos, 0, 0))
         if p != len(tree) and v.l == pos:
             return v.v
         return v1.v
+
+    # 以下操作全是暴力，寄希望于这里边元素不多。
+    def query_min(self, l, r):
+        """        查找x,y区间的最小值   暴力lgn+lgn+  lgnlgn(期望)     """
+        begin = self.split(l)
+        end = self.split(r + 1)
+        return min(node.v for node in self.tree[begin:end])
+
+    def query_max(self, l, r):
+        """        查找x,y区间的最大值   暴力lgn+lgn+  lgnlgn(期望)     """
+        begin = self.split(l)
+        end = self.split(r + 1)
+        return max(node.v for node in self.tree[begin:end])
+
+    def add_interval(self, l, r, val):
+        """区间挨个加
+        """
+        tree = self.tree
+        begin = self.split(l)
+        end = self.split(r + 1)
+        for i in range(begin, end):
+            tree[i].v += val
+
+    def query_has_greater_than(self, l, r, val):
+        """
+        查找x,y区间是否有大于val的数
+        """
+        begin = self.split(l)
+        end = self.split(r + 1)
+        return any(node.v > val for node in self.tree[begin:end])
+
+    # 以下操作全是暴力，寄希望于这里边元素不多。
+
+    def query_all_intervals(self):
+        tree = self.tree
+        lines = []
+        l = r = -1
+        for node in tree[:]:
+            if node.v == 0:
+                if l != -1:
+                    lines.append([l, r])
+                    l = -1
+            else:
+                if l == -1:
+                    l = node.l
+                r = node.r
+        return lines
+
 
 
 #  	1714 ms
