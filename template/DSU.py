@@ -43,6 +43,9 @@
     - 维护n*2长度的并查集。
     - 若ab是敌人，则合并(a,n+b)和(b,n+a)
     - 如果有其他关系，如剪刀石头布(克制与被克),可以维护n*3长度
+- 带权并查集，我自己理解为前缀和并查集，维护每个节点到祖宗的距离，这样查询同家族的距离时，可以用前缀和减。
+    - 注意距离要有方向
+    - https://www.luogu.com.cn/problem/P2024 食物链，维护模三上的距离
 ---
 - 目前不会的：
 - 可以删除的并查集
@@ -85,6 +88,38 @@ class DSU:
         self.set_count -= 1
         return True
 
+
+
+class DSUW:
+    """带权并查集，维护每个节点到祖宗的距离"""
+
+    def __init__(self, n):
+        self.fa = list(range(n))
+        self.w = [0] * n  # 到祖宗的距离
+
+    def find(self, x):
+        fa = self.fa
+        w = self.w
+        t = x
+        s = 0
+        while fa[x] != x:
+            s += w[x]
+            x = fa[x]
+        while t != x:
+            w[t], s = s, s - w[t]
+            fa[t], t = x, fa[t]
+        return x
+
+    def union(self, x: int, y: int, z: int) -> tuple[bool, int]:  # 表示合并一个y-x=z的关系,返回是否成功合并，以及y-x的实际距离
+        nx = self.find(x)
+        ny = self.find(y)
+
+        if nx == ny:
+            return False, self.w[y] - self.w[x]  # 同组，返回实际距离
+        self.w[ny] = self.w[x] - self.w[y] + z
+        self.fa[ny] = nx
+
+        return True, z
 
 
 
