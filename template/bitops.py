@@ -1,6 +1,8 @@
 """位运算技巧
 位运算的技巧浩如烟海，灵神的总结学不完，根本学不完0.0
-用O(lgx)时间计算1~x每位上共有多少1： https://leetcode.cn/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/solutions/2603673/er-fen-da-an-shu-wei-dpwei-yun-suan-pyth-tkir/
+用O(lgx)时间计算1~x每位上共有多少1：
+    https://leetcode.cn/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/solutions/2603673/er-fen-da-an-shu-wei-dpwei-yun-suan-pyth-tkir/
+    https://leetcode.cn/problems/find-products-of-elements-of-big-array/description/
 """
 
 
