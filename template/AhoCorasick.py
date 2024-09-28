@@ -11,18 +11,20 @@
 
 直接调模板慢0.9倍左右：https://leetcode.cn/problems/construct-string-with-minimum-cost/solutions/2833949/hou-zhui-shu-zu-by-endlesscheng-32h9/
 例题：
-    - 3213. 最小代价构造字符串 https://leetcode.cn/problems/construct-string-with-minimum-cost/
+    - 3213. 最小代价构造字符串 找所有匹配集 https://leetcode.cn/problems/construct-string-with-minimum-cost/
+    - 3292. 形成目标字符串需要的最少字符串数 II  找每个位置的最长匹配 https://leetcode.cn/problems/minimum-number-of-valid-strings-to-form-target-ii/description/
 """
 
 
 class Node:
-    __slots__ = 'son', 'fail', 'last', 'idx'
+    __slots__ = 'son', 'fail', 'last', 'idx','depth'
 
-    def __init__(self):
+    def __init__(self,depth=0):
         self.son = [None] * 26
         self.fail = None  # 当 o.son[i] 不能匹配 target 中的某个字符时，o.fail.son[i] 即为下一个待匹配节点（等于 root 则表示没有匹配）
         self.last = None  # 后缀链接（suffix link），用来快速跳到一定是某个 words[k] 的最后一个字母的节点（等于 root 则表示没有）
         self.idx = -2
+        self.depth=depth
 
 
 class AhoCorasick:
@@ -38,7 +40,7 @@ class AhoCorasick:
         for b in s:
             b = ord(b) - ord('a')
             if cur.son[b] is None:
-                cur.son[b] = Node()
+                cur.son[b] = Node(cur.depth+1)
             cur = cur.son[b]
         if i == -1:
             i = len(self.words)
@@ -71,7 +73,7 @@ class AhoCorasick:
     def find(self, s: str) -> (int, int):
         cur = root = self.root
         for i, c in enumerate(s):
-            cur = cur.son[ord(c) - ord('a')]
+            cur = cur.son[ord(c) - ord('a')]  # 这个动作会使cur移动到和s[:i+1]“匹配的后缀”最长的节点;如果cur is root则说明没有任何字典里的前缀匹配当前后缀
             if cur.idx != -2:
                 yield i, cur.idx  # 主串末尾位置，对应的模式串数组下标
             fail = cur.last
