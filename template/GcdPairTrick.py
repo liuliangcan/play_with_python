@@ -1,4 +1,4 @@
-"""获取数组中的数组对，gcd恰好为k的对的个数。记为res[k]。O(n+UlgU)
+"""获取数组中的数组对，gcd恰好为k的对的个数。记为res[k]。O(n+UlgU)，注意要符合调和级数的数据特征1<=a[i]<=U
 本质是DP。
 先统计a中每个元素的cnt。
 枚举k及其倍数2k,3k...,累计个数记为c。
@@ -15,7 +15,7 @@
 """
 
 
-def gcd_pair_cnt(a):
+def gcd_pair_cnt(a):  # 求a中gcd恰好为k的对数，记为res[k]。
     mx = max(a)
     cnt = [0]*(mx+1)
     for v in a:
