@@ -17,14 +17,14 @@
 
 def gcd_pair_cnt(a):  # 求a中gcd恰好为k的对数，记为res[k]。
     mx = max(a)
-    cnt = [0]*(mx+1)
+    cnt = [0] * (mx + 1)
     for v in a:
         cnt[v] += 1
-    res = [0]*(mx+1)
-    for i in range(mx,0,-1):
+    res = [0] * (mx + 1)
+    for i in range(mx, 0, -1):
         c = 0
-        for j in range(i,mx+1,i):
+        for j in range(i, mx + 1, i):
             c += cnt[j]
             res[i] -= res[j]
-        res[i] += c*(c-1)//2
+        res[i] += c * (c - 1) // 2
     return res
