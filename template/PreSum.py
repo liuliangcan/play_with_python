@@ -8,8 +8,11 @@
     - 加法/异或都支持
 2. 二维前缀和
     - 难写所以打板
+    - 如果n方的空间受不了，但是可以接受空间n,时间nlgn，那么可以用离线+BIT二维偏序统计数点的方式做
+        - 统计每个矩形里包含的点数：3382. 用点构造面积最大的矩形 II https://leetcode.cn/problems/maximum-area-rectangle-with-point-constraints-ii/description/
 3. 带模前缀乘
     - 由于除法不支持同余，因此需要预处理逆元。若不预处理则需要多个O(lgn)用费马小定理实时算。
+
 """
 
 
@@ -54,3 +57,76 @@ class ModPreMul:
 
     def mul_interval(self, l, r):
         return self.fact[r + 1] * self.inv[l] % self.p
+
+
+class OfflinePresum2D:
+    def __init__(self, rect, points):  # rect:要统计的矩形；points:要计数的点
+        # [(x1,y1,x2,y2)..] 表示左上右下构成的矩形(保证x1<=x2&&y1<=y2)
+        hy = sorted(set([p[1] for p in points] + [r[1] for r in rect] + [r[3] for r in rect]))  # 只需要把y离散化
+        rect = [(x1, bisect_left(hy, y1), x2, bisect_left(hy, y2)) for x1, y1, x2, y2 in rect]
+        ps = [(x, bisect_left(hy, y)) for x, y in points]
+        ps.sort()  # 所有障碍点
+        n, m = len(hy), len(ps)
+        corner = []  # 所有矩形的4个角，注意公式是s[x2,y2]+s[x1-1,y1-1]-s[x2,y1-1]-s[x1-1,y2]
+        for x1, y1, x2, y2 in rect:
+            corner.append((x2, y2))
+            corner.append((x1 - 1, y1 - 1))
+            corner.append((x2, y1 - 1))
+            corner.append((x1 - 1, y2))
+        corner = sorted(set(corner))  # 离线四个角，计算<=角的数点
+        s = defaultdict(int)  # 缓存每个角的前缀和
+        c = [0] * (n + 1)
+
+        def add(i):
+            while i <= n:
+                c[i] += 1
+                i += i & -i
+
+        def get(i):
+            s = 0
+            while i:
+                s += c[i]
+                i -= i & -i
+            return s
+
+        j = 0
+        for x, y in corner:
+            while j < m and (ps[j][0] < x or ps[j][0] == x and ps[j][1] <= y):
+                add(ps[j][1] + 1)
+                j += 1
+            s[x, y] = get(y + 1)
+        self.cnt = [s[x2, y2] + s[x1 - 1, y1 - 1] - s[x2, y1 - 1] - s[x1 - 1, y2] for x1, y1, x2, y2 in
+                    rect]  # 每个矩形里的点数
+
+
+"""3382. 用点构造面积最大的矩形 II
+class Solution:
+    def maxRectangleArea(self, xCoord: List[int], yCoord: List[int]) -> int:
+        ans = -1
+        rect = []
+        ps = set(zip(xCoord, yCoord))
+        xy = defaultdict(list)
+        yx = defaultdict(list)
+        for x, y in ps:
+            xy[x].append(y)
+            yx[y].append(x)
+        prex = defaultdict(int)
+        prey = defaultdict(int)
+        for x, ys in xy.items():
+            for y1, y2 in pairwise(sorted(ys)):
+                prey[(x, y2)] = y1
+        for y, xs in yx.items():
+            for x1, x2 in pairwise(sorted(xs)):
+                prex[(x2, y)] = x1
+        rect = []
+        for x2, y2 in ps:
+            x1, y1 = prex.get((x2, y2), -1), prey.get((x2, y2), -1)
+            if (x1, y1) in ps:
+                rect.append((x1, y1, x2, y2))
+        cnt = OfflinePresum2D(rect, ps).cnt
+
+        for (x1, y1, x2, y2), c in zip(rect, cnt):
+            if c == 4:
+                ans = max(ans, (x2 - x1) * (y2 - y1))
+        return ans
+"""
