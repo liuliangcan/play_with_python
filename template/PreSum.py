@@ -60,11 +60,11 @@ class ModPreMul:
 
 
 class OfflinePresum2D:
-    def __init__(self, rect, points):  # rect:要统计的矩形；points:要计数的点
+    def __init__(self, rect, points):  # rect:要统计的矩形；points:要计数的点以及贡献
         # [(x1,y1,x2,y2)..] 表示左上右下构成的矩形(保证x1<=x2&&y1<=y2)
         hy = sorted(set([p[1] for p in points] + [r[1] for r in rect] + [r[3] for r in rect]))  # 只需要把y离散化
         rect = [(x1, bisect_left(hy, y1), x2, bisect_left(hy, y2)) for x1, y1, x2, y2 in rect]
-        ps = [(x, bisect_left(hy, y)) for x, y in points]
+        ps = [(x, bisect_left(hy, y), v) for x, y, v in points]
         ps.sort()  # 所有障碍点
         n, m = len(hy), len(ps)
         corner = []  # 所有矩形的4个角，注意公式是s[x2,y2]+s[x1-1,y1-1]-s[x2,y1-1]-s[x1-1,y2]
@@ -77,9 +77,9 @@ class OfflinePresum2D:
         s = defaultdict(int)  # 缓存每个角的前缀和
         c = [0] * (n + 1)
 
-        def add(i):
+        def add(i, v):
             while i <= n:
-                c[i] += 1
+                c[i] += v
                 i += i & -i
 
         def get(i):
@@ -92,14 +92,16 @@ class OfflinePresum2D:
         j = 0
         for x, y in corner:
             while j < m and (ps[j][0] < x or ps[j][0] == x and ps[j][1] <= y):
-                add(ps[j][1] + 1)
+                add(ps[j][1] + 1, ps[j][2])
                 j += 1
             s[x, y] = get(y + 1)
         self.cnt = [s[x2, y2] + s[x1 - 1, y1 - 1] - s[x2, y1 - 1] - s[x1 - 1, y2] for x1, y1, x2, y2 in
                     rect]  # 每个矩形里的点数
 
 
+
 """3382. 用点构造面积最大的矩形 II
+
 class Solution:
     def maxRectangleArea(self, xCoord: List[int], yCoord: List[int]) -> int:
         ans = -1
@@ -123,7 +125,7 @@ class Solution:
             x1, y1 = prex.get((x2, y2), -1), prey.get((x2, y2), -1)
             if (x1, y1) in ps:
                 rect.append((x1, y1, x2, y2))
-        cnt = OfflinePresum2D(rect, ps).cnt
+        cnt = OfflinePresum2D(rect, [(x, y, 1) for x, y in ps]).cnt
 
         for (x1, y1, x2, y2), c in zip(rect, cnt):
             if c == 4:
