@@ -1,4 +1,3 @@
-
 PROBLEM = """扩展卢卡斯
 求C(n,m)%p,其中mod可以不为质数。 单次计算复杂度O(plogp)
 自顶向下分解这个问题：
@@ -9,6 +8,9 @@ PROBLEM = """扩展卢卡斯
         定义f(n)为n!内有多少个p，发现f(n)=f(n//p)+n//p
     2. 和p无关的部分.发现这部分的模是有循环节的，长度为p^k，一共n//(p^k)节；再算上剩下一段尾巴即可
 模板题：https://www.luogu.com.cn/problem/P4720
+多次模10，把所有方法cache了才过：https://leetcode.cn/problems/check-if-digits-are-equal-in-string-after-operations-ii/
+
+这个算法感觉八百年用不到，只有出题人为了考而考，否则一般都是质数模
 """
 
 
@@ -31,11 +33,11 @@ def inv(x, p):  # 用扩展欧几里得求x在p上的逆元
     return exgcd(x, p)[0] % p
 
 
-def factor_cnt(n, p):  # x!里有多少个p因子
+def factor_cnt(n, p):  # n!里有多少个p因子
     return 0 if n == 0 else factor_cnt(n // p, p) + n // p
 
 
-def fac(n, p, pk):  # 计算x!里除了p之外的累乘%pk
+def fac(n, p, pk):  # 计算n!里除了p之外的累乘%pk
     if not n: return 1
     ans = 1
     for i in range(2, pk):
@@ -59,7 +61,7 @@ def crt(x, r, m):  # 当前模数、模、所有模数积
     return m // x * r % m * inv(m // x, x) % m
 
 
-def exlucas(m, r, mod):  # 用扩展卢卡斯计算C(m,r)%mod,复杂度modlogmod
+def exlucas(m, r, mod):  # 用扩展卢卡斯计算C(m,r)%mod,复杂度modlogmod，注意这里还有一个sqrt的质因数分解
     ans = 0
     x = mod
     i = 2
@@ -74,6 +76,29 @@ def exlucas(m, r, mod):  # 用扩展卢卡斯计算C(m,r)%mod,复杂度modlogmod
     if x > 1:
         ans = (ans + crt(x, cmb(m, r, x, x), mod)) % mod
     return ans % mod
+
+
+class ExLucas:  # 用这个的话，就不用每次分解质因数，多次时少了个sqrt(mod),但由于内部还是有遍历2-pk的动作，最差依然是p
+    def __init__(self, mod):
+        self.factorization = []
+        i = 2
+        x = self.mod = mod
+        while i * i <= x:
+            if x % i == 0:
+                pk = 1
+                while x % i == 0:
+                    pk *= i
+                    x //= i
+                self.factorization.append((i, pk))
+            i += 1
+        if x > 1:
+            self.factorization.append((x, x))
+
+    def comb(self, m, r):
+        ans = 0
+        for p, pk in self.factorization:
+            ans += crt(pk, cmb(m, r, p, pk), self.mod)
+        return ans % self.mod
 
 
 #       ms
@@ -91,9 +116,10 @@ if __name__ == '__main__':
     else:
         solve()
 
-
 """在洛谷发现一个这个板子，好像单次计算是O(lg)的，不确定，再看看
 """
+
+
 class BinomialCoefficient:
     def __init__(self, mod: int):
         self.MOD = mod
@@ -129,8 +155,8 @@ class BinomialCoefficient:
         res = 0
         for i, (p, pe) in enumerate(self.factorization):
             res += (
-                self._choose_pe(n, k, p, pe, self.facs[i], self.invs[i], self.pows[i])
-                * self.coeffs[i]
+                    self._choose_pe(n, k, p, pe, self.facs[i], self.invs[i], self.pows[i])
+                    * self.coeffs[i]
             )
             res %= self.MOD
         return res
@@ -170,7 +196,7 @@ class BinomialCoefficient:
             while N % i == 0:
                 N //= i
                 c += 1
-            factorization.append((i, i**c))
+            factorization.append((i, i ** c))
         if N != 1:
             factorization.append((N, N))
         return factorization
