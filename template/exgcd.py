@@ -1,4 +1,4 @@
-"""
+""" 这里讲一些数论讲的很好：https://www.cnblogs.com/zjp-shadow/p/9267675.html
 扩展欧几里得 exgcd
     先看一下欧几里得算法，即辗转相除法：
         gcd(a,b) = gcd(b,a%b)
@@ -59,28 +59,30 @@ def exgcd(a, b):  # 注意这里要求ab互质
         return 1, 0
     x1, y1 = exgcd(b, a % b)
     return y1, x1 - a // b * y1
+
+
 def P5656():
-    a, b, c = map(int,input().split())
-    g = gcd(a,b)
-    if c%g:  # g|c才有解
+    a, b, c = map(int, input().split())
+    g = gcd(a, b)
+    if c % g:  # g|c才有解
         return print(-1)
-    a//=g
-    b//=g
-    c//=g
-    x0,y0 = exgcd(a,b)  # 一组特解
-    x0*=c
-    y0*=c
+    a //= g
+    b //= g
+    c //= g
+    x0, y0 = exgcd(a, b)  # 一组特解
+    x0 *= c
+    y0 *= c
     # 根据特解求ax+by=c的解系
     # x = x0+tb; y = y0-ta
     # x0+tb>0 => t> -x0/b  时取到x为正的最小值； y0-ta>0 => t<y0/a 时取到y为正的最小值
-    ty = (y0-1)//a  # 此时y为最小整数
-    tx = (1-x0+b-1)//b  # 此时x为最小整数
-    x = x0+ty*b
+    ty = (y0 - 1) // a  # 此时y为最小整数
+    tx = (1 - x0 + b - 1) // b  # 此时x为最小整数
+    x = x0 + ty * b
     if x <= 0:  # x和y的最小解
-        return print(x0+tx*b,y0-ty*a)
+        return print(x0 + tx * b, y0 - ty * a)
     # print(x0+tx*b)
-    xmn = x0+tx*b
-    ymx = y0-tx*a
-    xmx = x0+ty*b
-    ymn = y0-ty*a
-    print((ymx-ymn)//a+1,xmn,ymn,xmx,ymx)  # 正整数解的个数，最小值*2，最大值*2
+    xmn = x0 + tx * b
+    ymx = y0 - tx * a
+    xmx = x0 + ty * b
+    ymn = y0 - ty * a
+    print((ymx - ymn) // a + 1, xmn, ymn, xmx, ymx)  # 正整数解的个数，最小值*2，最大值*2

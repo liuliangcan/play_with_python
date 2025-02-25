@@ -1,5 +1,7 @@
 """逆元,在模数下约等于除法
-求一个数的逆元： pow(x,MOD-2,MOD)  或者 pow(x,-1,MOD)
+求一个数的逆元：
+费马小定理： pow(x,MOD-2,MOD)  或者 pow(x,-1,MOD)
+扩展欧几里得： exgcd(x,MOD)[0]%MOD
 求累乘的逆元，主要出现在modcomb和presum:
         self.p = p
         self.fact = pre = [1] * (n + 1)
@@ -12,7 +14,7 @@
             inv[i] = a[i] * inv[i + 1] % p
 
 
-1~n的逆元线性递推：
+1~n的逆元线性递推：https://www.luogu.com.cn/problem/P3811
 百度之星20240602 B:n个人，每个人跑1圈的要花i分钟，一直到大家同时到终点才停。问所有人两两相遇几次。答案取模
 显然最后时间是lcm分钟。设一圈长度是1，那么他们的速度分别是1/1,1/2,1/3。。。1/n
 对于x<y的两个人来说，他们的速度差是1/x-1/y,在lcm分钟，一共追及(1/x-1/y)圈，即相遇次数。
@@ -22,6 +24,11 @@
 只需要解决两个问题：
 1. 求1~n每个数的逆元：inv[i] = (MOD - MOD // i) * inv[MOD % i] % MOD，  O(n)
 2. 求1~n的lcm:求出<=n的所有质数，然后把每个质数的k次方加到lcm里即可。  O(n)求质数，遍历prime添加，应该也<O(n)
+
+任意n个数的逆元
+先求前缀积 fac[i]
+求inv_fac[n]，倒推inv_fac[i]
+那么inv[i] = inv_fac[i]*fac[i-1]
 
 
 """
