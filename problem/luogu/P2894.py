@@ -1,3 +1,49 @@
+# Problem: P2894 [USACO08FEB] Hotel G
+# Contest: Luogu
+# URL: https://www.luogu.com.cn/problem/P2894
+# Memory Limit: 128 MB
+# Time Limit: 1000 ms
+
+import sys
+
+from types import GeneratorType
+import bisect
+import io, os
+from bisect import bisect_left, bisect_right
+from collections import Counter, defaultdict, deque
+from contextlib import redirect_stdout
+from itertools import accumulate, combinations, permutations
+# combinations(a,k)a序列选k个 组合迭代器
+# permutations(a,k)a序列选k个 排列迭代器
+from array import *
+from functools import lru_cache, reduce
+from heapq import heapify, heappop, heappush
+from math import ceil, floor, sqrt, pi, factorial, gcd, log, log10, log2, inf
+from random import randint, choice, shuffle, randrange
+# randint(a,b)从[a,b]范围随机选择一个数
+# choice(seq)seq可以是一个列表,元组或字符串,从seq中随机选取一个元素
+# shuffle(x)将一个可变的序列x中的元素打乱
+from string import ascii_lowercase, ascii_uppercase, digits
+# 小写字母，大写字母，十进制数字
+from decimal import Decimal, getcontext
+
+# Decimal(s) 实例化Decimal对象,一般使用字符串
+# getcontext().prec=100 修改精度
+# sys.setrecursionlimit(10**6) #调整栈空间
+RI = lambda: map(int, sys.stdin.buffer.readline().split())
+RS = lambda: map(bytes.decode, sys.stdin.buffer.readline().strip().split())
+RILST = lambda: list(RI())
+DEBUG = lambda *x: sys.stderr.write(f'{str(x)}\n')
+# print = lambda d: sys.stdout.write(str(d) + "\n")  # 打开可以快写，但是无法使用print(*ans,sep=' ')这种语法,需要print(' '.join(map(str, p)))，确实会快。
+
+DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 右下左上
+DIRS8 = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # →↘↓↙←↖↑↗
+RANDOM = randrange(2 ** 62)
+MOD = 10 ** 9 + 7
+# MOD = 998244353
+PROBLEM = """维护每个区间最多连续0的数量，然后线段树二分
+"""
+
 import typing
 
 
@@ -201,39 +247,10 @@ class ZKWLazy:
         self._all_apply(2 * k + 1, self._lz[k])
         self._lz[k] = self._id
 
-"""例题
-区间赋值，区间求max: https://leetcode.cn/problems/falling-squares/  https://www.luogu.com.cn/problem/P3870
-    tree_size = len(hashes)
-    op = max  # 两个节点合并
-    e = 0  # 节点初始值
-    mapping = lambda f,x: f if f is not None else x  # mappint(f,x)把x节点应用f(可能是lazy),本题是如果有lazy tag，则赋值，否则不变
-    composition = lambda f,g: f if f is not None else g   # 合并两个tag,如果x有值，那就应用，否则用之前的
-    id_ = None  # lazy 默认值    
-    tree = LazySegTree(op,e,mapping,composition,id_,tree_size)
-01线段树，区间异或，区间求和：https://leetcode.cn/problems/handling-sum-queries-after-update/description/
-    op = lambda x,y:(x[0]+y[0],x[1]+y[1])  # 区间长度和1的个数都是求和合并       
-    e = (0, 0)  # 区间长度，1的个数
-    mapping = lambda f,x: (x[0],x[0]-x[1]) if f else x  # 如果区间异或1则处理，否则不变
-    composition = lambda f,g:f^g  # 合并两次异或操作     
-    id_ = 0  # 默认lazytag，对异或来说就是0
-    zkw = ZKWLazy(op,e,mapping,composition,id_,[(1,int(v==1)) for v in nums1])
-同时存在覆盖和区间加,询问区间和：
-    op = lambda x, y: (x[0] + y[0], x[1] + y[1])  # 两个节点合并
-    e = (0, 1)  # 求和，节点区间长度
 
-    def mapping(f, x):  # mapping(f,x)把x节点应用f,f[0]是覆盖,f[1]是add
-        a, b = x
-        if f[0] is not None:  # 如果有覆盖则优先覆盖
-            a = f[0] * b
-        return a + f[1] * b, b  # 如果有add则加上
-
-    def composition(f, g):  # 合并两个tag,如果新tag是覆盖，则直接修改覆盖，add置0
-        if f[0]: return f[0], 0
-        return g[0], f[1] + g[1]
-
-    id_ = (None, 0)  # lazy 默认值
-    tree = ZKWLazy(op, e, mapping, composition, id_, n + 1)
-维护区间内最多连续的0个数： https://www.luogu.com.cn/problem/P2894   https://leetcode.cn/problems/design-memory-allocator/
+#       ms
+def solve():
+    n, m = RI()
     e = (0, 0, 0, 0)  # 最多连续0，靠左的连续0，靠右的连续0,区间长度
 
     def op(x, y):
@@ -252,4 +269,30 @@ class ZKWLazy:
     composition = lambda f, g: f if f is not None else g  # 合并
     id_ = None  # 默认lazytag
     zkw = ZKWLazy(op, e, mapping, composition, id_, [(1, 1, 1, 1) for _ in range(n)])
-"""
+    for _ in range(m):
+        t, *op = RI()
+        if t == 1:
+            size = op[0]
+            if zkw.all_prod()[0] < size:
+                print(0)
+                continue
+            p = zkw.max_right(0, lambda x: x[0] < size)
+            if p == n:
+                print(0)
+                continue
+            p = p - size + 1
+            zkw.apply(p, p + size, 1)
+            print(p + 1)
+        else:
+            l, d = op
+            zkw.apply(l - 1, l + d - 1, 0)
+
+
+if __name__ == '__main__':
+    t = 0
+    if t:
+        t, = RI()
+        for _ in range(t):
+            solve()
+    else:
+        solve()
