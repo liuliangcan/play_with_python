@@ -11,7 +11,8 @@
 应用小学学的斜截式：给出(x1,y1),(x2,y2)，那么
     斜率 k=(y2-y1)/(x2-x1)，用gcd约分一下，元组表示，注意特判dx=0的情况。另外，优先保持dx>=0，然后dy再>0
     截距 b=(y * dx - x * dy) / dx if dx else x， 但其实可以直接用b = y * dx - x * dy，因为斜率相同时，dx是相同的，这样避免除法
-
+判断平行四边形：
+对角线互相平分（共享中点），因此可以把点两两组合作为线段，存在它的中点上，那么共享中点的组内任意两条不同线段都能组成一个平行四边形（作为对角线）
 """
 class Solution:
     def countTrapezoids(self, points: List[List[int]]) -> int:
