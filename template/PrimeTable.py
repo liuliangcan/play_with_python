@@ -4,17 +4,22 @@ class PrimeTable:
         self.primes = primes = []  # 所有n以内的质数
         self.min_div = min_div = [0] * (n + 1)  # md[i]代表i的最小(质)因子
         min_div[1] = 1
+        self.mu = mu = [1]*(n+1)  # 莫比乌斯函数：含有平方因子的是0，否则是(-1)^c,c是不同质数个数
 
         # 欧拉筛O(n)，顺便求出min_div
         for i in range(2, n + 1):
             if not min_div[i]:
                 primes.append(i)
                 min_div[i] = i
+                mu[i] = -1  # 只有一个质数
             for p in primes:
                 if i * p > n: break
                 min_div[i * p] = p
                 if i % p == 0:
+                    mu[i*p] = 0  # 因为i*p里有至少两个p
                     break
+                else:
+                    mu[i*p] = -mu[i]  # 因为i*p比i多一个质数p
 
 
     def is_prime(self, x: int):

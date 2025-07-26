@@ -11,10 +11,49 @@
 这个系数可以和预处理因数的时候同时处理，调和级数方式
 
 另外，对于coef为0的项，是不是考虑从因数列表里去掉，这样复杂度可以进一步降低
-
+其实就是莫反、莫比乌斯反演、莫比乌斯函数
 
 https://ac.nowcoder.com/acm/contest/108576/G
+线性筛莫反,mo2：
+    mu[i]={0， 如果i含平方因子；(-1)^c, c是不同质因子个数}
+用法：
+    对gcd的题来说，很多可以用莫反，一般来说答案形如：
+    for i in range(1,mx+1):
+        ans += mu[i]*f(i)
+    其中f(i)是i的倍数合集的一个贡献。
+例题：
+    求gcd为i非空子序列数量： https://codeforces.com/problemset/problem/803/F， f(i)=pow(2,cnt[i]+cnt[2i]+..cnt[k*i])-1
 """
+
+
+def mo1(n):  # 返回[1, 0, 1, 1, 0, 1, -1, 1, 0, 0]
+    coef = [1] * (n + 1)
+    coef[1] = 0
+    for i in range(1, n + 1):
+        for j in range(i, n + 1, i):
+            if j > i:
+                coef[j] -= coef[i]
+    return coef
+
+
+def mo2(n):  # 返回[1, 1, -1, -1, 0, -1, 1, -1, 0, 0]
+    mu = [1] * (n + 1)
+    is_prime = [True] * (n + 1)
+    primes = []
+    for i in range(2, n + 1):
+        if is_prime[i]:
+            primes.append(i)
+            mu[i] = -1
+        for p in primes:
+            if i * p > n: break
+            is_prime[i * p] = False
+            if i % p == 0:
+                mu[i * p] = 0
+                break
+            else:
+                mu[i * p] = -mu[i]
+    return mu
+
 # n = 20
 # coef = [1] * n
 # coef[1] = 0
