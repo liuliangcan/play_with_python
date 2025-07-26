@@ -86,6 +86,36 @@ class SuffixArray:
         self.height = height
         return sa, rk, height
 
+    def build_lcp_array(self):
+        s = self.s
+        sa = self.sa
+        n = len(s)
+        # 计算排名数组：rank[i]表示后缀i在后缀数组中的排名
+        rank = self.rk
+        # for i in range(n):
+        #     rank[sa[i]] = i
+
+        lcp = [0] * n  # 初始化LCP数组,lcp[i]代表排名为sa[i]和sa[i-1]的公共前缀长度
+        h = 0  # 当前公共前缀长度
+
+        for i in range(n):
+            # 只处理排名>0的后缀（排名0的后缀没有前驱）
+            if rank[i] > 0:
+                # 找到后缀数组中前一个后缀的起始位置
+                j = sa[rank[i] - 1]
+
+                # 从位置h开始比较两个后缀
+                while i + h < n and j + h < n and s[i + h] == s[j + h]:
+                    h += 1  # 增加公共前缀长度
+
+                # 设置LCP值
+                lcp[rank[i]] = h
+
+                # 为下一个后缀准备：公共前缀长度至少为h-1
+                if h > 0:
+                    h -= 1
+
+        return lcp
     def get_pos_range(self, w):  # 获取所有s中所有w所在位置的起始点，例如s='abaac',w='a',则返回(0,2,3)，但是yield返回
         sa, s, n = self.sa, self.s, len(self.s)
 
