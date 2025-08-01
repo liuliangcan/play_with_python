@@ -56,7 +56,7 @@ def log_trick_v_cnt(nums: List[int], op=and_):
             else:
                 dp[ptr][1] = v[1]
         # dp = dp[: ptr + 1]
-        del dp[ptr + 1:]  # little faster
+        del dp[ptr + 1:]
 
         for l, r, v in dp:
             res[v] += r - l

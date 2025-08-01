@@ -41,23 +41,17 @@ class TrieXor:
         # 计算01字典树里任意数字异或num的最大值,只会处理最低bit_len位。
         # 贪心的从高位开始处理，显然num的某位是0，对应的优先应取1；相反同理
         cur = self.trie
-        ret = 0
+        res = 0
         for i in range(self.bit_len, -1, -1):
-            if (num >> i) & 1 == 0:  # 如果本位是0，那么取1才最大；取不到1才取0
-                if 1 in cur:
-                    cur = cur[1]
-                    ret += ret + 1
-                else:
-                    cur = cur.get(0, {})
-                    ret <<= 1
+            c = num >> i & 1
+            op = c ^ 1  # 有对面的数，这位异或才能是1
+            if op in cur:
+                cur = cur[op]
+                res |= 1 << i
             else:
-                if 0 in cur:
-                    cur = cur[0]
-                    ret += ret + 1
-                else:
-                    cur = cur.get(1, {})
-                    ret <<= 1
-        return ret
+                cur = cur[c]
+
+        return res
 
     def count_less_than_limit_xor_num(self, num, limit):
         # 计算01字典树里有多少数字异或num后小于limit
@@ -67,21 +61,29 @@ class TrieXor:
         # 3.当limit对应为是0，且异或值为0的子树部分，向后检查。
         # 若向后检查取不到，直接剪枝break
         cur = self.trie
-        ans = 0
+        res = 0
         for i in range(self.bit_len, -1, -1):
             a, b = (num >> i) & 1, (limit >> i) & 1
             if b == 1:
-                if a == 0:
-                    if 0 in cur:  # 右子树上所有值异或1都是0，一定小于1
-                        ans += cur[0][3]
-                    cur = cur.get(1)  # 继续检查右子树
-                    if not cur: break  # 如果没有1，即没有右子树，可以直接跳出了
-                if a == 1:
-                    if 1 in cur:  # 右子树上所有值异或1都是0，一定小于1
-                        ans += cur[1][3]
-                    cur = cur.get(0)  # 继续检查左子树
-                    if not cur: break  # 如果没有0，即没有左子树，可以直接跳出了
+                if a in cur:
+                    res += cur[a][3]
+                cur = cur.get(a ^ 1)
             else:
                 cur = cur.get(a)  # limit是0，因此只需要检查异或和为0的子树
-                if not cur: break  # 如果没有相同边的子树，即等于0的子树，可以直接跳出了
-        return ans
+            if not cur: break  # 如果没有相同边的子树，即等于0的子树，可以直接跳出了
+        return res
+
+    def kth_xor_num(self, x, k):
+        # 计算树里，异或x后的第k小数是谁(k base1)
+        cur = self.trie
+        res = 0
+        for i in range(self.bit_len, -1, -1):
+            c = x >> i & 1
+            left = cur.get(c, {}).get(3, 0)  # 本位是0的部分
+            if k <= left:
+                cur = cur[c]
+            else:
+                cur = cur[c ^ 1]
+                k -= left
+                res |= 1 << i
+        return res
