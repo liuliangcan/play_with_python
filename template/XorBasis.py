@@ -4,11 +4,14 @@
 2. 判断一个数能否表示成某数集的异或和
 3. 求一个数表示成某数集子集异或和的方案数
 4. 求一个数在某数集子集异或和中的排名
-例题：
+例题：https://codeforces.com/gym/105974 cf xbasis专项
 1. 3630. 划分数组得到最大异或运算和与运算之和
 https://leetcode.cn/problems/partition-array-for-maximum-xor-and-and/description/
 2.https://codeforces.com/problemset/problem/1101/G ,任取若干子段，异或和要互异，求前缀和的线性基数量即可，但是由于前缀和可以被原数组表出，也可以直接求原数组的线性基
 3.https://codeforces.com/problemset/problem/959/F 问某个数可以被用多少种方式表出，增量构造线性基
+4. https://codeforces.com/gym/105974/problem/A A. Distinct Xor Subsequences一组数异或能表出的数字数量，其实就是pow(2,len(b))
+5. https://codeforces.com/gym/105974/problem/B B. Distinct Xor Subsequence Queries 第k小异或和，可选空，b排序，k按位取即可
+6. https://codeforces.com/gym/105974/problem/C C. Distinct Xor Subsequence Queries Ⅱ 同CF959F，增量构造，pow(2,n-len(b))
 """
 from typing import List
 
@@ -75,7 +78,27 @@ class XorBasisGauss:
         for i in range(self.cnt):
             res ^= self.a[i]
         return res
+class XorBasisQuick:
+    """贪心法构造线性基，基于每个高位计算"""
+    def __init__(self):
+        self.b = []
 
+    def insert(self, v):
+        for x in self.b:
+            if v ^ x < v:
+                v ^= x
+        if v:
+            self.b.append(v)
+    def can_present(self,v):
+        for x in self.b:
+            v = min(v,x^v)
+        return v == 0
+    def find_max_xor(self):  # 这个很慢
+        res = 0
+        for v in sorted(self.b, reverse=True):
+            if res ^ v > res:
+                res ^= v
+        return res
 
 
 class Solution:
@@ -96,7 +119,7 @@ class Solution:
         u = max(nums).bit_length()
         for i in range(m):
             if ands[i] + ors[(m-1)^i]*2 - xors[(m-1)^i] <= ans:continue
-            base = XorBasis(u)
+            base = XorBasisGreedy(u)
             xor = ~xors[(m-1)^i]
             for j in range(n):
                 if not i >> j & 1:
