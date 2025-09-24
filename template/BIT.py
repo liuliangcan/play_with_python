@@ -16,6 +16,7 @@
 - 单点更新-区间求极值: 线段树卡常才需要用，好像不支持回退。而且复杂度多个log。   BinIndexTreeMin/BinIndexTreeMax
 - 二维树状数组: 不太常用  BinTree2DIUPQ
 - 另外还可以实现ranktree(权值树状数组)，要求值域小或者可离散化，复杂度是O(lgn)：思想是维护01值然后用sum(i)前边代表i是第几小  https://leetcode.cn/problems/sliding-subarray-beauty/
+- 判断两个部分是否相交（覆盖也不算），类似扫描线， https://atcoder.jp/contests/abc424/tasks/abc424_f
 我的csdn:[[python刷题模板] 树状数组](https://blog.csdn.net/liuliangcan/article/details/124990108)
 
 """
