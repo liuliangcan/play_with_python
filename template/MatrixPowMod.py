@@ -35,7 +35,7 @@
 11. LC2851. 字符串转换 https://leetcode.cn/problems/string-transformation/ 利用kmp找出所有匹配位置，状态只有两种，i次操作后当前匹配或者不匹配
 12. abc009_d 渐进式 https://atcoder.jp/contests/abc009/submissions/me 题目直接给出矩阵公式，但是递推关系是位与和异或， 注意去掉取模
 13. abc236_g G - Good Vertices  https://atcoder.jp/contests/abc236/tasks/abc236_g min(max))递推
-
+14. cf1117D. Magic Gems https://codeforces.com/problemset/problem/1117/D  类似爬楼梯，但是维度要前100项
 
 """
 from typing import List
@@ -50,10 +50,20 @@ from typing import List
 
 MOD = 10**9+7
 
-# a @ b，其中 @ 是矩阵乘法,这个不一定快
+# # a @ b，其中 @ 是矩阵乘法,这个不一定快
+# def mul(a: List[List[int]], b: List[List[int]]) -> List[List[int]]:
+#     return [[sum(x * y for x, y in zip(row, col)) % MOD for col in zip(*b)]
+#             for row in a]
+
+# 缓存友好写法
 def mul(a: List[List[int]], b: List[List[int]]) -> List[List[int]]:
-    return [[sum(x * y for x, y in zip(row, col)) % MOD for col in zip(*b)]
-            for row in a]
+    ret = [[0] * len(b[0]) for _ in range(len(a))]
+    n, z = len(b[0]), len(a[0])
+    for row1, row2 in zip(ret, a):
+        for j in range(n):
+            for k in range(z):
+                row1[j] = (row1[j] + row2[k] * b[k][j]) % MOD
+    return ret
 
 # a^n @ f1
 def pow_mul(a: List[List[int]], n: int, f1: List[List[int]]) -> List[List[int]]:
