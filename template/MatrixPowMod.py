@@ -36,6 +36,7 @@
 12. abc009_d 渐进式 https://atcoder.jp/contests/abc009/submissions/me 题目直接给出矩阵公式，但是递推关系是位与和异或， 注意去掉取模
 13. abc236_g G - Good Vertices  https://atcoder.jp/contests/abc236/tasks/abc236_g min(max))递推
 14. cf1117D. Magic Gems https://codeforces.com/problemset/problem/1117/D  类似爬楼梯，但是维度要前100项
+15. cf691E. Xor-sequences https://codeforces.com/problemset/problem/691/E 线性递推dp
 
 """
 from typing import List
@@ -47,7 +48,14 @@ from typing import List
 #             for k in range(len(a[0])):
 #                 ret[i][j] ^= a[i][k] & b[k][j]
 #     return ret
-
+# # 全展开的话这个快
+# def mul2(A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+#     res = [[0] * len(B[0]) for _ in [None] * len(A)]
+#     for i, resi in enumerate(res):
+#         for k, aik in enumerate(A[i]):
+#             for j, bkj in enumerate(B[k]):
+#                 resi[j] = (resi[j] + aik * bkj) % MOD
+#     return res
 MOD = 10**9+7
 
 # # a @ b，其中 @ 是矩阵乘法,这个不一定快
