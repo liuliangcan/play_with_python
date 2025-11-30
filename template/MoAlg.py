@@ -21,7 +21,11 @@
 优化
     - 对询问r进行奇偶排序，这样移动到下个块时，不用重复从n移到1重新开始，而是从大的开始顺路。这样可以减一半。整体效率提高30%。
     - 对询问进行状压，比对元组操作快很多。由于莫队题目的n和q通常是1e5级别(<1e6),可以用60位把这三个数都压起来。
-
+    - 剪枝（按理说应该没用）lc3762. 使数组元素相等的最小操作次数。 这题有的询问是非法的，可以O(1)剔除，那这种情况下，只需要add其它询问。
+        这时，self.query不要初始化成q了，直接append
+        同时，res不要在solve里创建，传进去，不影响已经算过的剪枝的询问。
+        这题剪不剪枝从TLE变成2.8s飞快。但如果题目数据有那种[1]*n,剪枝无效的话，其实没有意义
+        这题还要用对顶堆，所以总复杂度是nsqrtnlogn
 例题
     - 模板 G - Range Pairing Query https://atcoder.jp/contests/ABC242/tasks/abc242_g
 """
@@ -98,3 +102,173 @@ for i in range(q):
     mo.add_query(l - 1, r - 1, i)
 res = mo.solve()
 print('\n'.join(map(str, res)))
+
+
+################  以下是lc3762. 使数组元素相等的最小操作次数  的代码，算是优化剪枝的案例，但极端数据其实无效；如果题目一定可以剪枝，那就有效
+
+class DualHeap:
+    """对顶堆，实时计算当前集合前k小的元素和(如果k设0,则保持平衡，0<=small-large<=1)。每个操作均摊时间复杂度O(lgn)，总体O(nlgn)。682ms"""
+
+    def __init__(self, k=0):
+        self.k = k  # 如果k=0，表示保持两个堆一样大(0<=small-large<=1),此时-small[0]就是中位数
+        self.small = []  # 大顶堆存较小的k个数，注意py默认小顶堆，因此需要取反
+        self.large = []  # 小顶堆存较大的剩余数
+        self.delay_rm = defaultdict(int)  # 延时删除标记
+        self.sum_kth = 0  # 前k小数字的和
+        self.small_size = 0
+        self.large_size = 0
+
+    def prune(self, h):
+        """修剪h，使h堆顶的已标记删除元素全部弹出"""
+        delay_rm = self.delay_rm
+        p = -1 if h is self.small else 1
+        while h:
+            v = h[0] * p
+            if v in delay_rm:
+                delay_rm[v] -= 1
+                if not delay_rm[v]:
+                    del delay_rm[v]
+                heappop(h)
+            else:
+                break
+
+    def make_balance(self):
+        """调整small和large的大小，使small中达到k个（或清空large）"""
+        k = self.k or (self.small_size + self.large_size + 1) // 2  # 如果self.k是0，表示前后要balance
+        if self.small_size > k:
+            heappush(self.large, -self.small[0])
+            self.sum_kth += heappop(self.small)  # 其实是-=负数
+            self.large_size += 1
+            self.small_size -= 1
+            self.prune(self.small)
+        elif self.small_size < k and self.large:
+            heappush(self.small, -self.large[0])
+            self.sum_kth += heappop(self.large)
+            self.small_size += 1
+            self.large_size -= 1
+            self.prune(self.large)
+
+    def add(self, v):
+        """添加值v，判断需要加到哪个堆"""
+        small = self.small
+        if not small or v <= -small[0]:
+            heappush(small, -v)
+            self.sum_kth += v
+            self.small_size += 1
+        else:
+            heappush(self.large, v)
+            self.large_size += 1
+        self.make_balance()
+
+    def remove(self, v):
+        """移除v，延时删除，但可以实时判断是否贡献了前k和"""
+        small, large = self.small, self.large
+        self.delay_rm[v] += 1
+        if large and v >= large[0]:
+            self.large_size -= 1
+            if v == large[0]:
+                self.prune(large)
+        else:
+            self.small_size -= 1
+            self.sum_kth -= v
+            if v == -small[0]:
+                self.prune(small)
+        self.make_balance()
+
+
+class Solution:
+    def minOperations(self, nums: List[int], k: int, queries: List[List[int]]) -> List[int]:
+        n = len(nums)
+        a = [v % k for v in nums]
+
+        class Mo:
+            def __init__(self, N, Q):
+                self.q = Q
+                self.n = N
+                self.query = []
+                self.data = [0] * Q
+                self.bsize_ = int(max(1, n / max(1, (Q * 2 / 3) ** 0.5)))
+                # W = max(1, int(N / sqrt(Q)))
+
+            def add_query(self, l, r, i):
+                self.data[i] = l << 20 | r
+                self.query.append(((l // self.bsize_) << 40) + ((-r if (l // self.bsize_) & 1 else r) << 20) + i)
+
+            def solve(self, res):
+                data = self.data
+                self.query.sort()
+                L, R = 0, -1
+                # res = [0] * self.q
+                mask = (1 << 20) - 1
+                for lri in self.query:
+                    i = lri & mask
+                    lr = data[i]
+                    l, r = lr >> 20, lr & mask
+                    while L > l: L -= 1; add_left(L, R);
+                    while R < r: R += 1; add_right(L, R)
+                    while L < l: remove_left(L, R); L += 1;
+                    while R > r:  remove_right(L, R); R -= 1;
+                    res[i] = get()
+                return res
+
+        def add_left(x, R):
+            nonlocal s, diff
+            v = nums[x]
+            s += v
+            dh.add(v)
+            if x < R:
+                diff += a[x] != a[x + 1]
+
+        def add_right(L, x):
+            nonlocal s, diff
+            v = nums[x]
+            s += v
+            dh.add(v)
+            if L < x:
+                diff += a[x] != a[x - 1]
+
+        def remove_left(x, R):
+            nonlocal s, diff
+            v = nums[x]
+            s -= v
+            dh.remove(v)
+            if x < R:
+                diff -= a[x] != a[x + 1]
+
+        def remove_right(L, x):
+            nonlocal s, diff
+            v = nums[x]
+            s -= v
+            dh.remove(v)
+            if L < x:
+                diff -= a[x] != a[x - 1]
+
+        def get():
+            if diff: return -1
+            x, y = dh.small_size, dh.large_size
+            if x + y == 1: return 0
+            mid = -dh.small[0]
+            left = dh.sum_kth
+            return (mid * x - left + s - left - mid * y) // k
+
+        diff = []
+        for x, y in pairwise(nums):
+            diff.append(int(y % k != x % k))
+        dpre = [0] + list(accumulate(diff))
+
+        s = 0
+        diff = 0
+        dh = DualHeap()
+        q = len(queries)
+        mo = Mo(n, q)
+        ans = [0] * q
+        for i, (l, r) in enumerate(queries):
+            if l == r:
+                ans[i] = 0
+                continue
+            if dpre[r] - dpre[l]:
+                ans[i] = -1
+                continue
+            mo.add_query(l, r, i)
+        res = mo.solve(ans)
+        return res

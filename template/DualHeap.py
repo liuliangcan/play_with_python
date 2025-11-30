@@ -8,7 +8,7 @@
 维护前k小：https://leetcode.cn/problems/divide-an-array-into-subarrays-with-minimum-cost-ii/description/
 维护前一半：https://leetcode.cn/problems/5TxKeK/description/
 """
-from collections import Counter
+from collections import Counter, defaultdict
 from heapq import *
 
 
@@ -19,7 +19,7 @@ class DualHeap:
         self.k = k  # 如果k=0，表示保持两个堆一样大(0<=small-large<=1),此时-small[0]就是中位数
         self.small = []  # 大顶堆存较小的k个数，注意py默认小顶堆，因此需要取反
         self.large = []  # 小顶堆存较大的剩余数
-        self.delay_rm = Counter()  # 延时删除标记
+        self.delay_rm = defaultdict(int)  # 延时删除标记
         self.sum_kth = 0  # 前k小数字的和
         self.small_size = 0
         self.large_size = 0
