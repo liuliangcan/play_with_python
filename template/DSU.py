@@ -46,6 +46,10 @@
 - 带权并查集，我自己理解为前缀和并查集，维护每个节点到祖宗的距离，这样查询同家族的距离时，可以用前缀和减。
     - 注意距离要有方向
     - https://www.luogu.com.cn/problem/P2024 食物链，维护模三上的距离
+- 可撤销并查集（撤销上一次操作）：
+    1. 不可以路径压缩，必须用启发式合并(推荐按size，好写，场数小)。
+    2. 需要储存修改上的y, undo时：size[fa[y]]-=size[y];fa[y]=y;
+    3. 注意union时不要把size[y]置0
 ---
 - 目前不会的：
 - 可以删除的并查集
@@ -55,8 +59,11 @@
 - [[python刷题模板] 并查集](https://blog.csdn.net/liuliangcan/article/details/124990864)
 """
 
+
+
 class DSU:
     """基于数组的并查集"""
+
     def __init__(self, n):
         self.fathers = list(range(n))
         self.size = [1] * n  # 本家族size
@@ -89,7 +96,6 @@ class DSU:
         return True
 
 
-
 class DSUW:
     """带权并查集，维护每个节点到祖宗的距离"""
 
@@ -120,7 +126,6 @@ class DSUW:
         self.fa[ny] = nx
 
         return True, z
-
 
 
 class UnionFind:
@@ -203,6 +208,32 @@ class UnionFind:
             self.weights[root] += self.weights[r]
             self.parents[r] = root
 
+class DSUUndo:
+    # 可撤销并查集
+    def __init__(self, n):
+        self.fa = list(range(n))
+        self.size = [1] * n
+        self.history = []
+
+    def find(self, x):
+        while x != self.fa[x]: x = self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x, y = self.find(x), self.find(y)
+        if x == y: return False
+        if self.size[x] < self.size[y]:
+            x, y = y, x
+        self.size[x] += self.size[y]
+        self.history.append(y)
+        self.fa[y] = x
+        return True
+
+    def undo(self):
+        y = self.history.pop()
+        self.size[self.fa[y]] -= self.size[y]
+        self.fa[y] = y
+
 # if __name__ == '__main__':
 #
 #     uf = UnionFind(range(10))
@@ -212,4 +243,3 @@ class UnionFind:
 #     uf.union(1,2)
 #     print(uf.weights[uf[1]])
 #     print(list(uf.to_sets()))
-
