@@ -28,6 +28,19 @@
         这题还要用对顶堆，所以总复杂度是nsqrtnlogn
 例题
     - 模板 G - Range Pairing Query https://atcoder.jp/contests/ABC242/tasks/abc242_g
+
+其他：
+回滚莫队 可以解决无法删除或者添加的题目，“真正的原始莫队”
+    1. 对每个区间， 如果r-l<=B, 暴力处理。 这可以保证后续处理的时候l和r一定不在同一个block
+    2. 其余区间按照l的块号为第一关键字，r为第二关键字排序(l//B,r)：
+        l遇到新的块号b时, 这时r肯定是在b+1以及更右的块里
+        更新L为b的右端点+1, R为b的右端点
+        先向右暴力更新R:while R<r:add(++R)
+        然后快照当前状态stat
+        然后向左暴力更新L在b里的所有贡献:for L in range(l//B*B+B-1,l-1,-1):add(L)
+        贡献答案
+        还原没带b里元素的stat
+    lc3636 查询超过阈值频率最高元素
 """
 
 
