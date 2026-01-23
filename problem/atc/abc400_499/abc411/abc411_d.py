@@ -1,3 +1,9 @@
+# Problem: D - Conflict 2
+# Contest: AtCoder - UNIQUE VISION Programming Contest 2025 Summer (AtCoder Beginner Contest 411)
+# URL: https://atcoder.jp/contests/abc411/tasks/abc411_d
+# Memory Limit: 1024 MB
+# Time Limit: 2000 ms
+
 import sys
 
 from types import GeneratorType
@@ -38,72 +44,56 @@ MOD = 10 ** 9 + 7
 PROBLEM = """
 """
 
-def fast_read_sample():
+
+#    238   ms
+def solve():
     iterator = iter(sys.stdin.read().split())
 
     n = int(next(iterator))
     q = int(next(iterator))
-def iii():  # 牛客输入格式有bug
-    num = 0
-    neg = False
-    while True:
-        c = sys.stdin.read(1)
-        if c == '-':
-            neg = True
-            continue
-        elif c < '0' or c > '9':
-            continue
-        while True:
-            num = 10 * num + ord(c) - ord('0')
-            c = sys.stdin.read(1)
-            if c < '0' or c > '9':
-                break
-        return -num if neg else num
 
 
-def lower_bound(lo: int, hi: int, key):
-    """由于3.10才能用key参数，因此自己实现一个。
-    :param lo: 二分的左边界(闭区间)
-    :param hi: 二分的右边界(闭区间)
-    :param key: key(mid)判断当前枚举的mid是否应该划分到右半部分。
-    :return: 右半部分第一个位置。若不存在True则返回hi+1。
-    虽然实现是开区间写法，但为了思考简单，接口以[左闭,右闭]方式放出。
-    """
-    lo -= 1  # 开区间(lo,hi)
-    hi += 1
-    while lo + 1 < hi:  # 区间不为空
-        mid = (lo + hi) >> 1  # py不担心溢出，实测py自己不会优化除2，手动写右移
-        if key(mid):  # is_right则右边界向里移动，目标区间剩余(lo,mid)
-            hi = mid
-        else:  # is_left则左边界向里移动，剩余(mid,hi)
-            lo = mid
-    return hi
-
-
-def bootstrap(f, stack=[]):
-    def wrappedfunc(*args, **kwargs):
-        if stack:
-            return f(*args, **kwargs)
+    ser = ['', None]
+    a = [['', None] for _ in range(n + 1)]
+    for _ in range(q):
+        t = next(iterator)
+        p = int(next(iterator))
+        if t == '1':
+            a[p] = ser
+        elif t == '2':
+            s = next(iterator)
+            a[p] = [s, a[p]]
         else:
-            to = f(*args, **kwargs)
-            while True:
-                if type(to) is GeneratorType:
-                    stack.append(to)
-                    to = next(to)
-                else:
-                    stack.pop()
-                    if not stack:
-                        break
-                    to = stack[-1].send(to)
-            return to
-
-    return wrappedfunc
+            ser = a[p]
+    ans = []
+    p = ser
+    while p:
+        ans.append(p[0])
+        p = p[1]
+    print(''.join(ans[::-1]))
 
 
-#       ms
-def solve():
-    n, = RI()
-    a = RILST()
+#    464   ms
+def solve1():
+    n, q = RI()
+    ser = ['', None]
+    a = [['', None] for _ in range(n + 1)]
+    for _ in range(q):
+        t, *op = RS()
+        p = int(op[0])
+        if t == '1':
+            a[p] = ser
+        elif t == '2':
+            s = op[1]
+            a[p] = [s, a[p]]
+        else:
+            ser = a[p]
+    ans = []
+    p = ser
+    while p:
+        ans.append(p[0])
+        p = p[1]
+    print(''.join(ans[::-1]))
 
 
 if __name__ == '__main__':
